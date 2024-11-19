@@ -9,7 +9,7 @@
         <input class="block mb-3" />
       </div>
       <div class="mb-3">
-        <button class="bg-blueGreen px-3 py-1 rounded-xl mx- hover:animate-pulse">Login</button>
+        <button class="bg-blueGreen px-3 py-1 rounded-xl hover:animate-pulse">Login</button>
       </div>
       <svg height="5" width="300" xmlns="http://www.w3.org/2000/svg">
         <line x1="0" y1="0" x2="300" y2="0" style="stroke: white; stroke-width: 2" />
