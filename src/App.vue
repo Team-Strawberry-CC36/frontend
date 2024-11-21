@@ -1,5 +1,33 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+
+const auth = getAuth()
+
+const username = ref<string | null>(null)
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/auth.user
+    username.value = user.displayName
+  } else {
+    alert('Logged out')
+    username.value = null
+    // User is signed out
+  }
+})
+
+const handleSignOut = async () =>
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch((error) => {
+      // An error happened.
+      console.log('Error: ' + error)
+    })
 </script>
 
 <template>
@@ -9,7 +37,9 @@ import { RouterLink, RouterView } from 'vue-router'
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <button @click.prevent="handleSignOut">Log out</button>
       </nav>
+      This is a check: {{ username }}
     </div>
   </header>
 
