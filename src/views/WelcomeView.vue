@@ -10,7 +10,7 @@ import { RouterLink } from 'vue-router'
     </div>
     <div class="mx-auto mt-10">
       <!-- <button class="bg-blueGreen p-3 rounded-xl mx- hover:animate-pulse">Login</button> -->
-      <RouterLink class="bg-blueGreen p-3 rounded-xl mx- hover:animate-pulse" to="/login">
+      <RouterLink class="bg-blueGreen p-3 rounded-xl mx-5 hover:animate-pulse" to="/login">
         Login
       </RouterLink>
       <button class="bg-blueGreen p-3 rounded-xl mx-5 hover:animate-pulse">Sign Up</button>
