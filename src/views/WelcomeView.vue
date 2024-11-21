@@ -13,7 +13,9 @@ import { RouterLink } from 'vue-router'
       <RouterLink class="bg-blueGreen p-3 rounded-xl mx-5 hover:animate-pulse" to="/login">
         Login
       </RouterLink>
-      <button class="bg-blueGreen p-3 rounded-xl mx-5 hover:animate-pulse">Sign Up</button>
+      <RouterLink class="bg-blueGreen p-3 rounded-xl mx-5 hover:animate-pulse" to="/signup">
+        Sign Up
+      </RouterLink>
     </div>
   </main>
 </template>
