@@ -7,6 +7,24 @@ const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 
+const handleSignUp = () => {
+  if (
+    displayName.value.trim() === '' ||
+    email.value.trim() === '' ||
+    password.value.trim() === '' ||
+    confirmPassword.value.trim() === ''
+  ) {
+    alert('Please fill in all fields.')
+    return
+  }
+  if (password.value !== confirmPassword.value) {
+    alert('Passwords do not match.')
+    return
+  }
+  registerUserThroughFirebase(email.value, password.value, displayName.value)
+  alert('Sign up successful!')
+}
+
 // const testFunc = () => {
 //   console.log([displayName.value, email.value, password.value, confirmPassword.value])
 // }
@@ -15,10 +33,7 @@ const confirmPassword = ref('')
 <template>
   <div class="flex flex-col items-center sm:h-1/2 sm:w-1/4 rounded-xl bg-tiffanyBlue shadow-xl">
     <span class="m-3">Sign up for Japuri</span>
-    <form
-      class="flex flex-col"
-      @submit.prevent="registerUserThroughFirebase(email, password, displayName)"
-    >
+    <form class="flex flex-col" @submit.prevent="handleSignUp">
       <input type="text" v-model="displayName" placeholder="Username" class="block mb-3" />
 
       <input type="email" v-model="email" placeholder="Email" class="block mb-3" />
@@ -36,6 +51,7 @@ const confirmPassword = ref('')
         <button class="bg-blueGreen px-3 py-1 rounded-xl hover:animate-pulse">Sign Up</button>
       </div>
     </form>
+    <RouterLink class="mb-3" to="/login"> To login </RouterLink>
     <svg height="5" width="300" xmlns="http://www.w3.org/2000/svg">
       <line x1="0" y1="0" x2="300" y2="0" style="stroke: white; stroke-width: 2" />
     </svg>
