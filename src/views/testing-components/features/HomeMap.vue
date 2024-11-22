@@ -1,28 +1,44 @@
-<script setup lang="ts">
+<script setup>
+  import { Loader } from "@googlemaps/js-api-loader";
+  import {environment} from "@/environments/environent.ts";
   import {onMounted} from "vue";
-  import {environment} from "@/environments/environent";
 
-  const mapSrc = `https://www.google.com/maps/embed/v1/place?key=${environment.keys.googleApiKey}&q=Space+Needle,Seattle+WA"`
+  const loader = new Loader({
+    apiKey: environment.keys.googleApiKey,
+    version: "weekly",
+    libraries: ["places"]
+  });
 
   onMounted(() => {
-    console.log("Home Map mounted");
-    console.log(mapSrc);
+    initMap()
   })
+
+  async function initMap() {
+    // Promise for a specific library
+    const position = { lat: -25.344, lng: 131.031 };
+    const { Map } = await loader.importLibrary("maps");
+    const { AdvancedMarkerElement } = await loader.importLibrary("marker");
+
+    const map = new Map(
+      document.getElementById('map'),
+      {
+        zoom: 12,
+        center: position,
+        mapId: 'DEMO_MAP_ID',
+      }
+  );
+
+    // The marker, positioned at Uluru
+    const marker = new AdvancedMarkerElement({
+      map: map,
+      position: position,
+      title: 'Uluru'
+    });
+  }
 </script>
 
 <template>
-  <div>
-    <iframe
-      width="450"
-      height="250"
-      frameborder="0" style="border:0"
-      referrerpolicy="no-referrer-when-downgrade"
-      v-bind:src="mapSrc"
-      allowfullscreen>
-    </iframe>
+  <div id="map" style="width: 600px; height: 500px;">
+<!--    -->
   </div>
 </template>
-
-<style scoped>
-
-</style>

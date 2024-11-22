@@ -1,9 +1,11 @@
 <script setup lang="ts">
 
+import HomeMap from "@/views/testing-components/features/HomeMap.vue";
 </script>
 
 <template>
-  <p>Working testing components</p>
+  <p>HomeMap</p>
+  <HomeMap />
 </template>
 
 <style scoped>
