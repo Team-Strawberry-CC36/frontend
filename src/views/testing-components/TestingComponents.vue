@@ -1,11 +1,16 @@
 <script setup lang="ts">
 
-import HomeMap from "@/views/testing-components/features/HomeMap.vue";
+import HomeMap from "./features/HomeMap.vue";
+
+let placesDummyData = [];
+
 </script>
 
 <template>
-  <p>HomeMap</p>
-  <HomeMap />
+  <h1>Testing components</h1>
+  <div class="w-[600px] h-[400px] border border-l border-white-500">
+    <HomeMap :data="placesDummyData"/>
+  </div>
 </template>
 
 <style scoped>
