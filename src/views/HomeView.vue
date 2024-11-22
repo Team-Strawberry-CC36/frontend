@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue';
+import PlaceComponent from '@/components/Home/PlaceComponent.vue';
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
+  <main class="flex flex-col items-center h-screen w-full bg-roseQuartz">
+    <PlaceComponent />
   </main>
 </template>

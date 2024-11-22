@@ -24,10 +24,6 @@ const handleSignUp = () => {
   registerUserThroughFirebase(email.value, password.value, displayName.value);
   alert('Sign up successful!');
 };
-
-// const testFunc = () => {
-//   console.log([displayName.value, email.value, password.value, confirmPassword.value])
-// }
 </script>
 
 <template>

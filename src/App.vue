@@ -35,8 +35,9 @@ const handleSignOut = async () =>
     <div class="h-full w-full flex items-center bg-tiffanyBlue">
       <h1 class="basis-1/4 text-3xl">Japuri!</h1>
       <nav>
-        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/">Welcome</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/home">Home</RouterLink>
         <button @click.prevent="handleSignOut">Log out</button>
       </nav>
       This is a check: {{ username }}
