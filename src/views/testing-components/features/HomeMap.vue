@@ -1,13 +1,19 @@
 <script setup lang="ts">
   import { Loader } from "@googlemaps/js-api-loader";
-  import {environment} from "@/environments/environent";
-  import {onMounted} from "vue";
+  import { environment } from "@/environments/environent";
+  import {onMounted, ref, useTemplateRef} from "vue";
   import type Place from "@/interfaces/Place";
 
+  // This component receives the Places as the source of information
   const { data } = defineProps<{ data: Place[] }>();
+  const emit = defineEmits(['map-marker-clicked']);
 
-  console.log(environment.keys)
+  // Initial variables
+  const tokyoLocation = { lat: 35.6764,  lng: 139.6500 };
+  // Load container
+  let mapElementRef = useTemplateRef("map-container");
 
+  // `Loader` module loads dynamically the Google module necessary for using the map, or any other utility.
   const loader = new Loader({
     apiKey: environment.keys.googleApiKey,
     version: "beta",
@@ -18,43 +24,44 @@
     initMap();
   })
 
+  // When the template is rendered, we initialize the map.
   async function initMap() {
     const { Map } = await loader.importLibrary("maps") as google.maps.MapsLibrary;
     const { AdvancedMarkerElement } = await loader.importLibrary("marker");
 
-    const mapElement = document.getElementById("map");
+    if (!mapElementRef.value) return;
 
-    if (!mapElement) return;
+    const map = new Map(mapElementRef.value, {
+      center: tokyoLocation,
+      zoom: 12,
+      mapId: "DEMO_MAP_ID"
+    });
 
-    const map = new Map(
-      mapElement,
-      {
-        zoom: 12,
-        center: position,
-        mapId: 'DEMO_MAP_ID',
-      }
-  );
-
+    // We iterate over every place, and we set markers using location in each place
     data.forEach((place: Place) => {
-      // Create each marker
       const marker = new AdvancedMarkerElement({
         map,
         position: {
           lat: place.location.latitude,
           lng: place.location.longitude
         },
+        // Activate google event!
         gmpClickable: true,
       }) as google.maps.marker.AdvancedMarkerElement;
 
-      // Do something in a click
-      // The idea here is to submit an event to the parent to update the place view!
-      marker.addEventListener("gmc-click", (event => {
-        console.log("clicked", place);
-      }))
+      // If the marker its clicked, we emit an event including
+      // the place information
+      marker.addEventListener("gmp-click", event => {
+        emit("map-marker-clicked", {
+          event: "map-marker-clicked",
+          place: place,
+        })
+      })
     })
   }
 </script>
 
 <template>
-  <div id="map" class="w-[100%] h-[100%]" >map</div>
+  <!-- Div who stores google maps container -->
+  <div ref="map-container" class="w-[100%] h-[100%]" ></div>
 </template>
