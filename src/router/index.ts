@@ -3,6 +3,7 @@ import WelcomeView from '@/views/WelcomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SignUpView from '@/views/SignUpView.vue'
+import HomeView from '@/views/HomeView.vue'
 import TestingComponents from "@/views/testing-components/TestingComponents.vue";
 
 const router = createRouter({
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/signup',
       name: 'signup',
       component: SignUpView,
+    },
+    {
+      path: '/homeview',
+      name: 'homeview',
+      component: HomeView
     },
     {
       path: "/testing-components",

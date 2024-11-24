@@ -1,21 +1,19 @@
 
 
 <template>
-  <main>
-    <div class="main-page">
+    <div class="flex flex-col h-screen w-screen">
       <Navbar />
-      <div class="main-content">
-        <GoogleMap />
-        <PlaceInfo />
+      <div class="flex flex-grow">
+        <GoogleMap class="flex-[2] h-full" />
+        <PlaceInfo class="flex-[1] h-full" />
       </div>
     </div>
-  </main>
 </template>
 
 <script>
-  import Navbar from '../components/Navbar.vue';
-  import GoogleMap from '../components/GoogleMap.vue';
-  import PlaceInfo from '../components/PlaceInfo.vue';
+  import Navbar from '../components/HomeView/Navbar.vue';
+  import GoogleMap from '../components/HomeView/GoogleMap.vue';
+  import PlaceInfo from '../components/HomeView/PlaceInfo.vue';
 
   export default {
     name: "HomeView",
@@ -26,16 +24,3 @@
     },
   };
 </script>
-
-<style scoped>
-.main-page {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.main-content {
-  display: flex;
-  flex: 1;
-}
-</style>
