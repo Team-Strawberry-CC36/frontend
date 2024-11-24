@@ -17,9 +17,12 @@ defineProps({
         <li>Opening hours: {{ placeDetails.regular_opening_hours }}</li>
         <li>Website: {{ placeDetails.website_uri }}</li>
       </ul>
+      {{ placeDetails.general_info }}
     </section>
-    <section>Guide Link</section>
+    <section>
+      Guide Link will go here
+    </section>
     <section>Etiquette</section>
-    <section>Link to experiences</section>
+    <section>Router Link to experiences</section>
   </div>
 </template>
