@@ -1,11 +1,19 @@
 <script setup lang="ts">
-defineProps({
-  placeDetails: Object
-})
+import type Place from '@/interfaces/Place';
+
+defineProps<{
+  placeDetails: Place;
+}>();
 </script>
 
 <template>
   <div class="w-11/12 sm:w-1/2 h-fit sm:min-h-full mt-3 rounded-xl shadow-xl bg-peach">
+    <section>
+      <!-- Header Photo -->
+       <div>
+        <img src='placeDetails.photos[0]' alt="place_photo" />
+       </div>
+    </section>
     <section>
       <!-- Name of the place -->
       <h1>{{ placeDetails.name }}</h1>
@@ -14,15 +22,19 @@ defineProps({
       <!-- General information -->
       <ul>
         <li>AddressL: {{ placeDetails.address }}</li>
-        <li>Opening hours: {{ placeDetails.regular_opening_hours }}</li>
-        <li>Website: {{ placeDetails.website_uri }}</li>
       </ul>
-      {{ placeDetails.general_info }}
+      {{ placeDetails.generalInfo }}
     </section>
     <section>
-      Guide Link will go here
+      <h2>First time visiting a Japanese {{ placeDetails.placeType }}?</h2>
+      <RouterLink v-if="placeDetails.placeType === 'onsen'" to="/onsenguide">Onsen Guide</RouterLink>
+      <RouterLink v-if="placeDetails.placeType === 'shrine'" to="/shrineguide">Shrine Guide</RouterLink>
+      <RouterLink v-if="placeDetails.placeType === 'restaurant'" to="/restaurantguide">Restaurant Guide</RouterLink>
     </section>
     <section>Etiquette</section>
-    <section>Router Link to experiences</section>
+    <section>
+      Check out what other tourists are saying!
+      <RouterLink to="/experiences">Experiences</RouterLink>
+    </section>
   </div>
 </template>
