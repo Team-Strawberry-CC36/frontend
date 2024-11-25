@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import type Place from '@/utils/interfaces/Place';
+//import type Place from '@/utils/interfaces/Place';
+import { usePlaceStore } from '@/stores/selectedPlace';
 
-defineProps<{
-  placeDetails: Place;
-}>();
+const place = usePlaceStore();
+
+// defineProps<{
+//   details: Place;
+// }>();
 </script>
 
 <template>
@@ -11,25 +14,25 @@ defineProps<{
     <section>
       <!-- Header Photo -->
        <div>
-        <!-- <img src='placeDetails.photos[0]' alt="place_photo" /> -->
+        <!-- <img src='details.photos[0]' alt="place_photo" /> -->
        </div>
     </section>
     <section>
       <!-- Name of the place -->
-      <h1>{{ placeDetails.name }}</h1>
+      <h1>{{ place.details.name }}</h1>
     </section>
     <section>
       <!-- General information -->
       <ul>
-        <li>Address: {{ placeDetails.address }}</li>
+        <li>Address: {{ place.details.address }}</li>
       </ul>
-      {{ placeDetails.generalInfo }}
+      {{ place.details.generalInfo }}
     </section>
     <section>
-      <h2>First time visiting a Japanese {{ placeDetails.placeType }}?</h2>
-      <RouterLink v-if="placeDetails.placeType === 'onsen'" to="/onsenguide">Onsen Guide</RouterLink>
-      <RouterLink v-if="placeDetails.placeType === 'shrine'" to="/shrineguide">Shrine Guide</RouterLink>
-      <RouterLink v-if="placeDetails.placeType === 'restaurant'" to="/restaurantguide">Restaurant Guide</RouterLink>
+      <h2>First time visiting a Japanese {{ place.details.placeType }}?</h2>
+      <RouterLink v-if="place.details.placeType === 'onsen'" to="/onsenguide">Onsen Guide</RouterLink>
+      <RouterLink v-if="place.details.placeType === 'shrine'" to="/shrineguide">Shrine Guide</RouterLink>
+      <RouterLink v-if="place.details.placeType === 'restaurant'" to="/restaurantguide">Restaurant Guide</RouterLink>
     </section>
     <section>Etiquette</section>
     <section>
