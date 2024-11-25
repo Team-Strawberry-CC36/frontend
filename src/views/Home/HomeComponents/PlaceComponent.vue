@@ -4,6 +4,9 @@ import { usePlaceStore } from '@/stores/selectedPlace';
 
 const place = usePlaceStore();
 
+//use mock state data
+place.useMock();
+
 // defineProps<{
 //   details: Place;
 // }>();
@@ -34,7 +37,9 @@ const place = usePlaceStore();
       <RouterLink v-if="place.details.placeType === 'shrine'" to="/shrineguide">Shrine Guide</RouterLink>
       <RouterLink v-if="place.details.placeType === 'restaurant'" to="/restaurantguide">Restaurant Guide</RouterLink>
     </section>
-    <section>Etiquette</section>
+    <section>Etiquette
+
+    </section>
     <section>
       Check out what other tourists are saying!
       <RouterLink to="/experiences">Experiences</RouterLink>

@@ -2,7 +2,7 @@ export default interface Place {
   id: number
   name: string;
   address: string;
-  generalInfo: '';
+  generalInfo: string;
   placeType: PlaceType;
   location: {
     latitude: number;
