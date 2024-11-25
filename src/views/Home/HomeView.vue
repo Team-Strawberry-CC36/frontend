@@ -1,28 +1,9 @@
 <script setup lang="ts">
 //import { ref } from 'vue'
 import PlaceComponent from './HomeComponents/PlaceComponent.vue';
-import { usePlaceStore } from '@/stores/selectedPlace';
+import { usePlaceStore } from '@/stores/PlaceStore';
 
 //const apiURL = import.meta.env.BACKEND_URL;
-
-// const placeDetails = ref<Place>({
-//   id: 0,
-//   name: '',
-//   address: '',
-//   generalInfo: '',
-//   placeType: 'onsen',
-//   location: {
-//     latitude: 0,
-//     longitude: 0,
-//   },
-//   etiquettes: [],
-//   experiences: [],
-//   photos: [],
-//   metadata: {
-//     createdAt: new Date,
-//     updatedAt: new Date,
-//   }
-// });
 
 const place = usePlaceStore();
 
@@ -35,7 +16,7 @@ const place = usePlaceStore();
 </script>
 
 <template>
-  <main class="flex flex-col items-center h-screen w-full bg-roseQuartz">
+  <main class="flex flex-col items-center h-fit w-full bg-mist">
     <PlaceComponent
       :placeDetails="place"
     />

@@ -32,7 +32,7 @@ const handleSignOut = async () =>
 
 <template>
   <header class="h-16">
-    <div class="h-full w-full flex items-center bg-tiffanyBlue">
+    <div class="h-full w-full flex items-center bg-velvet">
       <h1 class="basis-1/4 text-3xl">Japuri!</h1>
       <nav>
         <RouterLink to="/">Welcome</RouterLink>
