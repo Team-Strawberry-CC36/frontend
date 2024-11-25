@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { registerUserThroughFirebase } from '@/utils/auth'
+import { ref } from 'vue';
+import { registerUserThroughFirebase } from '@/utils/auth';
 
-const displayName = ref('')
-const email = ref('')
-const password = ref('')
-const confirmPassword = ref('')
+const displayName = ref('');
+const email = ref('');
+const password = ref('');
+const confirmPassword = ref('');
 
 const handleSignUp = () => {
   if (
@@ -14,20 +14,16 @@ const handleSignUp = () => {
     password.value.trim() === '' ||
     confirmPassword.value.trim() === ''
   ) {
-    alert('Please fill in all fields.')
-    return
+    alert('Please fill in all fields.');
+    return;
   }
   if (password.value !== confirmPassword.value) {
-    alert('Passwords do not match.')
-    return
+    alert('Passwords do not match.');
+    return;
   }
-  registerUserThroughFirebase(email.value, password.value, displayName.value)
-  alert('Sign up successful!')
-}
-
-// const testFunc = () => {
-//   console.log([displayName.value, email.value, password.value, confirmPassword.value])
-// }
+  registerUserThroughFirebase(email.value, password.value, displayName.value);
+  alert('Sign up successful!');
+};
 </script>
 
 <template>

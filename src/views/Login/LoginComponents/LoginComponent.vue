@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { signInThroughFirebase } from '@/utils/auth'
+import { ref } from 'vue';
+import { signInThroughFirebase } from '@/utils/auth';
 
-const email = ref('')
-const password = ref('')
+const email = ref('');
+const password = ref('');
 
 const handleSignIn = () => {
-  signInThroughFirebase(email.value, password.value)
-}
+  signInThroughFirebase(email.value, password.value);
+};
 </script>
 
 <template>
