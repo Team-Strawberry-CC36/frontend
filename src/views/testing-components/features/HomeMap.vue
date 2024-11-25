@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { Loader } from "@googlemaps/js-api-loader";
-  import { environment } from "@/environments/environent";
+  import { environment } from "@/utils/environments/environent";
   import {onMounted, ref, useTemplateRef} from "vue";
-  import type Place from "@/interfaces/Place";
+  import type Place from "@/utils/interfaces/Place";
 
   // This component receives the Places as the source of information
   const { data } = defineProps<{ data: Place[] }>();

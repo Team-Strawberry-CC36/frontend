@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import PlaceComponent from '@/components/Home/PlaceComponent.vue';
-import type Place from '@/interfaces/Place';
+import PlaceComponent from './HomeComponents/PlaceComponent.vue';
+import type Place from '@/utils/interfaces/Place';
 
 //const apiURL = import.meta.env.BACKEND_URL;
 

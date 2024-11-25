@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type Place from '@/interfaces/Place';
+import type Place from '@/utils/interfaces/Place';
 
 defineProps<{
   placeDetails: Place;
@@ -11,7 +11,7 @@ defineProps<{
     <section>
       <!-- Header Photo -->
        <div>
-        <img src='placeDetails.photos[0]' alt="place_photo" />
+        <!-- <img src='placeDetails.photos[0]' alt="place_photo" /> -->
        </div>
     </section>
     <section>
@@ -21,7 +21,7 @@ defineProps<{
     <section>
       <!-- General information -->
       <ul>
-        <li>AddressL: {{ placeDetails.address }}</li>
+        <li>Address: {{ placeDetails.address }}</li>
       </ul>
       {{ placeDetails.generalInfo }}
     </section>

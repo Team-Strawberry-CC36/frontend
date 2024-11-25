@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import HomeMap from "./features/HomeMap.vue";
-import type Place from "@/interfaces/Place";
+import type Place from "@/utils/interfaces/Place";
 
 function doSomething(event: { event: string, place: Place }) {
     console.log(event);

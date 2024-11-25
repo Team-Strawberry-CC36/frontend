@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import WelcomeView from '@/views/WelcomeView.vue';
-import AboutView from '../views/AboutView.vue';
-import LoginView from '@/views/LoginView.vue';
-import SignUpView from '@/views/SignUpView.vue';
-import HomeView from '@/views/HomeView.vue';
+import WelcomeView from '@/views/Welcome/WelcomeView.vue';
+import AboutView from '../views/About/AboutView.vue';
+import LoginView from '@/views/Login/LoginView.vue';
+import SignUpView from '@/views/SignUp/SignUpView.vue';
+import HomeView from '@/views/Home/HomeView.vue';
 import TestingComponents from '@/views/testing-components/TestingComponents.vue';
 
 const router = createRouter({
