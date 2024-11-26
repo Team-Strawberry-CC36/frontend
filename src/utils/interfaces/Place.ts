@@ -35,6 +35,9 @@ interface Experience {
   id: number;
   placeId: number;
   userId: number;
+  username: string;
+  dateVisited: Date;
+  etiquette: string;
   experience: string;
   experienceType: string;
   metadata: {
