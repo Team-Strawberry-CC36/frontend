@@ -61,7 +61,7 @@ function resetForm() {
 
 const addExperience = async () => {
   try {
-    const response = await fetch(`${apiUrl}/places/1/experiences`, {
+    const response = await fetch(`${apiUrl}/places/${place.id}/experiences`, {
       method: 'POST',
       headers: {
         'Contents-type': 'application/json',
