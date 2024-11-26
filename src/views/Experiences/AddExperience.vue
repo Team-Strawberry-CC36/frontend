@@ -42,7 +42,6 @@ const apiUrl = import.meta.env.VITE_BACKEND_URL;
 console.log(apiUrl);
 
 const place = usePlaceStore();
-console.log(place);
 
 let experiencePackage = {
   etiquette: ['smoking', 'Tatoo'],
