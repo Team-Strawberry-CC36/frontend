@@ -1,11 +1,11 @@
 <script setup lang="ts">
 //import { ref } from 'vue'
 import PlaceComponent from './HomeComponents/PlaceComponent.vue';
-import { usePlaceStore } from '@/stores/PlaceStore';
+import MapComponent from './HomeComponents/MapComponent.vue';
 
 //const apiURL = import.meta.env.BACKEND_URL;
 
-const place = usePlaceStore();
+// const place = usePlaceStore();
 
 //Below function was intended to fetch information from data cache
 // const handleMapClick = async () => {
@@ -16,9 +16,8 @@ const place = usePlaceStore();
 </script>
 
 <template>
-  <main class="flex flex-col items-center h-fit w-full bg-mist">
-    <PlaceComponent
-      :placeDetails="place"
-    />
+  <main class="flex flex-col lg:flex-row gap-4 p-4 w-screen bg-mist ">
+    <MapComponent />
+    <PlaceComponent />
   </main>
 </template>

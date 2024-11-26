@@ -10,8 +10,8 @@ place.useMock();
 </script>
 
 <template>
-  <div class="sm:w-1/2 sm:h-fit h-full sm:border border-slate-400 overflow-hidden sm:m-3 sm:rounded-xl shadow-2xl bg-frostWhite">
-    <section class="h-80">
+  <div class="sm:w-full sm:h-fit sm:border border-slate-400 overflow-hidden sm:m-3 sm:rounded-xl shadow-2xl bg-frostWhite">
+    <section class="h-[20vh]">
       <!-- Cover Photo -->
        <div class="h-full w-full">
         <img class="w-full h-full object-cover border-b border-slate-400"  :src='place.details.photos[0].fileData' alt="place_photo" />
