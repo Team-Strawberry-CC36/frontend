@@ -10,7 +10,7 @@ place.useMock();
 </script>
 
 <template>
-  <div class="sm:w-1/2 sm:h-fit h-full overflow-hidden sm:m-3 sm:rounded-xl shadow-2xl bg-frostWhite">
+  <div class="sm:w-1/2 sm:h-fit overflow-hidden sm:m-3 sm:rounded-xl shadow-2xl bg-frostWhite">
     <section class="h-80">
       <!-- Cover Photo -->
        <div class="h-full w-full">

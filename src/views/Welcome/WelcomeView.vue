@@ -3,7 +3,7 @@ import { RouterLink } from 'vue-router';
 </script>
 
 <template>
-  <main class="flex flex-col items-center justify-center h-screen w-full bg-mist">
+  <main class="flex flex-col items-center justify-center w-full bg-mist">
     <div class="w-1/2 text-center">
       <h1 class="text-5xl">Welcome to Japuri</h1>
       <h2 class="mt-5">Cultural appreciation begins with understanding</h2>
