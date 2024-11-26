@@ -23,7 +23,7 @@
 </script>
 
 <template>
-    <div class="w-full m-3">
+    <div class="w-full">
         <h1 class="text-3xl justify-self-center mb-3">Select a place</h1>
         <div class="h-[30vh] lg:h-5/6 rounded-xl shadow-2xl">
             <iframe

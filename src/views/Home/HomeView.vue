@@ -16,7 +16,7 @@ import MapComponent from './HomeComponents/MapComponent.vue';
 </script>
 
 <template>
-  <main class="flex flex-col lg:flex-row gap-4 p-4 w-screen bg-mist ">
+  <main class="flex flex-col lg:flex-row p-4 w-full lg:w-screen bg-mist ">
     <MapComponent />
     <PlaceComponent />
   </main>
