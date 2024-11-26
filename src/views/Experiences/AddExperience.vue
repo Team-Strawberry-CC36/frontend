@@ -58,6 +58,9 @@ function resetForm() {
   experiencePackage.experienceText = '';
 }
 
+// Will replace this with actual user's account ID from our authentication context
+const userAccountId = 1;
+
 const addExperience = async () => {
   try {
     const response = await fetch(`${apiUrl}/places/${place.id}/experiences`, {
@@ -68,6 +71,7 @@ const addExperience = async () => {
       body: JSON.stringify({
         selectedEtiquette: experiencePackage.selectedEtiquette,
         experienceText: experiencePackage.experienceText,
+        user_id: userAccountId,
       }),
     });
     resetForm();
