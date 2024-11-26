@@ -35,6 +35,9 @@ interface Experience {
   id: number;
   placeId: number;
   userId: number;
+  username: string;
+  dateVisited: Date;
+  etiquette: string;
   experience: string;
   place_etiquette_id: number;
   metadata: {
@@ -44,4 +47,3 @@ interface Experience {
 }
 
 type PlaceType = "shrine" | "onsen" | "restaurant";
-export type ExperienceType = "mango" | "cherry" | "banana" | "apple"
