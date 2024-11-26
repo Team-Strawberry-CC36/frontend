@@ -44,3 +44,4 @@ interface Experience {
 }
 
 type PlaceType = "shrine" | "onsen" | "restaurant";
+export type ExperienceType = "mango" | "cherry" | "banana" | "apple"
