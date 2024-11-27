@@ -45,7 +45,7 @@ export const usePlaceStore = defineStore('placeStore', () => {
         dateVisited: new Date("2024-11-01"),
         etiquette: "No smoking",
         experience: "You can't smoke inside the building, but there is a designated smoking area outside.",
-        experienceType: "smoking",
+        place_etiquette_id: 1,
         metadata: {
           createdAt: new Date("2024-11-01T10:00:00Z"),
           updatedAt: new Date("2024-11-01T10:00:00Z"),
@@ -59,7 +59,7 @@ export const usePlaceStore = defineStore('placeStore', () => {
         dateVisited: new Date("2024-10-15"),
         etiquette: "No tattoos",
         experience: "Visible tattoos are not allowed, so I had to wear a long-sleeved shirt to cover mine.",
-        experienceType: "appearance",
+        place_etiquette_id: 2,
         metadata: {
           createdAt: new Date("2024-10-15T09:00:00Z"),
           updatedAt: new Date("2024-10-15T09:00:00Z"),
@@ -73,7 +73,7 @@ export const usePlaceStore = defineStore('placeStore', () => {
         dateVisited: new Date("2024-11-20"),
         etiquette: "Towels provided",
         experience: "It was nice that towels were provided at the pool, saving me the hassle of bringing my own.",
-        experienceType: "amenity",
+        place_etiquette_id: 3,
         metadata: {
           createdAt: new Date("2024-11-20T14:00:00Z"),
           updatedAt: new Date("2024-11-20T14:00:00Z"),
@@ -87,7 +87,7 @@ export const usePlaceStore = defineStore('placeStore', () => {
         dateVisited: new Date("2024-09-10"),
         etiquette: "No swimming",
         experience: "Swimming is prohibited in the main lake due to safety concerns, but there’s a nearby public pool.",
-        experienceType: "activity",
+        place_etiquette_id: 4,
         metadata: {
           createdAt: new Date("2024-09-10T12:00:00Z"),
           updatedAt: new Date("2024-09-10T12:00:00Z"),
@@ -101,7 +101,7 @@ export const usePlaceStore = defineStore('placeStore', () => {
         dateVisited: new Date("2024-11-25"),
         etiquette: "Existential dread",
         experience: "The ambiance was reflective and a bit overwhelming—it felt designed to provoke deep existential questions.",
-        experienceType: "ambiance",
+        place_etiquette_id: 5,
         metadata: {
           createdAt: new Date("2024-11-25T16:00:00Z"),
           updatedAt: new Date("2024-11-25T16:00:00Z"),
