@@ -6,7 +6,7 @@
     const place = usePlaceStore();
 
     //use mock state data
-    place.useMock();    
+    place.useMock();
 
     const emit = defineEmits(['toggleAddExperience']);
 
@@ -36,7 +36,7 @@
 </script>
 
 <template>
-    <div class="sm:w-1/2 sm:h-fit h-full overflow-hidden sm:m-3 sm:rounded-xl shadow-2xl bg-frostWhite">
+    <div class="sm:w-1/2 sm:h-fit sm:border border-slate-400 overflow-hidden sm:m-3 sm:rounded-xl shadow-2xl bg-frostWhite">
         <section class="flex flex-row justify-between m-3">
             <!-- Place Name + add Experiences button-->
              <h1 class="text-3xl">{{ place.details.name }}</h1>
@@ -46,10 +46,10 @@
         <section class="h-80">
             <!-- Cover Photo -->
             <div class="h-full w-full">
-                <img class="w-full h-full object-cover"  :src='place.details.photos[0].fileData' alt="place_photo" />
+                <img class="w-full h-full object-cover border-b border-t border-slate-400"  :src='place.details.photos[0].fileData' alt="place_photo" />
             </div>
         </section>
-        
+
         <section>
             <!-- Filter Experiences section -->
              <div class="flex flex-row justify-around m-3">

@@ -24,7 +24,7 @@ place.useMock();
       </section>
       <section class="m-5 w-full pb-5 border-b border-slate-400">
         <!-- General information -->
-        <ul class="list-disc list-inside">
+        <ul class="list-disc list-inside font-light">
           <li>Address: {{ place.details.address }}</li>
           <li>{{ place.details.generalInfo }}</li>
         </ul>
@@ -37,7 +37,7 @@ place.useMock();
       </section>
       <section class="m-5 w-full pb-5 border-b border-slate-400">
         <h2 class="text-center text-velvet text-xl">Etiquette Rules</h2>
-        <ul class="list-disc list-inside">
+        <ul class="list-disc list-inside font-light">
           <li v-for="item in place.details.etiquettes" :key="item.id">
             {{ item.label }}
           </li>
