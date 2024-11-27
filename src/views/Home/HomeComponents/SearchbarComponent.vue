@@ -43,7 +43,9 @@ const performSearch = async () => {
     }
 
     const data = await response.json();
-    console.log(data);
+
+    emit("search", data);
+
   } catch (error) {
     console.error('Search request failed: ', error);
   }
