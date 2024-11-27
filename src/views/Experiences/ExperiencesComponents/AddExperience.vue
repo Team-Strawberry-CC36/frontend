@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { getAuth } from 'firebase/auth';
 import { usePlaceStore } from '@/stores/PlaceStore';
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 console.log(apiUrl);
+
+const auth = getAuth();
 
 const place = usePlaceStore();
 
@@ -13,7 +16,7 @@ const handleAddExperience = () => {
 };
 
 const experiencePackage = {
-  etiquette: ['Smoking', 'Tattoo'],
+  etiquette: place.details.etiquettes,
   selectedEtiquette: '',
   experienceText: '',
   experiences: '',
@@ -27,9 +30,6 @@ function resetForm() {
   experiencePackage.experienceText = '';
 }
 
-// Will replace this with actual user's account ID from our authentication context
-const userAccountId = 1;
-
 const addExperience = async () => {
   try {
     await fetch(`${apiUrl}/places/${place.details.id}/experiences`, {
@@ -40,7 +40,7 @@ const addExperience = async () => {
       body: JSON.stringify({
         selectedEtiquette: experiencePackage.selectedEtiquette,
         experienceText: experiencePackage.experienceText,
-        user_id: userAccountId,
+        user_id: auth.currentUser?.uid,
       }),
     });
     resetForm();
@@ -58,44 +58,44 @@ const addExperience = async () => {
         </section>
 
         <section>
-            <!-- Filter Experiences section -->
+            <!-- Select Etiquette section -->
              <div class="flex flex-row justify-around m-3">
                 <label for="etiquette" class="text-xl font-extralight">Select an etiquette:</label>
                 <select class="w-80 rounded-lg bg-mist p-1" v-model="experiencePackage.selectedEtiquette" id="etiquette">
                     <option v-for="etiquette in experiencePackage.etiquette"
-                    :key="experiencePackage.etiquette"
-                    :value="experiencePackage.etiquette"
+                    :key="etiquette.id"
+                    :value="etiquette.label"
                   >
-                    {{ etiquette }}
+                    {{ etiquette.label }}
                   </option>
                 </select>
              </div>
         </section>
+
         <section class="font-light">
-
           <textarea
-      v-model="experiencePackage.experienceText"
-      placeholder="Share your experience..."
-      rows="5"
-      cols="30"
-    ></textarea>
+            v-model="experiencePackage.experienceText"
+            placeholder="Share your experience"
+            rows="5"
+            cols="30"
+            class="resize-none p-3 rounded-2xl"
+          ></textarea>
 
-    <button @click="addExperience" :disabled="!canSubmit">Post!</button>
-
-    <div v-if="experiencePackage.experiences">
-      <h2>Your Experiences</h2>
-      <ul>
-        <li v-for="(exp, index) in experiences" :key="index">
-          <strong>Etiquette:</strong> {{ exp.etiquette }} <br />
-          <strong>Content:</strong> {{ exp.text }}
-        </li>
-      </ul>
-    </div>
+    <button @click="addExperience" :disabled="!canSubmit">Post</button>
 
     <button class="border-velvet border p-2 rounded-xl font-extralight text-sm hover:bg-velvet hover:text-white" @click="handleAddExperience">Cancel
     </button>
 
         </section>
-    </div>
 
+        <div v-if="experiencePackage.experiences">
+      <h2>Your Experiences</h2>
+      <ul>
+        <li v-for="(exp, index) in experiencePackage.experiences" :key="index">
+          <strong>Etiquette:</strong> {{ exp.etiquette }} <br />
+          <strong>Content:</strong> {{ exp.text }}
+        </li>
+      </ul>
+    </div>
+    </div>
 </template>

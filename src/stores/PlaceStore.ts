@@ -39,7 +39,7 @@ export const usePlaceStore = defineStore('placeStore', () => {
         id: 5,
         username: 'Philosopher101',
         dateVisited: new Date('2024-11-25'),
-        etiquettes: [{id: 1, label: "something"}],
+        etiquettes: [{id: 1, label: "Ambiance"}],
         experience:
           'The ambiance was reflective and a bit overwhelming—it felt designed to provoke deep existential questions.',
         metadata: {
