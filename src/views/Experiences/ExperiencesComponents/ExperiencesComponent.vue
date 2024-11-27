@@ -43,7 +43,7 @@
              <button class="border-velvet border p-2 rounded-xl font-extralight text-sm hover:bg-velvet hover:text-white" @click="handleAddExperience">+ Tell us your experience
             </button>
         </section>
-        <section class="h-80">
+        <section class="h-[20vh]">
             <!-- Cover Photo -->
             <div class="h-full w-full">
                 <img class="w-full h-full object-cover"  :src='place.details.photos[0].fileData' alt="place_photo" />

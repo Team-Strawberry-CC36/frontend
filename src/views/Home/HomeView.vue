@@ -1,11 +1,12 @@
 <script setup lang="ts">
 //import { ref } from 'vue'
 import PlaceComponent from './HomeComponents/PlaceComponent.vue';
-import { usePlaceStore } from '@/stores/PlaceStore';
+import MapComponent from './HomeComponents/MapComponent.vue';
+import SearchbarComponent from './HomeComponents/SearchbarComponent.vue';
 
 //const apiURL = import.meta.env.BACKEND_URL;
 
-const place = usePlaceStore();
+// const place = usePlaceStore();
 
 //Below function was intended to fetch information from data cache
 // const handleMapClick = async () => {
@@ -13,12 +14,24 @@ const place = usePlaceStore();
 //   const details = response.json();
 //   placeDetails.value = details;
 // }
+
+  import { ref } from 'vue';
+
+  const places = ref([]); // Stores search results
+  const selectedPlace = ref(null); // Tracks which place is currently selected on map
+  
+
 </script>
 
 <template>
-  <main class="flex flex-col items-center h-fit w-full bg-mist">
-    <PlaceComponent
-      :placeDetails="place"
-    />
+  <main class="flex flex-col">
+    <div class="">
+      <SearchbarComponent />
+    </div>
+    <div class="flex flex-col lg:flex-row p-4 w-full lg:w-screen bg-mist ">
+      <MapComponent />
+      <PlaceComponent />
+    </div>
+    
   </main>
 </template>
