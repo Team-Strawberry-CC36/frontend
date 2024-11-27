@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import type IPlace from '@/utils/interfaces/Place';
 import HomeMap from './features/HomeMap.vue';
 import AddExperience from '@/views/Experiences/AddExperience.vue';
-import type Place from '@/utils/interfaces/Place';
 
-function doSomething(event: { event: string; place: Place }) {
+function doSomething(event: { event: string; place: IPlace }) {
   console.log(event);
 }
 </script>
