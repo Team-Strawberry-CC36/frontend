@@ -14,7 +14,7 @@ place.useMock();
     <section class="h-[20vh]">
       <!-- Cover Photo -->
        <div class="h-full w-full">
-        <img class="w-full h-full object-cover border-b border-slate-400"  :src='place.details.photos[0].fileData' alt="place_photo" />
+        <img v-if="place.details.photos?.length > 0 && place.details.photos" class="w-full h-full object-cover border-b border-slate-400"  :src='place.details.photos[0].fileData' alt="place_photo" />
        </div>
     </section>
     <div class="flex flex-col p-5 items-center">
@@ -26,7 +26,6 @@ place.useMock();
         <!-- General information -->
         <ul class="list-disc list-inside">
           <li>Address: {{ place.details.address }}</li>
-          <li>{{ place.details.generalInfo }}</li>
         </ul>
       </section>
       <section class="w-full pb-5 border-b border-slate-400">
