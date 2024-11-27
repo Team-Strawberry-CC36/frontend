@@ -14,6 +14,13 @@ import SearchbarComponent from './HomeComponents/SearchbarComponent.vue';
 //   const details = response.json();
 //   placeDetails.value = details;
 // }
+
+  import { ref } from 'vue';
+
+  const places = ref([]); // Stores search results
+  const selectedPlace = ref(null); // Tracks which place is currently selected on map
+  
+
 </script>
 
 <template>
