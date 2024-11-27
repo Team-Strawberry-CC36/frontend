@@ -1,49 +1,36 @@
-export default interface Place {
-  id: number
+import type { IEtiquettePerPlace } from './Etiquette';
+import type IExperience from './Experience';
+
+export default interface IPlace {
+  id: number;
   name: string;
   address: string;
-  generalInfo: string;
-  placeType: PlaceType;
+  // generalInfo: ''; // [ ] Removed from Schema
+  placeType: IPlaceType;
   location: {
     latitude: number;
     longitude: number;
-  },
-  etiquettes: Etiquette[]
-  experiences: Experience[];
-  photos: Photo[];
+  };
+  etiquettes?: IEtiquettePerPlace[];
+  experiences?: IExperience[];
+  // - Photos
+  // We may not have, or we may don't want to include it
+  // in the interface
+  photos?: IPhoto[];
+  // Metadata
   metadata: {
     createdAt: Date;
     updatedAt: Date;
-  }
+  };
 }
 
-interface Etiquette {
-  id: number;
-  label: string;
-}
+type IPlaceType = 'shrine' | 'onsen' | 'restaurant';
 
-interface Photo {
+interface IPhoto {
   id: number;
   fileData: string;
   metadata: {
     createdAt: string;
     authorName: string;
-  }
+  };
 }
-
-interface Experience {
-  id: number;
-  placeId: number;
-  userId: number;
-  username: string;
-  dateVisited: Date;
-  etiquette: string;
-  experience: string;
-  place_etiquette_id: number;
-  metadata: {
-    createdAt: Date;
-    updatedAt: Date;
-  }
-}
-
-type PlaceType = "shrine" | "onsen" | "restaurant";

@@ -1,17 +1,17 @@
 <script setup lang="ts">
   import { Loader } from "@googlemaps/js-api-loader";
   import { environment } from "@/utils/environments/environent";
-  import {onMounted, ref, useTemplateRef} from "vue";
-  import type Place from "@/utils/interfaces/Place";
+  import {onMounted, useTemplateRef} from "vue";
+  import type IPlace from "@/utils/interfaces/Place";
 
   // This component receives the Places as the source of information
-  const { data } = defineProps<{ data: Place[] }>();
+  const { data } = defineProps<{ data: IPlace[] }>();
   const emit = defineEmits(['map-marker-clicked']);
 
   // Initial variables
   const tokyoLocation = { lat: 35.6764,  lng: 139.6500 };
   // Load container
-  let mapElementRef = useTemplateRef("map-container");
+  const mapElementRef = useTemplateRef("map-container");
 
   // `Loader` module loads dynamically the Google module necessary for using the map, or any other utility.
   const loader = new Loader({
@@ -38,7 +38,7 @@
     });
 
     // We iterate over every place, and we set markers using location in each place
-    data.forEach((place: Place) => {
+    data.forEach((place: IPlace) => {
       const marker = new AdvancedMarkerElement({
         map,
         position: {
@@ -51,7 +51,7 @@
 
       // If the marker its clicked, we emit an event including
       // the place information
-      marker.addEventListener("gmp-click", event => {
+      marker.addEventListener("gmp-click", () => {
         emit("map-marker-clicked", {
           event: "map-marker-clicked",
           place: place,
