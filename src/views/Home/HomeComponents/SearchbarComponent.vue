@@ -27,7 +27,7 @@
         errorMessage.value = '';
 
         try {
-            const response = await fetch(`${apiUrl}/search`, {
+            const response = await fetch(`${apiUrl}/testing/search`, {
                 method: 'POST',
                 headers: {
                     'Contents-type': 'application/json',
