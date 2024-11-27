@@ -1,8 +1,16 @@
 <script setup lang="ts">
 //import type Place from '@/utils/interfaces/Place';
 import { usePlaceStore } from '@/stores/PlaceStore';
+import type IPlace from '@/utils/interfaces/Place';
+import { defineProps, watch } from 'vue';
 
 const place = usePlaceStore();
+
+const { data } = defineProps<{ data: IPlace }>()
+
+watch(() => data, (value) => {
+  place.details = value;
+})
 
 //use mock state data
 place.useMock();
