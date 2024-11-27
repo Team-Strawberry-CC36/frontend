@@ -61,7 +61,7 @@ const addExperience = async () => {
             <!-- Select Etiquette section -->
              <div class="flex flex-row justify-around m-3">
                 <label for="etiquette" class="text-xl font-extralight">Select an etiquette:</label>
-                <select class="w-80 rounded-lg bg-mist p-1" v-model="experiencePackage.selectedEtiquette" id="etiquette">
+                <select class="w-1/2 rounded-lg bg-mist p-1" v-model="experiencePackage.selectedEtiquette" id="etiquette">
                     <option v-for="etiquette in experiencePackage.etiquette"
                     :key="etiquette.id"
                     :value="etiquette.label"
