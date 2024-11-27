@@ -14,7 +14,7 @@
 </script>
 
 <template>
-  <main class="flex flex-col items-center h-fit w-full bg-mist">
+  <main class="flex flex-col items-center justify-center h-screen w-full bg-mist">
     <ExperiencesComponent
       v-if="!showAddExperience"
       @toggleAddExperience="toggleAddExperience"
