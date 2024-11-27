@@ -45,7 +45,7 @@
 </script>
 
 <template>
-    <div class="sm:w-1/2 sm:h-fit h-full overflow-hidden sm:m-3 sm:rounded-xl shadow-2xl bg-frostWhite">
+    <div class="sm:w-1/2 sm:h-fit h-full overflow-hidden sm:rounded-xl shadow-2xl bg-frostWhite">
         <section class="flex flex-row justify-between m-3">
             <!-- Place Name + add Experiences button-->
              <h1 class="text-3xl">{{ place.details.name }}</h1>
@@ -63,7 +63,7 @@
             <!-- Filter Experiences section -->
              <div class="flex flex-row justify-around m-3">
                 <label for="filter" class="text-xl font-extralight">Filter by Etiquette:</label>
-                <select class="w-80 rounded-lg bg-mist p-1" id="filter" v-model="selectedFilter">
+                <select class="w-1/2 rounded-lg bg-mist p-1" id="filter" v-model="selectedFilter">
                     <option value="">All</option>
                     <option v-for="type in etiquetteTypes" :key="type" :value="type">
                         {{ type }}
