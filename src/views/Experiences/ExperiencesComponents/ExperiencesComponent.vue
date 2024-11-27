@@ -45,7 +45,7 @@ const handleAddExperience = () => {
 </script>
 
 <template>
-  <div class="sm:w-1/2 sm:h-fit h-full overflow-hidden sm:rounded-xl shadow-2xl bg-frostWhite">
+  <div class="sm:w-1/2 sm:h-fit h-full sm:border border-slate-400 overflow-hidden sm:rounded-xl shadow-2xl bg-frostWhite">
     <section class="flex flex-row justify-between m-3">
       <!-- Place Name + add Experiences button-->
       <h1 class="text-3xl">{{ place.details.name }}</h1>
@@ -58,7 +58,7 @@ const handleAddExperience = () => {
     </section>
     <section class="h-[20vh]">
       <!-- Cover Photo -->
-      <div class="h-full w-full">
+      <div class="h-full w-full sm:border-t sm:border-b border-slate-400">
         <img
           v-if="place.details.photos?.length > 0 && place.details.photos"
           class="w-full h-full object-cover"
