@@ -51,46 +51,6 @@ const addExperience = async () => {
 </script>
 
 <template>
-  <div class="add-experiences-page">
-    <section>
-      <h1>{{ place.details.name }}</h1>
-    </section>
-    <label for="etiquette">Select Etiquette:</label>
-    <select v-model="experiencePackage.selectedEtiquette" id="etiquette">
-      <option
-        v-for="etiquette in experiencePackage.etiquette"
-        :key="experiencePackage.etiquette"
-        :value="experiencePackage.etiquette"
-      >
-        {{ etiquette }}
-      </option>
-    </select>
-
-    <textarea
-      v-model="experiencePackage.experienceText"
-      placeholder="Share your experience..."
-      rows="5"
-      cols="30"
-    ></textarea>
-
-    <button @click="addExperience" :disabled="!canSubmit">Post!</button>
-
-    <div v-if="experiencePackage.experiences">
-      <h2>Your Experiences</h2>
-      <ul>
-        <li v-for="(exp, index) in experiences" :key="index">
-          <strong>Etiquette:</strong> {{ exp.etiquette }} <br />
-          <strong>Content:</strong> {{ exp.text }}
-        </li>
-      </ul>
-    </div>
-
-    <button class="border-velvet border p-2 rounded-xl font-extralight text-sm hover:bg-velvet hover:text-white" @click="handleAddExperience">Cancel
-    </button>
-  </div>
-
-  <!--  -->
-
   <div class="sm:w-1/2 sm:h-fit h-full overflow-hidden sm:m-3 sm:rounded-xl shadow-2xl bg-frostWhite">
         <section class="flex flex-row justify-between m-3">
             <!-- Place Name + add Experiences button-->
@@ -112,20 +72,29 @@ const addExperience = async () => {
              </div>
         </section>
         <section class="font-light">
-            <!-- Repeated divs of experiences -->
-             <div class="m-3 p-3 bg-white rounded-lg" v-for="experience in filteredExperiences" :key="experience.id">
-                <div class="flex flex-row m-1 justify-between text-xl">
-                    <h4>Etiquette </h4>
-                    <p class="text-velvet">{{ experience.etiquette }}</p>
-                </div>
-                <div class="flex flex-col m-1 justify-between">
-                    <h4 class="text-xl">Experience </h4>
-                    <p>{{ experience.experience }}</p>
-                </div>
-                <div class="text-xs justify-self-end m-1">
-                    <span>{{ experience.username }} visted here {{ experience.dateVisited }}</span>
-                </div>
-             </div>
+
+          <textarea
+      v-model="experiencePackage.experienceText"
+      placeholder="Share your experience..."
+      rows="5"
+      cols="30"
+    ></textarea>
+
+    <button @click="addExperience" :disabled="!canSubmit">Post!</button>
+
+    <div v-if="experiencePackage.experiences">
+      <h2>Your Experiences</h2>
+      <ul>
+        <li v-for="(exp, index) in experiences" :key="index">
+          <strong>Etiquette:</strong> {{ exp.etiquette }} <br />
+          <strong>Content:</strong> {{ exp.text }}
+        </li>
+      </ul>
+    </div>
+
+    <button class="border-velvet border p-2 rounded-xl font-extralight text-sm hover:bg-velvet hover:text-white" @click="handleAddExperience">Cancel
+    </button>
+
         </section>
     </div>
 

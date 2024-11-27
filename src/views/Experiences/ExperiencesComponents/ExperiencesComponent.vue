@@ -14,19 +14,28 @@
     // and add to array only if not contained in the array
     // A set is good for this because sets only accept unique values
     const uniqueEtiquettes = new Set<string>();
-    place.details.experiences.forEach((experience) => {
-        uniqueEtiquettes.add(experience.etiquette);
+    if (typeof place.details.experiences !== "undefined") {
+      place.details.experiences.forEach((experience) => {
+        experience.etiquettes.forEach((etiquette) => {
+          uniqueEtiquettes.add(etiquette.label)
+        })
+        //uniqueEtiquettes.add(experience.etiquette);
     });
+    }
     const etiquetteTypes: string[] = Array.from(uniqueEtiquettes);
     const selectedFilter = ref<string | "">("");
 
     // Filter experiences based on experienceType
     const filteredExperiences = computed(() => {
+      if (place.details.experiences) {
         return selectedFilter.value
             ? place.details.experiences.filter(
-                (experience) => experience.etiquette === selectedFilter.value
+                (experience) => experience.etiquettes[0].label === selectedFilter.value
             ) : place.details.experiences
-    });
+        } else {
+          return []
+        }
+      })
 
     // Emit click event to parent component to toggle the view
     const handleAddExperience = () => {
@@ -46,7 +55,7 @@
         <section class="h-[20vh]">
             <!-- Cover Photo -->
             <div class="h-full w-full">
-                <img class="w-full h-full object-cover"  :src='place.details.photos[0].fileData' alt="place_photo" />
+                <img v-if="place.details.photos?.length > 0 && place.details.photos" class="w-full h-full object-cover"  :src='place.details.photos[0].fileData' alt="place_photo" />
             </div>
         </section>
 
@@ -67,7 +76,7 @@
              <div class="m-3 p-3 bg-white rounded-lg" v-for="experience in filteredExperiences" :key="experience.id">
                 <div class="flex flex-row m-1 justify-between text-xl">
                     <h4>Etiquette </h4>
-                    <p class="text-velvet">{{ experience.etiquette }}</p>
+                    <p class="text-velvet">{{ experience.etiquettes[0].label }}</p>
                 </div>
                 <div class="flex flex-col m-1 justify-between">
                     <h4 class="text-xl">Experience </h4>

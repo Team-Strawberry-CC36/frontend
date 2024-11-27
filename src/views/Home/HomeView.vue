@@ -1,25 +1,7 @@
 <script setup lang="ts">
-//import { ref } from 'vue'
 import PlaceComponent from './HomeComponents/PlaceComponent.vue';
 import MapComponent from './HomeComponents/MapComponent.vue';
 import SearchbarComponent from './HomeComponents/SearchbarComponent.vue';
-
-//const apiURL = import.meta.env.BACKEND_URL;
-
-// const place = usePlaceStore();
-
-//Below function was intended to fetch information from data cache
-// const handleMapClick = async () => {
-//   const response = await fetch(`${apiURL}/description`);
-//   const details = response.json();
-//   placeDetails.value = details;
-// }
-
-  import { ref } from 'vue';
-
-  const places = ref([]); // Stores search results
-  const selectedPlace = ref(null); // Tracks which place is currently selected on map
-  
 
 </script>
 
@@ -32,6 +14,6 @@ import SearchbarComponent from './HomeComponents/SearchbarComponent.vue';
       <MapComponent />
       <PlaceComponent />
     </div>
-    
+
   </main>
 </template>

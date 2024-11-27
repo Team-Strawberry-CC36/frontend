@@ -16,7 +16,7 @@
 <template>
   <main class="flex flex-col items-center h-fit w-full bg-mist">
     <ExperiencesComponent
-      v-if="showAddExperience"
+      v-if="!showAddExperience"
       @toggleAddExperience="toggleAddExperience"
     />
     <AddExperience

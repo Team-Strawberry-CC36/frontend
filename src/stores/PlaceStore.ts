@@ -25,7 +25,6 @@ export const usePlaceStore = defineStore('placeStore', () => {
     details.id = 1;
     details.name = 'Code Chrysalis Onsen';
     details.address = '〒106-0046 Tokyo, Minato City, Motoazabu, 3 Chome−1−35 Vort元麻布 B2F';
-    details.generalInfo = "Tis but a coding bootcamp disguised as an onsen!"
     details.placeType = 'onsen';
     details.location = {latitude: 35.65867467719728, longitude: 139.72758253068733};
     details.etiquettes = [
@@ -40,7 +39,7 @@ export const usePlaceStore = defineStore('placeStore', () => {
         id: 5,
         username: 'Philosopher101',
         dateVisited: new Date('2024-11-25'),
-        etiquettes: [],
+        etiquettes: [{id: 1, label: "something"}],
         experience:
           'The ambiance was reflective and a bit overwhelming—it felt designed to provoke deep existential questions.',
         metadata: {
