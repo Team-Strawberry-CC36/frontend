@@ -6,7 +6,7 @@
     const place = usePlaceStore();
 
     //use mock state data
-    place.useMock();    
+    place.useMock();
 
     const emit = defineEmits(['toggleAddExperience']);
 
@@ -49,7 +49,7 @@
                 <img class="w-full h-full object-cover"  :src='place.details.photos[0].fileData' alt="place_photo" />
             </div>
         </section>
-        
+
         <section>
             <!-- Filter Experiences section -->
              <div class="flex flex-row justify-around m-3">
