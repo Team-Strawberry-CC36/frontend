@@ -1,6 +1,6 @@
-import { reactive } from 'vue'
-import { defineStore } from 'pinia'
-import type IPlace from '@/utils/interfaces/Place'
+import { reactive } from 'vue';
+import { defineStore } from 'pinia';
+import type IPlace from '@/utils/interfaces/Place';
 
 export const usePlaceStore = defineStore('placeStore', () => {
   const details = reactive<IPlace>({
@@ -26,7 +26,7 @@ export const usePlaceStore = defineStore('placeStore', () => {
     details.name = 'Code Chrysalis Onsen';
     details.address = '〒106-0046 Tokyo, Minato City, Motoazabu, 3 Chome−1−35 Vort元麻布 B2F';
     details.placeType = 'onsen';
-    details.location = {latitude: 35.65867467719728, longitude: 139.72758253068733};
+    details.location = { latitude: 35.65867467719728, longitude: 139.72758253068733 };
     details.etiquettes = [
       { id: 1, label: 'No smoking', status: 'allowed' },
       { id: 2, label: 'No tattoos', status: 'allowed' },
@@ -39,7 +39,7 @@ export const usePlaceStore = defineStore('placeStore', () => {
         id: 5,
         username: 'Philosopher101',
         dateVisited: new Date('2024-11-25'),
-        etiquettes: [{id: 1, label: "something"}],
+        etiquettes: [{ id: 1, label: 'Ambiance' }],
         experience:
           'The ambiance was reflective and a bit overwhelming—it felt designed to provoke deep existential questions.',
         metadata: {

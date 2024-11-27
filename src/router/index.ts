@@ -56,7 +56,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (to.name === 'welcome' && user) {
     // redirects if user *is* logged in
-    next({name: 'home'});
+    next({ name: 'home' });
   } else if (to.name === 'signup' && user) {
     next({ name: 'home' });
   } else if (to.name === 'login' && user) {
@@ -70,7 +70,6 @@ router.beforeEach(async (to, from, next) => {
     // proceed normally if user is not logged in
     next();
   }
-
 });
 
 export default router;
