@@ -39,7 +39,7 @@ interface Experience {
   dateVisited: Date;
   etiquette: string;
   experience: string;
-  experienceType: string;
+  place_etiquette_id: number;
   metadata: {
     createdAt: Date;
     updatedAt: Date;
