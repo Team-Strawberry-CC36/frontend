@@ -5,13 +5,54 @@ const emit = defineEmits(['close-add-vote']);
 import { usePlaceStore } from '@/stores/PlaceStore';
 const place = usePlaceStore();
 place.useMock();
+import { reactive } from 'vue'
+
+// EtiquetteSelections type
+type EtiquetteSelections = Record<string, 'allowed' | 'not_allowed' | 'neutral' | undefined>;
+
+// Reactive state for etiquette selections
+const etiquetteSelections = reactive<EtiquetteSelections>({});
+const updateSelection = (etiquetteLabel: string, value: 'allowed' | 'not_allowed' | 'neutral') => {
+    etiquetteSelections[etiquetteLabel] = value;
+}
+
+// Handle click of the button
+const handleClick = async () => {
+    await submitVote();
+    emit('close-add-vote');
+}
+
+// For submitting the vote
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
+const submitVote = async () => {
+    try {
+        const response = await fetch(`${apiUrl}/vote`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                etiquetteSelections
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+        const result = await response.json();
+        console.log(result);
+        
+    } catch (error) {
+        console.log("There was an error posting the vote:", error);
+    }
+}
 
 </script>
 
 <template>
     <div
-    class="sm:w-full sm:h-fit mt-3 lg:m-3 sm:border border-slate-400 overflow-hidden rounded-xl shadow-2xl bg-frostWhite"
-  >
+        class="sm:w-full sm:h-fit mt-3 lg:m-3 sm:border border-slate-400 overflow-hidden rounded-xl shadow-2xl bg-frostWhite"
+    >
     <section class="h-[20vh]">
       <!-- Cover Photo -->
       <div class="h-full w-full">
@@ -35,9 +76,46 @@ place.useMock();
         </ul>
       </section>
 
-      <section>
-        <!-- Voting section-->
-        <button @click="emit('close-add-vote')">Done!</button>
+      <section class="w-full">
+        <!-- Voting section -->
+         <div v-for="etiquette in place.details.etiquettes">
+            <div class="flex flex-row">
+                <div class="p-3 w-1/2"> 
+                    {{ etiquette.label }} 
+                </div>
+                <div class="p-3">
+                    <input 
+                        class="ml-3"
+                        type="checkbox" 
+                        :id="etiquette.label + '-allowed'"
+                        value="allowed" 
+                        :checked="etiquetteSelections[etiquette.label]==='allowed'"
+                        @change="updateSelection(etiquette.label, 'allowed')"
+                    />
+                    <label class="ml-3" :for="etiquette.label + '-allowed'">allowed</label>
+                    <input 
+                        class="ml-3"
+                        type="checkbox" 
+                        :id="etiquette.label + '-not-allowed'"
+                        value="not_allowed" 
+                        :checked="etiquetteSelections[etiquette.label]==='not_allowed'"
+                        @change="updateSelection(etiquette.label, 'not_allowed')"
+                    />
+                    <label  class="ml-3":for="etiquette.label + '-not-allowed'">not allowed</label>
+                    <input 
+                        class="ml-3"
+                        type="checkbox" 
+                        :id="etiquette.label + '-neutral'"
+                        value="neutral" 
+                        :checked="etiquetteSelections[etiquette.label]==='neutral'"
+                        @change="updateSelection(etiquette.label, 'neutral')"
+                    />
+                    <label class="ml-3" :for="etiquette.label + '-neutral'">neutral</label>
+                </div>
+            </div>
+         </div>
+
+        <button @click="handleClick">Done!</button>
       </section>
     </div>
   </div>
