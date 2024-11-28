@@ -13,7 +13,7 @@ const place = usePlaceStore();
 
 const emit = defineEmits(['toggleAddExperience']);
 
-const handleAddExperience = () => {
+const handleToggleAddExperience = () => {
   emit('toggleAddExperience');
 };
 
@@ -24,6 +24,7 @@ interface ExperiencePackage {
   selectedEtiquette: string[];
   experienceText: string;
   experiences: string;
+  dateVisited: Date | null;
 }
 
 const experiencePackage: ExperiencePackage = {
@@ -31,7 +32,14 @@ const experiencePackage: ExperiencePackage = {
   selectedEtiquette: [],
   experienceText: '',
   experiences: '',
+  dateVisited: null
 };
+
+// user sets the date they visited
+const handleSetDateVisited = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  experiencePackage.dateVisited = new Date(target.value);
+}
 
 // Make sure user can only select up to 3 checkboxes
 const onCheck = (event: Event, label: string) => {
@@ -62,22 +70,34 @@ function resetForm() {
   experiencePackage.experienceText = '';
 }
 
-const addExperience = async () => {
+const handleAddExperience = async () => {
   const toSend = {
         selectedEtiquette: experiencePackage.selectedEtiquette,
         experienceText: experiencePackage.experienceText,
+        dateVisited: experiencePackage.dateVisited,
         user_id: auth.currentUser?.uid,
       };
       console.log(toSend);
   try {
-    await fetch(`${apiUrl}/places/${place.details.id}/experiences`, {
+    const response = await fetch(`${apiUrl}/places/${place.details.id}/experiences`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify(toSend),
     });
-    resetForm();
+    
+    if (response.ok) {
+      resetForm();
+      handleToggleAddExperience();
+    } else {
+      resetForm();
+      alert("ERROR!");
+      handleToggleAddExperience();
+      throw new Error("There was an error!");
+    }
+    
   } catch (error) {
     console.error(error);
   }
@@ -109,6 +129,13 @@ const addExperience = async () => {
         </div>
       </div>
     </section>
+    <section>
+      <!-- Date visited selection -->
+       <div class="flex flex-row flex-1 justify-center m-3">
+        <label class="mr-3" for="date_visited">Date visited:</label>
+        <input type="date" id="date_visited" name="date_visited" @change="handleSetDateVisited" />
+       </div>
+    </section>
 
     <section class="flex font-light justify-center h-1/2 lg:h-80 mb-3">
       <textarea
@@ -124,10 +151,10 @@ const addExperience = async () => {
       <!-- Post and cancel buttons -->
       <button
         class="mx-5 border-velvet border p-2 rounded-xl text-sm hover:bg-velvet hover:text-white"
-        @click="addExperience" :disabled="!canSubmit">Post</button>
+        @click="handleAddExperience" :disabled="!canSubmit">Post</button>
       <button
         class="border-velvet border p-2 rounded-xl text-sm hover:bg-velvet hover:text-white"
-        @click="handleAddExperience"
+        @click="handleToggleAddExperience"
       >
         Cancel
       </button>

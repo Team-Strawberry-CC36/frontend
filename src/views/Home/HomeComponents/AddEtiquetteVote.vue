@@ -2,18 +2,24 @@
 import { defineEmits } from 'vue';
 const emit = defineEmits(['close-add-vote']);
 
+// Authorization
+import { getAuth } from 'firebase/auth';
+const auth = getAuth();
+
+// pinia app state
 import { usePlaceStore } from '@/stores/PlaceStore';
 const place = usePlaceStore();
 place.useMock();
-import { reactive } from 'vue'
 
+// Tracking selections
+import { reactive } from 'vue'
 // EtiquetteSelections type
 type EtiquetteSelections = Record<string, 'allowed' | 'not_allowed' | 'neutral' | undefined>;
 
 // Reactive state for etiquette selections
-const etiquetteSelections = reactive<EtiquetteSelections>({});
-const updateSelection = (etiquetteLabel: string, value: 'allowed' | 'not_allowed' | 'neutral') => {
-    etiquetteSelections[etiquetteLabel] = value;
+const etiquetteSelections = reactive(new Map<number, 'allowed' | 'not_allowed' | 'neutral' | undefined>());
+const updateSelection = (etiquetteLabelId: number, value: 'allowed' | 'not_allowed' | 'neutral') => {
+    etiquetteSelections.set(etiquetteLabelId, value);
 }
 
 // Handle click of the button
@@ -25,22 +31,29 @@ const handleClick = async () => {
 // For submitting the vote
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 const submitVote = async () => {
+    console.log(etiquetteSelections);
+    // Convert to an array for easier processing
+    const voteData = Array.from(etiquetteSelections.entries()).map(([key, value]) => ({
+        id: Number(key),
+        vote: value
+    }));
     try {
-        const response = await fetch(`${apiUrl}/vote`, {
+        const response = await fetch(`${apiUrl}/moreTesting/places/${place.details.id}/votes`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify({
-                etiquetteSelections
+                votes: voteData,
+                userId: auth.currentUser?.uid
             }),
         });
 
         if (!response.ok) {
+            alert("ERROR!");
             throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
-        const result = await response.json();
-        console.log(result);
         
     } catch (error) {
         console.log("There was an error posting the vote:", error);
@@ -89,8 +102,8 @@ const submitVote = async () => {
                         type="checkbox" 
                         :id="etiquette.label + '-allowed'"
                         value="allowed" 
-                        :checked="etiquetteSelections[etiquette.label]==='allowed'"
-                        @change="updateSelection(etiquette.label, 'allowed')"
+                        :checked="etiquetteSelections.get(etiquette.id) === 'allowed'"
+                        @change="updateSelection(etiquette.id, 'allowed')"
                     />
                     <label class="ml-3" :for="etiquette.label + '-allowed'">allowed</label>
                     <input 
@@ -98,8 +111,8 @@ const submitVote = async () => {
                         type="checkbox" 
                         :id="etiquette.label + '-not-allowed'"
                         value="not_allowed" 
-                        :checked="etiquetteSelections[etiquette.label]==='not_allowed'"
-                        @change="updateSelection(etiquette.label, 'not_allowed')"
+                        :checked="etiquetteSelections.get(etiquette.id) === 'not_allowed'"
+                        @change="updateSelection(etiquette.id, 'not_allowed')"
                     />
                     <label  class="ml-3":for="etiquette.label + '-not-allowed'">not allowed</label>
                     <input 
@@ -107,8 +120,8 @@ const submitVote = async () => {
                         type="checkbox" 
                         :id="etiquette.label + '-neutral'"
                         value="neutral" 
-                        :checked="etiquetteSelections[etiquette.label]==='neutral'"
-                        @change="updateSelection(etiquette.label, 'neutral')"
+                        :checked="etiquetteSelections.get(etiquette.id) === 'neutral'"
+                        @change="updateSelection(etiquette.id, 'neutral')"
                     />
                     <label class="ml-3" :for="etiquette.label + '-neutral'">neutral</label>
                 </div>
