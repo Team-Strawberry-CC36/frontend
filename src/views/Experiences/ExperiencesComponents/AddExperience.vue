@@ -15,8 +15,6 @@ const handleAddExperience = () => {
   emit('toggleAddExperience');
 };
 
-let turtle = 'string';
-
 const experiencePackage = {
   etiquette: place.details.etiquettes,
   selectedEtiquette: '',
