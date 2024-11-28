@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, defineEmits } from 'vue';
-
+import { getAuth } from 'firebase/auth';
 import { usePlaceStore } from '@/stores/PlaceStore';
 
 const place = usePlaceStore();
@@ -45,13 +45,13 @@ const handleAddExperience = () => {
 
 let handleVote = async () => {
   try {
-    await fetch(`${apiUrl}/places/${place.details.id}/experiences`, {
+    await fetch(`${apiUrl}/places/${place.details.id}/experiences/${place.details.experiences}`, {
       method: 'POST',
       headers: {
         'Contents-type': 'application/json',
       },
       body: JSON.stringify({
-        selectedEtiquette: experiencePackage.selectedEtiquette,
+        //vote data
       }),
     });
     } catch (error) {
