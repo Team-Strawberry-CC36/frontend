@@ -1,6 +1,8 @@
 <script setup lang="ts">
 //import type Place from '@/utils/interfaces/Place';
 import { usePlaceStore } from '@/stores/PlaceStore';
+import { defineEmits } from 'vue';
+const emit = defineEmits(['show-add-vote']);
 
 const place = usePlaceStore();
 
@@ -64,6 +66,10 @@ place.useMock();
             {{ item.label }}
           </li>
         </ul>
+        <div>
+          <p>Agree with these etiquette rules for this place? Let us know.</p>
+          <button @click="emit('show-add-vote')">Vote</button>
+        </div>
       </section>
       <section class="w-full">
         <h2 class="mb-3 text-center text-velvet">See what other tourists are saying!</h2>
