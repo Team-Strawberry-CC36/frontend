@@ -26,16 +26,19 @@
 
         errorMessage.value = '';
 
+        const query = {
+                    textQuery: searchQuery.value,
+                    category: searchCategory.value
+                };
+        console.log(query)
+
         try {
             const response = await fetch(`${apiUrl}/testing/search`, {
                 method: 'POST',
                 headers: {
-                    'Contents-type': 'application/json',
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    textQuery: searchQuery.value,
-                    category: searchCategory.value
-                }),
+                body: JSON.stringify(query),
             });
 
             if (!response.ok) {
