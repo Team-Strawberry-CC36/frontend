@@ -3,7 +3,11 @@ import { ref, computed, defineEmits } from 'vue';
 import { getAuth } from 'firebase/auth';
 import { usePlaceStore } from '@/stores/PlaceStore';
 
+const apiUrl = import.meta.env.BACKEND_URL;
+
 const place = usePlaceStore();
+
+const auth = getAuth();
 
 //use mock state data
 place.useMock();
@@ -43,20 +47,27 @@ const handleAddExperience = () => {
   emit('toggleAddExperience');
 };
 
-let handleVote = async () => {
-  try {
-    await fetch(`${apiUrl}/places/${place.details.id}/experiences/${place.details.experiences}`, {
+const handleVote = async (exid:number, vote:string) => {
+  if (auth.currentUser) {
+    try {
+    await fetch(`${apiUrl}/places/${place.details.id}/experiences/${exid}`, {
       method: 'POST',
       headers: {
         'Contents-type': 'application/json',
       },
       body: JSON.stringify({
         //vote data
+        userID: auth.currentUser.uid,
+        experienceID: exid,
+        vote: vote,
       }),
     });
     } catch (error) {
     console.error(error);
     }
+  } else {
+    console.log("User not logged in.")
+  }
 }
 </script>
 
@@ -106,14 +117,14 @@ let handleVote = async () => {
 
         <div class="flex flex-row">
           <section class="basis-1/6 sm:basis-1/12 sm:p-2">
-            <button class="block mb-1">
+            <button class="block mb-1" @click="handleVote(experience.id, 'up')">
               <svg viewBox="0 0 256 256" id="Flat" xmlns="http://www.w3.org/2000/svg"
                 class="fill-charcoal h-full w-full hover:fill-velvet ease-in-out transition duration-300"
               >
                 <path d="M231.39062,123.06152A8,8,0,0,1,224,128H184v80a16.01833,16.01833,0,0,1-16,16H88a16.01833,16.01833,0,0,1-16-16V128H32a8.00065,8.00065,0,0,1-5.65723-13.65723l96-96a8.003,8.003,0,0,1,11.31446,0l96,96A8.002,8.002,0,0,1,231.39062,123.06152Z"/>
               </svg>
             </button>
-            <button class="block">
+            <button class="block" @click="handleVote(experience.id, 'down')">
               <svg viewBox="0 0 256 256" id="Flat" xmlns="http://www.w3.org/2000/svg"
                 class="fill-charcoal h-full w-full hover:fill-velvet ease-in-out transition duration-300"
               >
