@@ -77,7 +77,7 @@ const handleVote = async (exid:number, vote:string) => {
       <!-- Place Name + add Experiences button-->
       <h1 class="text-3xl">{{ place.details.name }}</h1>
       <button
-        class="border-velvet border p-2 rounded-xl font-extralight text-sm hover:bg-velvet hover:text-white"
+        class="border-velvet border p-2 rounded-xl font-extralight text-sm hover:bg-velvet hover:text-white ease-in-out transition duration-300"
         @click="handleAddExperience"
       >
         + Tell us your experience
