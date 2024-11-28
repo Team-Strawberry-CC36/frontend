@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { getAuth } from 'firebase/auth';
 import WelcomeView from '@/views/Welcome/WelcomeView.vue';
 import AboutView from '../views/About/AboutView.vue';
 import LoginView from '@/views/Login/LoginView.vue';
@@ -46,6 +47,29 @@ const router = createRouter({
       component: TestingComponents,
     },
   ],
+});
+
+// Redirection
+router.beforeEach(async (to, from, next) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (to.name === 'welcome' && user) {
+    // redirects if user *is* logged in
+    next({ name: 'home' });
+  } else if (to.name === 'signup' && user) {
+    next({ name: 'home' });
+  } else if (to.name === 'login' && user) {
+    next({ name: 'home' });
+    // redirects if user is *not* logged in
+  } else if (to.name === 'home' && !user) {
+    next({ name: 'signup' });
+  } else if (to.name === 'experiences' && !user) {
+    next({ name: 'signup' });
+  } else {
+    // proceed normally if user is not logged in
+    next();
+  }
 });
 
 export default router;

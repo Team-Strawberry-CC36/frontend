@@ -44,7 +44,9 @@ const handleSignUp = () => {
       />
 
       <div class="mb-3 mx-auto">
-        <button class="bg-charcoal text-frostWhite px-3 py-1 rounded-xl hover:animate-pulse">Sign Up</button>
+        <button class="bg-charcoal text-frostWhite px-3 py-1 rounded-xl hover:animate-pulse">
+          Sign Up
+        </button>
       </div>
     </form>
     <RouterLink class="mb-3" to="/login"> To login </RouterLink>
