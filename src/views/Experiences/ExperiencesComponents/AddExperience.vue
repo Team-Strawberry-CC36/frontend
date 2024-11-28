@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { getAuth } from 'firebase/auth';
 import { usePlaceStore } from '@/stores/PlaceStore';
+import { computed } from 'vue';
+import type { IEtiquettePerPlace } from '@/utils/interfaces/Etiquette';
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 console.log(apiUrl);
@@ -17,18 +19,46 @@ const handleAddExperience = () => {
 
 let turtle = 'string';
 
-const experiencePackage = {
-  etiquette: place.details.etiquettes,
-  selectedEtiquette: '',
+interface ExperiencePackage {
+  etiquette: IEtiquettePerPlace[];
+  selectedEtiquette: string[];
+  experienceText: string;
+  experiences: string;
+}
+
+const experiencePackage: ExperiencePackage = {
+  etiquette: place.details.etiquettes || [],
+  selectedEtiquette: [],
   experienceText: '',
   experiences: '',
+};
+
+// Make sure user can only select up to 3 checkboxes
+const onCheck = (event: Event, label: string) => {
+  const target = event.target as HTMLInputElement;
+
+  if (target.checked === false) {
+    experiencePackage.selectedEtiquette = experiencePackage.selectedEtiquette.filter(
+      (item) => item != label
+    );
+  }
+
+  if (experiencePackage.selectedEtiquette.length === 3) {
+    target.checked = false;
+    return;
+  }
+  
+  if (target.checked) {
+    experiencePackage.selectedEtiquette.push(label);
+  }
+  console.log(experiencePackage.selectedEtiquette);
 };
 
 function canSubmit() {
   return experiencePackage.selectedEtiquette && experiencePackage.experienceText.trim();
 }
 function resetForm() {
-  experiencePackage.selectedEtiquette = '';
+  experiencePackage.selectedEtiquette = [];
   experiencePackage.experienceText = '';
 }
 
@@ -62,22 +92,19 @@ const addExperience = async () => {
     </section>
 
     <section>
-      <!-- Select Etiquette section -->
-      <div class="flex flex-row justify-around m-3">
-        <label for="etiquette" class="text-xl font-extralight">Select an etiquette:</label>
-        <select
-          class="w-1/2 rounded-lg bg-mist p-1"
-          v-model="experiencePackage.selectedEtiquette"
-          id="etiquette"
-        >
-          <option
-            v-for="etiquette in experiencePackage.etiquette"
-            :key="etiquette.id"
-            :value="etiquette.label"
-          >
-            {{ etiquette.label }}
-          </option>
-        </select>
+      <!-- Select Etiquette section with checkboxes -->
+      <div class="flex flex-row flex-1 justify-around m-3">
+        <label for="etiquette" class="text-xl font-extralight">Select up to 3 etiquettes to discuss:</label>
+        <div v-for="etiquette in experiencePackage.etiquette" :key="etiquette.id">
+          <input 
+            type="checkbox" 
+            :id="etiquette.label"
+            :value="etiquette.label" 
+            @change="onCheck($event, etiquette.label)"
+            :checked="experiencePackage.selectedEtiquette.includes(etiquette.label)"
+          />
+          <label :for="etiquette.label">{{ etiquette.label }}</label><br>
+        </div>
       </div>
     </section>
 
