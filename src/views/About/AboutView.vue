@@ -1,5 +1,5 @@
 <template>
-  <main class="flex flex-col items-center justify-center h-screen w-full bg-mist">
+  <main class="flex flex-col items-center justify-center w-full bg-mist">
     <div class="max-w-4xl">
       <h1 class="text-center mb-3">About Japuri</h1>
       <p class="mb-3">

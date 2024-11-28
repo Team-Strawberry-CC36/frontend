@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { Loader } from '@googlemaps/js-api-loader';
 import { environment } from '@/utils/environments/environent';
-import { onMounted, useTemplateRef } from 'vue';
+import { onMounted, ref, useTemplateRef, watch } from 'vue';
 import type IPlace from '@/utils/interfaces/Place';
 
 // This component receives the Places as the source of information
 const { data } = defineProps<{ data: IPlace[] }>();
 const emit = defineEmits(['map-marker-clicked']);
 
+// Map object
+let map: google.maps.Map;
 // Initial variables
 const tokyoLocation = { lat: 35.6764, lng: 139.65 };
 // Load container
@@ -26,21 +28,26 @@ onMounted(() => {
 
 // When the template is rendered, we initialize the map.
 async function initMap() {
-  const { Map } = (await loader.importLibrary('maps')) as google.maps.MapsLibrary;
-  const { AdvancedMarkerElement } = await loader.importLibrary('marker');
+  const { Map }: google.maps.MapsLibrary = (await loader.importLibrary('maps'));
 
   if (!mapElementRef.value) return;
 
-  const map = new Map(mapElementRef.value, {
+  map = new Map(mapElementRef.value, {
     center: tokyoLocation,
     zoom: 12,
     mapId: 'DEMO_MAP_ID',
   });
+}
 
-  // We iterate over every place, and we set markers using location in each place
-  data.forEach((place: IPlace) => {
+// Watcher!
+
+watch(() => data, async (value) => {
+  const { AdvancedMarkerElement } = await loader.importLibrary('marker');
+
+   // We iterate over every place, and we set markers using location in each place
+   value.forEach((place: IPlace) => {
     const marker = new AdvancedMarkerElement({
-      map,
+      map: map,
       position: {
         lat: place.location.latitude,
         lng: place.location.longitude,
@@ -58,7 +65,7 @@ async function initMap() {
       });
     });
   });
-}
+})
 </script>
 
 <template>

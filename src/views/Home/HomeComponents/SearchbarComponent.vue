@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { usePlaceStore } from '@/stores/PlaceStore';
+import axiosInstance from '@/utils/api';
 import { ref, watch } from 'vue';
 const place = usePlaceStore();
 place.useMock();
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
-const searchQuery = ref('');
+const searchQuery = ref('onsen');
 const searchCategory = ref('onsen');
 const errorMessage = ref('');
 const emit = defineEmits(['search']);
@@ -27,23 +28,27 @@ const performSearch = async () => {
   errorMessage.value = '';
 
   try {
-    const response = await fetch(`${apiUrl}/testing/search`, {
+    const response = await axiosInstance.post(`${apiUrl}/testing/search`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
+      body: {
         textQuery: searchQuery.value,
         category: searchCategory.value,
-      }),
+      },
     });
 
-    if (!response.ok) {
+    if (response.status >= 400) {
       throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
 
-    const data = await response.json();
-    console.log(data);
+    console.log(response.data)
+
+    const data = response.data;
+
+    emit("search", data);
+
   } catch (error) {
     console.error('Search request failed: ', error);
   }
