@@ -51,7 +51,7 @@ const onCheck = (event: Event, label: string) => {
   if (target.checked) {
     experiencePackage.selectedEtiquette.push(label);
   }
-  console.log(experiencePackage.selectedEtiquette);
+
 };
 
 function canSubmit() {
@@ -63,17 +63,19 @@ function resetForm() {
 }
 
 const addExperience = async () => {
+  const toSend = {
+        selectedEtiquette: experiencePackage.selectedEtiquette,
+        experienceText: experiencePackage.experienceText,
+        user_id: auth.currentUser?.uid,
+      };
+      console.log(toSend);
   try {
     await fetch(`${apiUrl}/places/${place.details.id}/experiences`, {
       method: 'POST',
       headers: {
-        'Contents-type': 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        selectedEtiquette: experiencePackage.selectedEtiquette,
-        experienceText: experiencePackage.experienceText,
-        user_id: auth.currentUser?.uid,
-      }),
+      body: JSON.stringify(toSend),
     });
     resetForm();
   } catch (error) {

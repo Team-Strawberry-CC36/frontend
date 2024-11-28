@@ -30,7 +30,7 @@ const performSearch = async () => {
     const response = await fetch(`${apiUrl}/testing/search`, {
       method: 'POST',
       headers: {
-        'Contents-type': 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         textQuery: searchQuery.value,
