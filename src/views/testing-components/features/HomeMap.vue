@@ -7,8 +7,9 @@ import type IPlace from '@/utils/interfaces/Place';
 // This component receives the Places as the source of information
 const { data } = defineProps<{ data: IPlace[] }>();
 const emit = defineEmits(['map-marker-clicked']);
-let map = ref();
 
+// Map object
+let map: google.maps.Map;
 // Initial variables
 const tokyoLocation = { lat: 35.6764, lng: 139.65 };
 // Load container
@@ -25,14 +26,28 @@ onMounted(() => {
   initMap();
 });
 
-watch(() => data, (value, oldValue) => {
+// When the template is rendered, we initialize the map.
+async function initMap() {
+  const { Map }: google.maps.MapsLibrary = (await loader.importLibrary('maps'));
+
+  if (!mapElementRef.value) return;
+
+  map = new Map(mapElementRef.value, {
+    center: tokyoLocation,
+    zoom: 12,
+    mapId: 'DEMO_MAP_ID',
+  });
+}
+
+// Watcher!
+
+watch(() => data, async (value) => {
   const { AdvancedMarkerElement } = await loader.importLibrary('marker');
 
-  //
    // We iterate over every place, and we set markers using location in each place
-   data.forEach((place: IPlace) => {
+   value.forEach((place: IPlace) => {
     const marker = new AdvancedMarkerElement({
-      map,
+      map: map,
       position: {
         lat: place.location.latitude,
         lng: place.location.longitude,
@@ -51,19 +66,6 @@ watch(() => data, (value, oldValue) => {
     });
   });
 })
-
-// When the template is rendered, we initialize the map.
-async function initMap() {
-  const { Map } = (await loader.importLibrary('maps')) as google.maps.MapsLibrary;
-
-  if (!mapElementRef.value) return;
-
-  map.value = new Map(mapElementRef.value, {
-    center: tokyoLocation,
-    zoom: 12,
-    mapId: 'DEMO_MAP_ID',
-  });
-}
 </script>
 
 <template>

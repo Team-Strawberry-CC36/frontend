@@ -8,6 +8,8 @@ const place = usePlaceStore();
 
 const { data } = defineProps<{ data: IPlace }>()
 
+// HOTFIX
+// If the prop changes, we update details!
 watch(() => data, (value) => {
   place.details = value;
 })
