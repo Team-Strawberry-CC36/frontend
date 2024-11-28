@@ -78,7 +78,9 @@ place.useMock();
         </ul>
         <div>
           <p>Agree with these etiquette rules for this place? Let us know.</p>
-          <button @click="emit('show-add-vote')">Vote</button>
+          <div>
+            <button class="block mx-auto w-3/4 p-5 rounded-3xl border border-slate-400 hover:bg-white bg-velvet text-frostWhite hover:text-velvet hover:cursor-pointer" @click="emit('show-add-vote')">Vote</button>
+          </div>
         </div>
       </section>
       <section class="w-full">

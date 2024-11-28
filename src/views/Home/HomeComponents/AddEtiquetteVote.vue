@@ -127,8 +127,10 @@ const submitVote = async () => {
                 </div>
             </div>
          </div>
-
-        <button @click="handleClick">Done!</button>
+         <div class="flex flex-row justify-center"> 
+            <button class="h-12 w-1/2 rounded-lg border border-charcoal hover:bg-white bg-velvet text-white hover:text-velvet hover:cursor-pointer" @click="handleClick">Done!</button>
+         </div>
+        
       </section>
     </div>
   </div>
