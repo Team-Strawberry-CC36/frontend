@@ -66,6 +66,7 @@ const handleGoHome = () => {
 
   <SidebarComponent
     :openSidebar="openSidebar"
+    @close-sidebar="toggleSidebar"
   />
     </div>
   </header>
