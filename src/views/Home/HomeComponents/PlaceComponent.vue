@@ -8,12 +8,15 @@ const emit = defineEmits(['show-add-vote']);
 
 const place = usePlaceStore();
 
-const { data } = defineProps<{ data: IPlace }>()
+//@ts-ignore
+const { data } = defineProps<{ data: IPlace | null }>()
 
 // HOTFIX
 // If the prop changes, we update details!
 watch(() => data, (value) => {
-  place.details = value;
+  if (value) {
+    place.details = value;
+  }
 })
 
 //use mock state data
@@ -28,7 +31,7 @@ place.useMock();
       <!-- Cover Photo -->
       <div class="h-full w-full">
         <img
-          v-if="place.details.photos?.length > 0 && place.details.photos"
+          v-if="place.details.photos && place.details.photos.length > 0"
           class="w-full h-full object-cover border-b border-slate-400"
           :src="place.details.photos[0].fileData"
           alt="place_photo"

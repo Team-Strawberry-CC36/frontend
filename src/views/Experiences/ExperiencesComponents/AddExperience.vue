@@ -55,7 +55,7 @@ const onCheck = (event: Event, label: string) => {
     target.checked = false;
     return;
   }
-  
+
   if (target.checked) {
     experiencePackage.selectedEtiquette.push(label);
   }
@@ -87,7 +87,7 @@ const handleAddExperience = async () => {
       credentials: 'include',
       body: JSON.stringify(toSend),
     });
-    
+
     if (response.ok) {
       resetForm();
       handleToggleAddExperience();
@@ -97,7 +97,7 @@ const handleAddExperience = async () => {
       handleToggleAddExperience();
       throw new Error("There was an error!");
     }
-    
+
   } catch (error) {
     console.error(error);
   }
@@ -118,10 +118,10 @@ const handleAddExperience = async () => {
       <div class="flex flex-row flex-1 justify-around m-3">
         <label for="etiquette" class="text-xl font-extralight">Select up to 3 etiquettes to discuss:</label>
         <div v-for="etiquette in experiencePackage.etiquette" :key="etiquette.id">
-          <input 
-            type="checkbox" 
+          <input
+            type="checkbox"
             :id="etiquette.label"
-            :value="etiquette.label" 
+            :value="etiquette.label"
             @change="onCheck($event, etiquette.label)"
             :checked="experiencePackage.selectedEtiquette.includes(etiquette.label)"
           />
@@ -164,8 +164,9 @@ const handleAddExperience = async () => {
       <h2>Your Experiences</h2>
       <ul>
         <li v-for="(exp, index) in experiencePackage.experiences" :key="index">
-          <strong>Etiquette:</strong> {{ exp.etiquette }} <br />
-          <strong>Content:</strong> {{ exp.text }}
+          <!-- Commented for deployment -->
+          <!-- <strong>Etiquette:</strong> {{ exp.text }} <br /> -->
+          <!-- <strong>Content:</strong> {{ exp.text }} -->
         </li>
       </ul>
     </div>
