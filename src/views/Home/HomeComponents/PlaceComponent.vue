@@ -1,8 +1,18 @@
 <script setup lang="ts">
 //import type Place from '@/utils/interfaces/Place';
 import { usePlaceStore } from '@/stores/PlaceStore';
+import type IPlace from '@/utils/interfaces/Place';
+import { defineProps, watch } from 'vue';
 
 const place = usePlaceStore();
+
+const { data } = defineProps<{ data: IPlace }>()
+
+// HOTFIX
+// If the prop changes, we update details!
+watch(() => data, (value) => {
+  place.details = value;
+})
 
 //use mock state data
 place.useMock();
@@ -30,7 +40,7 @@ place.useMock();
       </section>
       <section class="m-5 w-full pb-5 border-b border-slate-400">
         <!-- General information -->
-        <ul class="list-disc list-inside">
+        <ul class="list-disc list-inside font-light">
           <li>Address: {{ place.details.address }}</li>
         </ul>
       </section>
@@ -59,7 +69,7 @@ place.useMock();
       </section>
       <section class="m-5 w-full pb-5 border-b border-slate-400">
         <h2 class="text-center text-velvet text-xl">Etiquette Rules</h2>
-        <ul class="list-disc list-inside">
+        <ul class="list-disc list-inside font-light">
           <li v-for="item in place.details.etiquettes" :key="item.id">
             {{ item.label }}
           </li>

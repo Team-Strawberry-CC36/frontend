@@ -1,17 +1,35 @@
 <script setup lang="ts">
 import PlaceComponent from './HomeComponents/PlaceComponent.vue';
-import MapComponent from './HomeComponents/MapComponent.vue';
 import SearchbarComponent from './HomeComponents/SearchbarComponent.vue';
+import { ref } from 'vue';
+import type IPlace from '@/utils/interfaces/Place';
+import HomeMap from '../testing-components/features/HomeMap.vue';
+
+const placeData = ref<IPlace[]>([]);
+const displayedPlace = ref<IPlace | null>(null);
+
+// Handlers
+const handleSearchResults = (event: { event: string, data: IPlace[] }) => {
+  placeData.value = event.data;
+}
+
+const handleMarkerClicked = (event: { event: string, place: IPlace }) => {
+  displayedPlace.value = event.place;
+}
+
 </script>
 
 <template>
   <main class="flex flex-col">
     <div class="">
-      <SearchbarComponent />
+      <SearchbarComponent @search="handleSearchResults"/>
     </div>
     <div class="flex flex-col lg:flex-row p-4 w-full lg:w-screen bg-mist">
-      <MapComponent />
-      <PlaceComponent />
+      <HomeMap style="height: 600px;" :data="placeData" @map-marker-clicked="handleMarkerClicked"/>
+      <div v-if="displayedPlace">
+        <h1>Rendering data! {{ displayedPlace }}</h1>
+        <PlaceComponent :data="displayedPlace"/>
+      </div>
     </div>
   </main>
 </template>
