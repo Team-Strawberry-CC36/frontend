@@ -34,9 +34,13 @@ const toggleView = () => {
     </div>
     <div class="flex flex-col lg:flex-row p-4 w-full lg:w-screen bg-mist">
       <HomeMap style="height: 600px;" :data="placeData" @map-marker-clicked="handleMarkerClicked"/>
-      <div > <!-- v-if="displayedPlace" put back in div after testing -->
+      <div v-if="displayedPlace"> <!-- v-if="displayedPlace" put back in div after testing -->
         <h1>Rendering data! {{ displayedPlace }}</h1>
-        <PlaceComponent :data="displayedPlace" v-if="!viewEtiquetteVote" @show-add-vote="toggleView"/>
+        <PlaceComponent 
+          :data="displayedPlace"
+          v-if="!viewEtiquetteVote"
+          @show-add-vote="toggleView"
+        />
         <AddEtiquetteVote v-if="viewEtiquetteVote" @close-add-vote="toggleView" />
       </div>
     </div>
