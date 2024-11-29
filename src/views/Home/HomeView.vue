@@ -17,6 +17,14 @@ const handleMarkerClicked = (event: { event: string, place: IPlace }) => {
   displayedPlace.value = event.place;
 }
 
+import AddEtiquetteVote from './HomeComponents/AddEtiquetteVote.vue';
+
+const viewEtiquetteVote = ref(false);
+
+const toggleView = () => {
+  viewEtiquetteVote.value = !viewEtiquetteVote.value;
+};
+
 </script>
 
 <template>
@@ -26,10 +34,12 @@ const handleMarkerClicked = (event: { event: string, place: IPlace }) => {
     </div>
     <div class="flex flex-col lg:flex-row p-4 w-full lg:w-screen bg-mist">
       <HomeMap style="height: 600px;" :data="placeData" @map-marker-clicked="handleMarkerClicked"/>
-      <div v-if="displayedPlace">
+      <div > <!-- v-if="displayedPlace" put back in div after testing -->
         <h1>Rendering data! {{ displayedPlace }}</h1>
-        <PlaceComponent :data="displayedPlace"/>
+        <PlaceComponent :data="displayedPlace" v-if="!viewEtiquetteVote" @show-add-vote="toggleView"/>
+        <AddEtiquetteVote v-if="viewEtiquetteVote" @close-add-vote="toggleView" />
       </div>
     </div>
   </main>
 </template>
+

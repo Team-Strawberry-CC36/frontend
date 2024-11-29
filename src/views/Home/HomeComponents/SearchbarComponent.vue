@@ -28,10 +28,12 @@ const performSearch = async () => {
   errorMessage.value = '';
 
   try {
+    console.log(searchCategory.value)
+        console.log(searchQuery.value)
     const response = await axiosInstance.post(`${apiUrl}/testing/search`, {
       method: 'POST',
       headers: {
-        'Contents-type': 'application/json',
+        'Content-Type': 'application/json',
       },
       body: {
         textQuery: searchQuery.value,

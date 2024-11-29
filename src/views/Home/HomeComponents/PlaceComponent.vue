@@ -3,6 +3,8 @@
 import { usePlaceStore } from '@/stores/PlaceStore';
 import type IPlace from '@/utils/interfaces/Place';
 import { defineProps, watch } from 'vue';
+import { defineEmits } from 'vue';
+const emit = defineEmits(['show-add-vote']);
 
 const place = usePlaceStore();
 
@@ -74,6 +76,12 @@ place.useMock();
             {{ item.label }}
           </li>
         </ul>
+        <div>
+          <p>Agree with these etiquette rules for this place? Let us know.</p>
+          <div>
+            <button class="block mx-auto w-3/4 p-5 rounded-3xl border border-slate-400 hover:bg-white bg-velvet text-frostWhite hover:text-velvet hover:cursor-pointer" @click="emit('show-add-vote')">Vote</button>
+          </div>
+        </div>
       </section>
       <section class="w-full">
         <h2 class="mb-3 text-center text-velvet">See what other tourists are saying!</h2>
