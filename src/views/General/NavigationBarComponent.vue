@@ -1,18 +1,24 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import SidebarComponent from './GeneralComponents/SidebarComponent.vue';
+import { useRouter } from 'vue-router';
 
 const openSidebar = ref<boolean>(false);
 const toggleSidebar = () => {
   openSidebar.value = !openSidebar.value;
   console.log(openSidebar.value)
 };
+
+const router = useRouter();
+const handleGoHome = () => {
+  router.push('/home')
+}
 </script>
 
 <template>
   <header class="h-16">
     <div class="h-full w-full flex items-center bg-velvet text-frostWhite">
-      <h1 class="w-full text-center text-3xl font-semibold">Japuri</h1>
+      <h1 class="w-full text-center text-3xl font-semibold hover:cursor-pointer" @click="handleGoHome">Japuri</h1>
       <button class="absolute top-4 left-5 p-2" @click="toggleSidebar">
       <!-- Hamburger Menu -->
       <svg
