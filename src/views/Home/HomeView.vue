@@ -8,6 +8,8 @@ import HomeMap from '../testing-components/features/HomeMap.vue';
 const placeData = ref<IPlace[]>([]);
 const displayedPlace = ref<IPlace | null>(null);
 
+const searchQuery = ref('');
+
 // Handlers
 const handleSearchResults = (event: { event: string, data: IPlace[] }) => {
   placeData.value = event.data;
@@ -33,7 +35,7 @@ const toggleView = () => {
       <SearchbarComponent @search="handleSearchResults"/>
     </div>
     <div class="flex flex-col lg:flex-row p-4 w-full lg:w-screen bg-mist">
-      <HomeMap style="height: 600px;" :data="placeData" @map-marker-clicked="handleMarkerClicked"/>
+      <HomeMap style="height: 600px;" :data="placeData" :search-query="searchQuery" @map-marker-clicked="handleMarkerClicked"/>
       <div v-if="displayedPlace"> <!-- v-if="displayedPlace" put back in div after testing -->
         <h1>Rendering data! {{ displayedPlace }}</h1>
         <PlaceComponent 
