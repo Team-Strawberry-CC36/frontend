@@ -22,9 +22,14 @@ import { reactive } from 'vue'
 
 // Reactive state for etiquette selections
 const etiquetteSelections = reactive(new Map<number, EtiquetteStatus>());
+// Initial values for etiquetteSelections
+etiquetteVotesData.data.usersVote.forEach((vote) => {
+    etiquetteSelections.set(vote.etiquetteId, undefined);
+});
 const updateSelection = (etiquetteLabelId: number, value: 'allowed' | 'not-allowed') => {
     etiquetteSelections.set(etiquetteLabelId, value);
 }
+console.log(etiquetteSelections);
 
 // Handle click of the button
 const handleClick = async () => {
@@ -38,7 +43,8 @@ const submitVote = async () => {
     console.log(etiquetteSelections);
     // Convert to an array for easier processing
     const voteData = Array.from(etiquetteSelections.entries()).map(([key, value]) => ({
-        id: Number(key),
+        etiquetteId: Number(key),
+        etiquetteType: etiquetteVotesData.data.usersVote.find((vote) => vote.etiquetteId === Number(key))?.etiquetteType,
         vote: value
     }));
     try {

@@ -42,7 +42,7 @@ const updateVote = async () => {
     console.log(etiquetteSelections);
     // Convert to an array for easier processing
     const voteData = Array.from(etiquetteSelections.entries()).map(([key, value]) => ({
-        id: Number(key),
+        etiquetteId: Number(key),
         vote: value
     }));
     try {
