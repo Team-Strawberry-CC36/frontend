@@ -28,13 +28,61 @@ export const usePlaceStore = defineStore('placeStore', () => {
     details.placeType = 'onsen';
     details.location = { latitude: 35.65867467719728, longitude: 139.72758253068733 };
     details.etiquettes = [
-      { id: 1, label: 'No smoking', status: 'allowed' },
-      { id: 2, label: 'No tattoos', status: 'allowed' },
-      { id: 3, label: 'Towels provided', status: 'allowed' },
-      { id: 4, label: 'No swimming', status: 'allowed' },
+      { id: 1, label: 'Smoking', status: 'not-allowed' },
+      { id: 2, label: 'Tattoos', status: 'not-allowed' },
+      { id: 3, label: 'Towels', status: 'allowed' },
+      { id: 4, label: 'Swimming', status: 'not-allowed' },
       { id: 5, label: 'Existential dread', status: 'allowed' },
     ];
     details.experiences = [
+      {
+        id: 1,
+        username: 'HealthConcious123',
+        dateVisited: new Date('2024-11-27'),
+        etiquettes: [{ id: 1, label: 'Smoking' }],
+        experience:
+          'I truly appreciated the no-smoking policy—it created a much cleaner and healthier environment. It made the experience more enjoyable for everyone.',
+        metadata: {
+          createdAt: new Date('2024-11-27T10:00:00Z'),
+          updatedAt: new Date('2024-11-27T10:00:00Z'),
+        },
+      },
+      {
+        id: 2,
+        username: 'ArtLover92',
+        dateVisited: new Date('2024-11-28'),
+        etiquettes: [{ id: 2, label: 'Tattoos' }],
+        experience:
+          'I was a bit surprised by the "No tattoos" rule—it felt a bit restrictive. However, the ambiance was nice and quite serene.',
+        metadata: {
+          createdAt: new Date('2024-11-28T14:30:00Z'),
+          updatedAt: new Date('2024-11-28T14:30:00Z'),
+        },
+      },
+      {
+        id: 3,
+        username: 'ComfortSeeker',
+        dateVisited: new Date('2024-11-29'),
+        etiquettes: [{ id: 3, label: 'Towels' }],
+        experience:
+          'Having towels provided was a wonderful touch! It made the visit hassle-free, and the attention to detail was impressive.',
+        metadata: {
+          createdAt: new Date('2024-11-29T09:45:00Z'),
+          updatedAt: new Date('2024-11-29T09:45:00Z'),
+        },
+      },
+      {
+        id: 4,
+        username: 'SwimFanatic',
+        dateVisited: new Date('2024-11-26'),
+        etiquettes: [{ id: 4, label: 'Swimming' }],
+        experience:
+          'The "No swimming" policy was disappointing as I was looking forward to taking a dip. Nonetheless, the other facilities were great, so it balanced out.',
+        metadata: {
+          createdAt: new Date('2024-11-26T18:20:00Z'),
+          updatedAt: new Date('2024-11-26T18:20:00Z'),
+        },
+      },
       {
         id: 5,
         username: 'Philosopher101',
