@@ -43,6 +43,7 @@ const updateVote = async () => {
     // Convert to an array for easier processing
     const voteData = Array.from(etiquetteSelections.entries()).map(([key, value]) => ({
         etiquetteId: Number(key),
+        etiquetteType: etiquetteVotesData.data.usersVote.find((vote) => vote.etiquetteId === Number(key))?.etiquetteType,
         vote: value
     }));
     try {
@@ -54,7 +55,7 @@ const updateVote = async () => {
             credentials: 'include',
             body: JSON.stringify({
                 votes: voteData,
-                userId: auth.currentUser?.uid,
+                //userId: auth.currentUser?.uid,
                 placeId: place.details.id
             }),
         });

@@ -56,7 +56,7 @@ const submitVote = async () => {
             credentials: 'include',
             body: JSON.stringify({
                 votes: voteData,
-                userId: auth.currentUser?.uid,
+                //userId: auth.currentUser?.uid,
                 placeId: place.details.id
             }),
         });

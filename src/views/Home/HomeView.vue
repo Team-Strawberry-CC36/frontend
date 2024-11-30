@@ -15,7 +15,7 @@ const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
     data: {
       placeId: 1,
       userId: auth.currentUser?.uid,
-      userHasVoted : false,
+      userHasVoted : true,
       etiquetteVotes : [
           { etiquetteId: 1, etiquetteType: 'Smoking', numberOfVotesForAllowed: 100, numberOfVotesForNotAllowed: 1000 },
           { etiquetteId: 2, etiquetteType: 'Tattoos', numberOfVotesForAllowed: 400, numberOfVotesForNotAllowed: 700 },
@@ -24,9 +24,9 @@ const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
           { etiquetteId: 5, etiquetteType: 'Existential Dread', numberOfVotesForAllowed: 1100, numberOfVotesForNotAllowed: 0}
       ],
       usersVote: [
-          { etiquetteId: 1, etiquetteType: 'Smoking', vote: undefined },
+          { etiquetteId: 1, etiquetteType: 'Smoking', vote: 'allowed' },
           { etiquetteId: 2, etiquetteType: 'Tattoos', vote: undefined },
-          { etiquetteId: 3, etiquetteType: 'Towels', vote: undefined },
+          { etiquetteId: 3, etiquetteType: 'Towels', vote: 'not-allowed' },
           { etiquetteId: 4, etiquetteType: 'Swimming', vote: undefined },
           { etiquetteId: 5, etiquetteType: 'Existential Dread', vote: undefined },
       ],
