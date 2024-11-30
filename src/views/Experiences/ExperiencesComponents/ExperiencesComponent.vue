@@ -208,7 +208,7 @@ const handleVote = async (exid:number, vote:string) => {
               :class="isUpvote(experience.id) ? 'fill-velvet' : 'fill-charcoal'"
               @click="handleVote(experience.id, 'up'); retrieveVote(experience.id)">
               <svg viewBox="0 0 256 256" id="Flat" xmlns="http://www.w3.org/2000/svg"
-                class="fill-charcoal h-full w-full hover:fill-velvet ease-in-out transition duration-300"
+                class="h-full w-full hover:fill-velvet ease-in-out transition duration-300"
               >
                 <path d="M231.39062,123.06152A8,8,0,0,1,224,128H184v80a16.01833,16.01833,0,0,1-16,16H88a16.01833,16.01833,0,0,1-16-16V128H32a8.00065,8.00065,0,0,1-5.65723-13.65723l96-96a8.003,8.003,0,0,1,11.31446,0l96,96A8.002,8.002,0,0,1,231.39062,123.06152Z"/>
               </svg>
@@ -218,7 +218,7 @@ const handleVote = async (exid:number, vote:string) => {
             :class="isDownvote(experience.id) ? 'fill-velvet' : 'fill-charcoal'"
             @click="handleVote(experience.id, 'down'); retrieveVote(experience.id)">
               <svg viewBox="0 0 256 256" id="Flat" xmlns="http://www.w3.org/2000/svg"
-                class="fill-charcoal h-full w-full hover:fill-velvet ease-in-out transition duration-300"
+                class="h-full w-full hover:fill-velvet ease-in-out transition duration-300"
               >
                 <path d="M229.65723,141.65723l-96,96a8.003,8.003,0,0,1-11.31446,0l-96-96A8.00065,8.00065,0,0,1,32,128H72V48A16.01833,16.01833,0,0,1,88,32h80a16.01833,16.01833,0,0,1,16,16v80h40a8.00066,8.00066,0,0,1,5.65723,13.65723Z"/>
               </svg>
