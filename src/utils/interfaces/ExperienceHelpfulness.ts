@@ -1,0 +1,15 @@
+export default interface ExperienceHelpfulness {
+  vote_id: number,
+  user_id: string,
+  experience_id: number,
+  helpfulness: "up" | "down"
+}
+
+
+interface ApiResponse<T> {
+  message: string;
+  data: T
+}
+
+
+type ExperienceApiResponse = ApiResponse<ExperienceHelpfulness[]>
