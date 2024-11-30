@@ -13,7 +13,7 @@ const toggleAddExperience = () => {
 </script>
 
 <template>
-  <main class="flex flex-col p4 items-center justify-center h-screen w-full bg-mist">
+  <main class="flex flex-col p4 items-center justify-center h-fit w-full bg-mist">
     <ExperiencesComponent v-if="!showAddExperience" @toggleAddExperience="toggleAddExperience" />
     <AddExperience v-else @toggleAddExperience="toggleAddExperience" />
   </main>

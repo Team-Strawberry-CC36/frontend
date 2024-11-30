@@ -10,39 +10,39 @@ import ReviewEtiquetteVote from './HomeComponents/ReviewEtiquetteVote.vue';
 import { getAuth } from 'firebase/auth';
 const auth = getAuth();
 
-const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
-    message: "Lovely job!",
-    data: {
-      placeId: 1,
-      userId: auth.currentUser?.uid,
-      userHasVoted : true,
-      etiquetteVotes : [
-          { etiquetteId: 1, etiquetteType: 'Smoking', numberOfVotesForAllowed: 100, numberOfVotesForNotAllowed: 1000 },
-          { etiquetteId: 2, etiquetteType: 'Tattoos', numberOfVotesForAllowed: 400, numberOfVotesForNotAllowed: 700 },
-          { etiquetteId: 3, etiquetteType: 'Towels', numberOfVotesForAllowed: 1050, numberOfVotesForNotAllowed: 50},
-          { etiquetteId: 4, etiquetteType: 'Swimming', numberOfVotesForAllowed: 550, numberOfVotesForNotAllowed: 550},
-          { etiquetteId: 5, etiquetteType: 'Existential Dread', numberOfVotesForAllowed: 1100, numberOfVotesForNotAllowed: 0}
-      ],
-      usersVote: [
-          { etiquetteId: 1, etiquetteType: 'Smoking', vote: 'allowed' },
-          { etiquetteId: 2, etiquetteType: 'Tattoos', vote: undefined },
-          { etiquetteId: 3, etiquetteType: 'Towels', vote: 'not-allowed' },
-          { etiquetteId: 4, etiquetteType: 'Swimming', vote: undefined },
-          { etiquetteId: 5, etiquetteType: 'Existential Dread', vote: undefined },
-      ],
-    }
+// const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
+//     message: "Lovely job!",
+//     data: {
+//       placeId: 1,
+//       userId: auth.currentUser?.uid,
+//       userHasVoted : true,
+//       etiquetteVotes : [
+//           { etiquetteId: 1, etiquetteType: 'Smoking', numberOfVotesForAllowed: 100, numberOfVotesForNotAllowed: 1000 },
+//           { etiquetteId: 2, etiquetteType: 'Tattoos', numberOfVotesForAllowed: 400, numberOfVotesForNotAllowed: 700 },
+//           { etiquetteId: 3, etiquetteType: 'Towels', numberOfVotesForAllowed: 1050, numberOfVotesForNotAllowed: 50},
+//           { etiquetteId: 4, etiquetteType: 'Swimming', numberOfVotesForAllowed: 550, numberOfVotesForNotAllowed: 550},
+//           { etiquetteId: 5, etiquetteType: 'Existential Dread', numberOfVotesForAllowed: 1100, numberOfVotesForNotAllowed: 0}
+//       ],
+//       usersVote: [
+//           { etiquetteId: 1, etiquetteType: 'Smoking', vote: 'allowed' },
+//           { etiquetteId: 2, etiquetteType: 'Tattoos', vote: undefined },
+//           { etiquetteId: 3, etiquetteType: 'Towels', vote: 'not-allowed' },
+//           { etiquetteId: 4, etiquetteType: 'Swimming', vote: undefined },
+//           { etiquetteId: 5, etiquetteType: 'Existential Dread', vote: undefined },
+//       ],
+//     }
     
-};
+// };
 
 const placeData = ref<IPlace[]>([]);
 const displayedPlace = ref<IPlace| null>(null);
-const etiquetteVotesData = ref<IPlaceEtiquetteVotes>(mockEtiquetteVotesData);
+const etiquetteVotesData = ref<IPlaceEtiquetteVotes | null>(null);
 
 const searchQuery = ref('');
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 const getPlaceEtiquetteVotesData = async (place:IPlace) => {
   try {
-    const response = await fetch(`${apiUrl}/place/${place.id}/etiquetteVotes`, {
+    const response = await fetch(`${apiUrl}/moreTesting/places/${place.id}/votes`, {
       method: 'GET',
       credentials: 'include'
     });
@@ -58,13 +58,10 @@ const handleSearchResults = (event: { event: string, data: IPlace[] }) => {
   placeData.value = event.data;
 }
 
-
-
 const handleMarkerClicked = (event: { event: string, place: IPlace }) => {
   displayedPlace.value = event.place;
-  // Make a request to the backend for votes data for the place
+  // Make a request to the backend for etiquette votes data about this place
   getPlaceEtiquetteVotesData(displayedPlace.value);
-  
 }
 
 /**
@@ -94,7 +91,7 @@ const toggleReviewVoteView = () => {
     </div>
     <div class="flex flex-col lg:flex-row p-4 w-full lg:w-screen bg-mist">
       <HomeMap style="height: 600px;" :data="placeData" :search-query="searchQuery" @map-marker-clicked="handleMarkerClicked"/>
-      <div> <!-- v-if="displayedPlace" put back in div after testing -->
+      <div v-if="displayedPlace"> <!-- v-if="displayedPlace" put back in div after testing -->
         <h1>Rendering data! {{ displayedPlace }}</h1>
         <PlaceComponent 
           :data="displayedPlace"

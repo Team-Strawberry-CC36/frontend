@@ -71,7 +71,7 @@ place.useMock();
           >Restaurant Guide →</RouterLink
         >
       </section>
-      <section class="m-5 w-full pb-5 border-b border-slate-400">
+      <section v-if="etiquetteVotesData" class="m-5 w-full pb-5 border-b border-slate-400">
         <h2 class="text-center text-velvet text-xl">Etiquette Rules</h2>
         <ul class="list-disc list-inside font-light">
           <li v-for="item in etiquetteVotesData.data.etiquetteVotes" :key="item.etiquetteId">

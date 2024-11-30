@@ -26,4 +26,4 @@ interface ApiResponseEtiquetteVotes<T> {
     data: T;
 }
 
-export type IPlaceEtiquetteVotes = ApiResponseEtiquetteVotes<IPlaceEtiquetteVotesAlias>;
+export type IPlaceEtiquetteVotes = ApiResponseEtiquetteVotes<IPlaceEtiquetteVotesAlias> | null;
