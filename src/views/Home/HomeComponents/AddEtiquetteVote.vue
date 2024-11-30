@@ -6,7 +6,7 @@ const emit = defineEmits(['close-add-vote']);
 import { defineProps } from 'vue';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
 import type { EtiquetteStatus } from '@/utils/interfaces/Etiquette';
-const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquetteVotes}>()
+const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquetteVotes | null}>()
 
 // Authorization
 import { getAuth } from 'firebase/auth';
@@ -23,7 +23,7 @@ import { reactive } from 'vue'
 // Reactive state for etiquette selections
 const etiquetteSelections = reactive(new Map<number, EtiquetteStatus>());
 // Initial values for etiquetteSelections
-etiquetteVotesData.data.usersVote.forEach((vote) => {
+etiquetteVotesData?.data.usersVote.forEach((vote) => {
     etiquetteSelections.set(vote.etiquetteId, undefined);
 });
 const updateSelection = (etiquetteLabelId: number, value: 'allowed' | 'not-allowed') => {
@@ -44,7 +44,7 @@ const submitVote = async () => {
     // Convert to an array for easier processing
     const voteData = Array.from(etiquetteSelections.entries()).map(([key, value]) => ({
         etiquetteId: Number(key),
-        etiquetteType: etiquetteVotesData.data.usersVote.find((vote) => vote.etiquetteId === Number(key))?.etiquetteType,
+        etiquetteType: etiquetteVotesData?.data.usersVote.find((vote) => vote.etiquetteId === Number(key))?.etiquetteType,
         vote: value
     }));
     try {
@@ -102,7 +102,7 @@ const submitVote = async () => {
 
       <section class="w-full">
         <!-- Voting section -->
-         <div v-for="etiquette in etiquetteVotesData.data.etiquetteVotes">
+         <div v-for="etiquette in etiquetteVotesData?.data.etiquetteVotes">
             <div class="flex flex-row">
                 <div class="p-3 w-1/2"> 
                     {{ etiquette.etiquetteType }} 
