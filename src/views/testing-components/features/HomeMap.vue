@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Loader } from '@googlemaps/js-api-loader';
 import { environment } from '@/utils/environments/environent';
-import { onMounted, ref, useTemplateRef, watch, watchEffect } from 'vue';
+import { onMounted, ref, useTemplateRef, watch } from 'vue';
 import type IPlace from '@/utils/interfaces/Place';
 
 // This component receives the Places as the source of information

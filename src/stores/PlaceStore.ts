@@ -28,11 +28,11 @@ export const usePlaceStore = defineStore('placeStore', () => {
     details.placeType = 'onsen';
     details.location = { latitude: 35.65867467719728, longitude: 139.72758253068733 };
     details.etiquettes = [
-      { id: 1, label: 'No smoking', status: 'allowed' },
-      { id: 2, label: 'No tattoos', status: 'allowed' },
-      { id: 3, label: 'Towels provided', status: 'allowed' },
-      { id: 4, label: 'No swimming', status: 'allowed' },
-      { id: 5, label: 'Existential dread', status: 'allowed' },
+      { id: 1, label: 'Smoking', status: 'allowed' },
+      { id: 2, label: 'Tattoos', status: 'allowed' },
+      { id: 3, label: 'Towels', status: 'allowed' },
+      { id: 4, label: 'Swimming', status: 'allowed' },
+      { id: 5, label: 'Existential Dread', status: 'allowed' },
     ];
     details.experiences = [
       {
