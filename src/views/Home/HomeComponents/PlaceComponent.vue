@@ -74,17 +74,17 @@ place.useMock();
       <section class="m-5 w-full pb-5 border-b border-slate-400">
         <h2 class="text-center text-velvet text-xl">Etiquette Rules</h2>
         <ul class="list-disc list-inside font-light">
-          <li v-for="item in etiquetteVotesData.etiquetteVotes" :key="item.etiquetteId">
+          <li v-for="item in etiquetteVotesData.data.etiquetteVotes" :key="item.etiquetteId">
             {{ item.etiquetteType }} : {{ item.numberOfVotesForAllowed >= 2*item.numberOfVotesForNotAllowed ? 'allowed' : 'not allowed' }}
           </li>
         </ul>
-        <div v-if="etiquetteVotesData.userHasVoted === false">
+        <div v-if="etiquetteVotesData.data.userHasVoted === false">
           <p>Agree with these etiquette rules for this place? Let us know.</p>
           <div>
             <button class="block mx-auto w-3/4 p-5 rounded-3xl border border-slate-400 hover:bg-white bg-velvet text-frostWhite hover:text-velvet hover:cursor-pointer" @click="emit('show-add-vote')">Vote</button>
           </div>
         </div>
-        <div v-if="etiquetteVotesData.userHasVoted === true">
+        <div v-if="etiquetteVotesData.data.userHasVoted === true">
           <p>Want to review your vote?</p>
           <div>
             <button class="block mx-auto w-3/4 p-5 rounded-3xl border border-salte-400 hover:bg-white bg-velvet text-frostWhite hover:text-velvet hover:cursor-pointer" @click="emit('show-review-vote')">Review vote</button>

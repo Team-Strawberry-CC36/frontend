@@ -21,4 +21,9 @@ interface IPlaceEtiquetteVotesAlias {
     usersVote:IEtiquetteUsersVote[];
 };
 
-export type IPlaceEtiquetteVotes = IPlaceEtiquetteVotesAlias;
+interface ApiResponseEtiquetteVotes<T> {
+    message: string;
+    data: T;
+}
+
+export type IPlaceEtiquetteVotes = ApiResponseEtiquetteVotes<IPlaceEtiquetteVotesAlias>;

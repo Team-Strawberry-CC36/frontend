@@ -11,23 +11,27 @@ import { getAuth } from 'firebase/auth';
 const auth = getAuth();
 
 const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
-    placeId: 1,
-    userId: auth.currentUser?.uid,
-    userHasVoted : false,
-    etiquetteVotes : [
-        { etiquetteId: 1, etiquetteType: 'Smoking', numberOfVotesForAllowed: 100, numberOfVotesForNotAllowed: 1000 },
-        { etiquetteId: 2, etiquetteType: 'Tattoos', numberOfVotesForAllowed: 400, numberOfVotesForNotAllowed: 700 },
-        { etiquetteId: 3, etiquetteType: 'Towels', numberOfVotesForAllowed: 1050, numberOfVotesForNotAllowed: 50},
-        { etiquetteId: 4, etiquetteType: 'Swimming', numberOfVotesForAllowed: 550, numberOfVotesForNotAllowed: 550},
-        { etiquetteId: 5, etiquetteType: 'Existential Dread', numberOfVotesForAllowed: 1100, numberOfVotesForNotAllowed: 0}
-    ],
-    usersVote: [
-        { etiquetteId: 1, etiquetteType: 'Smoking', vote: undefined },
-        { etiquetteId: 2, etiquetteType: 'Tattoos', vote: undefined },
-        { etiquetteId: 3, etiquetteType: 'Towels', vote: undefined },
-        { etiquetteId: 4, etiquetteType: 'Swimming', vote: undefined },
-        { etiquetteId: 5, etiquetteType: 'Existential Dread', vote: undefined },
-    ],
+    message: "Lovely job!",
+    data: {
+      placeId: 1,
+      userId: auth.currentUser?.uid,
+      userHasVoted : false,
+      etiquetteVotes : [
+          { etiquetteId: 1, etiquetteType: 'Smoking', numberOfVotesForAllowed: 100, numberOfVotesForNotAllowed: 1000 },
+          { etiquetteId: 2, etiquetteType: 'Tattoos', numberOfVotesForAllowed: 400, numberOfVotesForNotAllowed: 700 },
+          { etiquetteId: 3, etiquetteType: 'Towels', numberOfVotesForAllowed: 1050, numberOfVotesForNotAllowed: 50},
+          { etiquetteId: 4, etiquetteType: 'Swimming', numberOfVotesForAllowed: 550, numberOfVotesForNotAllowed: 550},
+          { etiquetteId: 5, etiquetteType: 'Existential Dread', numberOfVotesForAllowed: 1100, numberOfVotesForNotAllowed: 0}
+      ],
+      usersVote: [
+          { etiquetteId: 1, etiquetteType: 'Smoking', vote: undefined },
+          { etiquetteId: 2, etiquetteType: 'Tattoos', vote: undefined },
+          { etiquetteId: 3, etiquetteType: 'Towels', vote: undefined },
+          { etiquetteId: 4, etiquetteType: 'Swimming', vote: undefined },
+          { etiquetteId: 5, etiquetteType: 'Existential Dread', vote: undefined },
+      ],
+    }
+    
 };
 
 const placeData = ref<IPlace[]>([]);
@@ -64,7 +68,7 @@ const handleMarkerClicked = (event: { event: string, place: IPlace }) => {
 }
 
 /**
- * Adding etiquette
+ * Adding and reviewing etiquette
  */
 
 const viewEtiquetteVote = ref<boolean>(false);

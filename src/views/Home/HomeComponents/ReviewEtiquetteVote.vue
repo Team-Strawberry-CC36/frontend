@@ -23,7 +23,7 @@ import { reactive } from 'vue'
 // Reactive state for etiquette selections
 const etiquetteSelections = reactive(new Map<number, EtiquetteStatus>());
 // Set the initial state
-etiquetteVotesData.usersVote.forEach((etiquetteVote) => {
+etiquetteVotesData.data.usersVote.forEach((etiquetteVote) => {
     etiquetteSelections.set(etiquetteVote.etiquetteId, etiquetteVote.vote);
 });
 const updateSelection = (etiquetteLabelId: number, value: 'allowed' | 'not-allowed') => {
@@ -100,7 +100,7 @@ const updateVote = async () => {
 
       <section class="w-full">
         <!-- Voting section -->
-         <div v-for="etiquette in etiquetteVotesData.usersVote">
+         <div v-for="etiquette in etiquetteVotesData.data.usersVote">
             <div class="flex flex-row">
                 <div class="p-3 w-1/2"> 
                     {{ etiquette.etiquetteType }} 

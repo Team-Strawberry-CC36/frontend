@@ -96,7 +96,7 @@ const submitVote = async () => {
 
       <section class="w-full">
         <!-- Voting section -->
-         <div v-for="etiquette in etiquetteVotesData.etiquetteVotes">
+         <div v-for="etiquette in etiquetteVotesData.data.etiquetteVotes">
             <div class="flex flex-row">
                 <div class="p-3 w-1/2"> 
                     {{ etiquette.etiquetteType }} 
