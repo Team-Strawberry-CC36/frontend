@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { registerUserThroughFirebase } from '@/utils/auth';
+import { getAuth, signOut } from 'firebase/auth';
+import router from '@/router';
 
 const displayName = ref('');
 const email = ref('');
 const password = ref('');
 const confirmPassword = ref('');
 
-const handleSignUp = () => {
+const handleSignUp = async () => {
+  const auth = getAuth();
   if (
     displayName.value.trim() === '' ||
     email.value.trim() === '' ||
@@ -21,8 +24,11 @@ const handleSignUp = () => {
     alert('Passwords do not match.');
     return;
   }
+  // Successful sign up should redirect user to login page
   registerUserThroughFirebase(email.value, password.value, displayName.value);
   alert('Sign up successful!');
+  await signOut(auth);
+  await router.push({ name: 'login' });
 };
 </script>
 

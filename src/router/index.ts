@@ -8,6 +8,8 @@ import HomeView from '@/views/Home/HomeView.vue';
 import ExperiencesView from '@/views/Experiences/ExperiencesView.vue';
 import TestingComponents from '@/views/testing-components/TestingComponents.vue';
 
+const auth = getAuth();
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -55,7 +57,6 @@ let isAuthInitialized = false;
 // Promise function to check current login state
 function checkAuthState() {
   return new Promise((resolve) => {
-    const auth = getAuth();
     if (isAuthInitialized) {
       resolve(auth.currentUser);
     } else {
@@ -67,6 +68,21 @@ function checkAuthState() {
     }
   });
 }
+
+// Redirects the user when logging in and logging out
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // User is logged in, redirect to the home page
+    if (router.currentRoute.value.name !== 'home') {
+      router.push({ name: 'home' });
+    }
+  } else {
+    // User is logged out, redirect to the login page
+    if (router.currentRoute.value.name !== 'login') {
+      router.push({ name: 'login' });
+    }
+  }
+});
 
 // Redirection
 router.beforeEach(async (to, from, next) => {
