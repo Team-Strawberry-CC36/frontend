@@ -7,6 +7,7 @@ import SignUpView from '@/views/SignUp/SignUpView.vue';
 import HomeView from '@/views/Home/HomeView.vue';
 import ExperiencesView from '@/views/Experiences/ExperiencesView.vue';
 import TestingComponents from '@/views/testing-components/TestingComponents.vue';
+import TouristDashboard from '@/views/TouristDashboard/TouristDashboard.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,6 +47,11 @@ const router = createRouter({
       name: 'testing',
       component: TestingComponents,
     },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: TouristDashboard
+    }
   ],
 });
 
