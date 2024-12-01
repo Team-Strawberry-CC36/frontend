@@ -11,6 +11,7 @@ const searchCategory = ref('onsen');
 const errorMessage = ref('');
 const emit = defineEmits(['search']);
 
+
 // Watch the searchQuery so any changes clear the error message
 watch(searchQuery, () => {
   if (errorMessage.value) {

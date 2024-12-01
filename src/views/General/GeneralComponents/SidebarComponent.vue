@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { RouterLink } from 'vue-router';
+import { defineEmits } from 'vue';
 
   defineProps({
     openSidebar: Boolean
@@ -32,23 +33,27 @@ const handleSignOut = async () =>
     // An error happened.
     console.log('Error: ' + error);
 });
+
+// handle emits to close sidebar when clicking on link
+const emit = defineEmits(['close-sidebar']);
+
 </script>
 
 <template>
     <nav
-      class="absolute top-16 bg-velvet transition-all duration-500 h-screen w-[300px] p-5"
+      class="absolute top-16 bg-velvet transition-all duration-500 h-screen w-[300px] p-5 z-10"
       :class="{ 'left-0':  openSidebar, 'left-[-500px]': !openSidebar }"
     >
       <section class="block bg-charcoal text-frostWhite w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl">
         <p>Logged in as: {{ username }}</p>
       </section>
-      <RouterLink to="/" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
+      <RouterLink @click="emit('close-sidebar')" to="/" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
           Welcome
       </RouterLink>
-      <RouterLink to="/about" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
+      <RouterLink @click="emit('close-sidebar')" to="/about" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
         About
       </RouterLink>
-      <RouterLink to="/home" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
+      <RouterLink @click="emit('close-sidebar')" to="/home" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
         Home
       </RouterLink>
       <button @click.prevent="handleSignOut" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">

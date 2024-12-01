@@ -11,7 +11,8 @@ const emit = defineEmits(['map-marker-clicked']);
 // Map object
 let map: google.maps.Map;
 // Initial variables
-const tokyoLocation = { lat: 35.6764, lng: 139.65 };
+// const tokyoLocation = { lat: 35.6764, lng: 139.65 };
+const location = ref<{ lat: number, lng: number}>({ lat: 35.6765, lng: 139.65 }); // starting point is Tokyo
 // Load container
 const mapElementRef = useTemplateRef('map-container');
 
@@ -33,16 +34,29 @@ async function initMap() {
   if (!mapElementRef.value) return;
 
   map = new Map(mapElementRef.value, {
-    center: tokyoLocation,
+    center: location.value,
     zoom: 12,
     mapId: 'DEMO_MAP_ID',
   });
 }
 
-// Watcher!
 
+
+// Watcher for new markers from data
 watch(() => data, async (value) => {
   const { AdvancedMarkerElement } = await loader.importLibrary('marker');
+
+   // Recenter the map
+   if (value[0]) {
+      location.value = {
+        lat: value[0].location.latitude,
+        lng: value[0].location.longitude
+      };
+      if (map) {
+        map.setCenter(location.value);
+        map.setZoom(12);
+      }
+    }
 
    // We iterate over every place, and we set markers using location in each place
    value.forEach((place: IPlace) => {
@@ -65,6 +79,9 @@ watch(() => data, async (value) => {
       });
     });
   });
+
+  // Recenter the map
+
 })
 </script>
 

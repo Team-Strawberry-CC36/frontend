@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineEmits } from 'vue';
-const emit = defineEmits(['close-add-vote']);
+const emit = defineEmits(['close-review-vote']);
 
 // Props
 import { defineProps } from 'vue';
@@ -22,24 +22,23 @@ import { reactive } from 'vue'
 
 // Reactive state for etiquette selections
 const etiquetteSelections = reactive(new Map<number, EtiquetteStatus>());
-// Initial values for etiquetteSelections
-etiquetteVotesData?.data.usersVote.forEach((vote) => {
-    etiquetteSelections.set(vote.etiquetteId, undefined);
+// Set the initial state
+etiquetteVotesData?.data.usersVote.forEach((etiquetteVote) => {
+    etiquetteSelections.set(etiquetteVote.etiquetteId, etiquetteVote.vote);
 });
 const updateSelection = (etiquetteLabelId: number, value: 'allowed' | 'not-allowed') => {
     etiquetteSelections.set(etiquetteLabelId, value);
 }
-console.log(etiquetteSelections);
 
 // Handle click of the button
 const handleClick = async () => {
-    await submitVote();
-    emit('close-add-vote');
+    await updateVote();
+    emit('close-review-vote');
 }
 
 // For submitting the vote
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
-const submitVote = async () => {
+const updateVote = async () => {
     console.log(etiquetteSelections);
     // Convert to an array for easier processing
     const voteData = Array.from(etiquetteSelections.entries()).map(([key, value]) => ({
@@ -49,7 +48,7 @@ const submitVote = async () => {
     }));
     try {
         const response = await fetch(`${apiUrl}/moreTesting/places/${place.details.id}/votes`, {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -102,7 +101,7 @@ const submitVote = async () => {
 
       <section class="w-full">
         <!-- Voting section -->
-         <div v-for="etiquette in etiquetteVotesData?.data.etiquetteVotes">
+         <div v-for="etiquette in etiquetteVotesData?.data.usersVote">
             <div class="flex flex-row">
                 <div class="p-3 w-1/2"> 
                     {{ etiquette.etiquetteType }} 
