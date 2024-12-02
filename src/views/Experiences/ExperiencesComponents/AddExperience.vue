@@ -160,7 +160,7 @@ const handleAddExperience = async () => {
       </button>
     </section>
 
-    <div v-if="experiencePackage.experiences">
+    <!-- <div v-if="experiencePackage.experiences">
       <h2>Your Experiences</h2>
       <ul>
         <li v-for="(exp, index) in experiencePackage.experiences" :key="index">
@@ -168,6 +168,6 @@ const handleAddExperience = async () => {
           <strong>Content:</strong> {{ exp.text }}
         </li>
       </ul>
-    </div>
+    </div> -->
   </div>
 </template>
