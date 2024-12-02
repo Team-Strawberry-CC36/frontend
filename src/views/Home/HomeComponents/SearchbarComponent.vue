@@ -59,7 +59,7 @@ const performSearch = async () => {
 </script>
 
 <template>
-  <div class="flex flex-row justify-center m-1">
+  <div class="flex flex-row w-full bg-frostWhite justify-center p-1">
     <select
       v-model="searchCategory"
       class="w-1/6 h-10 p-3 mr-1 rounded-xl bg-charcoal text-white text-center text-sm"
