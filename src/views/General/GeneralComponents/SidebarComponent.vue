@@ -47,9 +47,6 @@ const emit = defineEmits(['close-sidebar']);
       <section v-if="username" class="block bg-charcoal text-frostWhite w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl">
         <p>Logged in as: {{ username }}</p>
       </section>
-      <RouterLink v-if="username" @click="emit('close-sidebar')" to="/dashboard" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
-        Dashboard
-      </RouterLink>
       <RouterLink v-else @click="emit('close-sidebar')" to="/login" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
         Login
       </RouterLink>
@@ -58,6 +55,9 @@ const emit = defineEmits(['close-sidebar']);
       </RouterLink>
       <RouterLink v-if="username" @click="emit('close-sidebar')" to="/home" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
         Home
+      </RouterLink>
+      <RouterLink v-if="username" @click="emit('close-sidebar')" to="/dashboard" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
+        Dashboard
       </RouterLink>
       <RouterLink v-else @click="emit('close-sidebar')" to="/" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
         Welcome
