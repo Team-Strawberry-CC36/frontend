@@ -1,9 +1,9 @@
 import { reactive } from 'vue';
-import type ExperienceVote from '@/utils/interfaces/ExperienceHelpfulness';
+import type ExperienceHelpfulnessVote from '@/utils/interfaces/ExperienceHelpfulnessVote';
 import { defineStore } from 'pinia';
 
 export const useExperienceVoteStore = defineStore('experienceVoteStore', () => {
-  const details = reactive<ExperienceVote[]>([])
+  const details = reactive<ExperienceHelpfulnessVote[]>([])
 
   function useMock() {
     details.splice(0, details.length); // Clear existing array
