@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { getAuth } from 'firebase/auth';
 import { usePlaceStore } from '@/stores/PlaceStore';
-import { computed } from 'vue';
 import type { IEtiquettePerPlace } from '@/utils/interfaces/Etiquette';
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
@@ -16,8 +15,6 @@ const emit = defineEmits(['toggleAddExperience']);
 const handleToggleAddExperience = () => {
   emit('toggleAddExperience');
 };
-
-let turtle = 'string';
 
 interface ExperiencePackage {
   etiquette: IEtiquettePerPlace[];
@@ -55,7 +52,7 @@ const onCheck = (event: Event, label: string) => {
     target.checked = false;
     return;
   }
-  
+
   if (target.checked) {
     experiencePackage.selectedEtiquette.push(label);
   }
@@ -87,7 +84,7 @@ const handleAddExperience = async () => {
       credentials: 'include',
       body: JSON.stringify(toSend),
     });
-    
+
     if (response.ok) {
       resetForm();
       handleToggleAddExperience();
@@ -97,7 +94,7 @@ const handleAddExperience = async () => {
       handleToggleAddExperience();
       throw new Error("There was an error!");
     }
-    
+
   } catch (error) {
     console.error(error);
   }
@@ -118,10 +115,10 @@ const handleAddExperience = async () => {
       <div class="flex flex-row flex-1 justify-around m-3">
         <label for="etiquette" class="text-xl font-extralight">Select up to 3 etiquettes to discuss:</label>
         <div v-for="etiquette in experiencePackage.etiquette" :key="etiquette.id">
-          <input 
-            type="checkbox" 
+          <input
+            type="checkbox"
             :id="etiquette.label"
-            :value="etiquette.label" 
+            :value="etiquette.label"
             @change="onCheck($event, etiquette.label)"
             :checked="experiencePackage.selectedEtiquette.includes(etiquette.label)"
           />

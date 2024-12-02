@@ -1,4 +1,4 @@
-export default interface ExperienceHelpfulness {
+export default interface ExperienceHelpfulnessVote {
   vote_id: number,
   user_id: string,
   experience_id: number,
@@ -12,4 +12,4 @@ interface ApiResponse<T> {
 }
 
 
-type ExperienceApiResponse = ApiResponse<ExperienceHelpfulness[]>
+type ExperienceApiResponse = ApiResponse<ExperienceHelpfulnessVote[]>
