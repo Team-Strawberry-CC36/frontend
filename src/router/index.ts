@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import WelcomeView from '@/views/Welcome/WelcomeView.vue';
 import AboutView from '../views/About/AboutView.vue';
+import GuideView from '@/views/Guide/GuideView.vue';
 import LoginView from '@/views/Login/LoginView.vue';
 import SignUpView from '@/views/SignUp/SignUpView.vue';
 import HomeView from '@/views/Home/HomeView.vue';
@@ -23,6 +24,11 @@ const router = createRouter({
       path: '/about',
       name: 'about',
       component: AboutView,
+    },
+    {
+      path: '/guides',
+      name: 'guides',
+      component: GuideView,
     },
     {
       path: '/login',
