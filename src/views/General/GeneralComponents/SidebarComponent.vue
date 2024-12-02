@@ -45,6 +45,7 @@ const emit = defineEmits(['close-sidebar']);
       :class="{ 'left-0':  openSidebar, 'left-[-500px]': !openSidebar }"
     >
       <section v-if="username" class="block bg-charcoal text-frostWhite w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl">
+      <section v-if="username" class="block bg-charcoal text-frostWhite w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl">
         <p>Logged in as: {{ username }}</p>
       </section>
       <RouterLink v-if="username" @click="emit('close-sidebar')" to="/dashboard" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
@@ -65,6 +66,7 @@ const emit = defineEmits(['close-sidebar']);
       <RouterLink @click="emit('close-sidebar')" to="/about" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
         About
       </RouterLink>
+      <button v-if="username" @click.prevent="handleSignOut" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
       <button v-if="username" @click.prevent="handleSignOut" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
         Log out
       </button>
