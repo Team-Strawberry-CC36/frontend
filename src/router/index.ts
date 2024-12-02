@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import WelcomeView from '@/views/Welcome/WelcomeView.vue';
 import AboutView from '../views/About/AboutView.vue';
 import LoginView from '@/views/Login/LoginView.vue';
@@ -7,6 +7,8 @@ import SignUpView from '@/views/SignUp/SignUpView.vue';
 import HomeView from '@/views/Home/HomeView.vue';
 import ExperiencesView from '@/views/Experiences/ExperiencesView.vue';
 import TestingComponents from '@/views/testing-components/TestingComponents.vue';
+
+const auth = getAuth();
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,10 +51,43 @@ const router = createRouter({
   ],
 });
 
+// Sets initial login state check variable to false
+let isAuthInitialized = false;
+
+// Promise function to check current login state
+function checkAuthState() {
+  return new Promise((resolve) => {
+    if (isAuthInitialized) {
+      resolve(auth.currentUser);
+    } else {
+      // If initial state is false, swap to true then check login
+      onAuthStateChanged(auth, (user) => {
+        isAuthInitialized = true;
+        resolve(user);
+      });
+    }
+  });
+}
+
+// Redirects the user when logging in and logging out
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // User is logged in, redirect to the home page
+    if (router.currentRoute.value.name !== 'home') {
+      router.push({ name: 'home' });
+    }
+  } else {
+    // User is logged out, redirect to the login page
+    if (router.currentRoute.value.name !== 'login') {
+      router.push({ name: 'login' });
+    }
+  }
+});
+
 // Redirection
 router.beforeEach(async (to, from, next) => {
-  const auth = getAuth();
-  const user = auth.currentUser;
+  // Checks login state first before redirection
+  const user = await checkAuthState();
 
   if (to.name === 'welcome' && user) {
     // redirects if user *is* logged in

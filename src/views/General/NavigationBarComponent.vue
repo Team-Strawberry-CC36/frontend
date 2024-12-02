@@ -19,7 +19,7 @@ const handleGoHome = () => {
   <header class="h-16">
     <div class="h-full w-full flex items-center bg-velvet text-frostWhite">
       <h1 class="w-full text-center text-3xl font-semibold hover:cursor-pointer" @click="handleGoHome">Japuri</h1>
-      <button class="absolute top-4 left-5 p-2" @click="toggleSidebar">
+      <button class="absolute top-3 left-5 p-2" @click="toggleSidebar">
       <!-- Hamburger Menu -->
       <svg
         xmlns="http://www.w3.org/2000/svg"

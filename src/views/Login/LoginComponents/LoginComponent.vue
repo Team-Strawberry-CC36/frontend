@@ -11,12 +11,12 @@ const handleSignIn = () => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center sm:h-1/2 sm:w-1/4 rounded-xl bg-frostWhite shadow-2xl">
-    <span class="m-3">Login with your Japuri account</span>
+  <div class="flex flex-col p-3 items-center h-fit sm:w-1/4 rounded-xl bg-frostWhite shadow-2xl">
+    <span class="m-3 text-center">Login with your Japuri account</span>
     <form class="flex flex-col" @submit.prevent="handleSignIn">
-      <input type="email" v-model="email" placeholder="Email" class="block mb-3" />
+      <input type="email" v-model="email" placeholder="Email" class="block mb-3 p-1 border border-slate-400 rounded-xl" />
 
-      <input type="password" v-model="password" placeholder="Password" class="block mb-3" />
+      <input type="password" v-model="password" placeholder="Password" class="block mb-3 p-1 border border-slate-400 rounded-xl" />
 
       <div class="mb-3 mx-auto">
         <button class="bg-charcoal text-frostWhite px-3 py-1 rounded-xl hover:animate-pulse">
@@ -24,10 +24,8 @@ const handleSignIn = () => {
         </button>
       </div>
     </form>
-    <RouterLink class="mb-3" to="/signup">Don't have an account? Sign up!</RouterLink>
-    <svg height="5" width="300" xmlns="http://www.w3.org/2000/svg">
-      <line x1="0" y1="0" x2="300" y2="0" class="stroke-charcoal stroke-2" />
-    </svg>
+    <RouterLink class="mb-3 text-center underline" to="/signup">Don't have an account? Sign up!</RouterLink>
+    <div class="text-center w-5/6 border-b border-slate-400"></div>
     <span class="m-3">Alternative Login</span>
     <div></div>
   </div>
