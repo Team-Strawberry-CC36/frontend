@@ -47,6 +47,9 @@ const emit = defineEmits(['close-sidebar']);
       <section v-if="username" class="block bg-charcoal text-frostWhite w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl">
         <p>Logged in as: {{ username }}</p>
       </section>
+      <RouterLink v-if="username" @click="emit('close-sidebar')" to="/dashboard" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
+        Dashboard
+      </RouterLink>
       <RouterLink v-else @click="emit('close-sidebar')" to="/login" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
         Login
       </RouterLink>
@@ -65,25 +68,5 @@ const emit = defineEmits(['close-sidebar']);
       <button v-if="username" @click.prevent="handleSignOut" class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse">
         Log out
       </button>
-	<!-- <br>
-	<button class="text-black w-full py-2 mx-auto block shadow-lg bg-white rounded-xl hover:bg-tealgreen hover:text-white ease-in-out transition duration-300" onclick={() => {changeView('basics'); console.log("Clicked", $siteState.view)}}>
-		Rules and Basics
-	</button>
-	<br>
-	<button class="text-black w-full py-2 mx-auto block shadow-lg bg-white rounded-xl hover:bg-tealgreen hover:text-white ease-in-out transition duration-300" onclick={() => {changeView('strategy'); console.log("Clicked", $siteState.view)}}>
-		Strategy
-	</button>
-	<br>
-	<button class="text-black w-full py-2 mx-auto block shadow-lg bg-white rounded-xl hover:bg-tealgreen hover:text-white ease-in-out transition duration-300" onclick={() => {changeView('scoring'); console.log("Clicked", $siteState.view)}}>
-		Scoring
-	</button>
-	<br>
-	<button class="text-black w-full py-2 mx-auto block shadow-lg bg-white rounded-xl hover:bg-tealgreen hover:text-white ease-in-out transition duration-300" onclick={() => {changeView('practice'); console.log("Clicked", $siteState.view)}}>
-		Practice
-	</button>
-	<br>
-	<button class="text-black w-full py-2 mx-auto block shadow-lg bg-white rounded-xl hover:bg-tealgreen hover:text-white ease-in-out transition duration-300" onclick={() => {changeView('resources'); console.log("Clicked", $siteState.view)}}>
-		Resources
-	</button> -->
   </nav>
 </template>
