@@ -10,6 +10,7 @@ export default interface IExperience {
   dateVisited: Date;
   //
   experience: string;
+  helpfulness: number;
   etiquettes: IEtiquettePerExperience[];
   //
   metadata: {
