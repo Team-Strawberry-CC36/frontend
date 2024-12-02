@@ -75,16 +75,24 @@ function checkAuthState() {
   });
 }
 
+// Entry restrictions for log in status
+// Unaccessible pages for logged in users
+const logInRestrictions = ['welcome', 'login', 'signup'];
+// Unaccessible pages for logged out users
+const logOutRestrictions = ['home', 'experiences', 'dashboard'];
+
 // Redirects the user when logging in and logging out
 onAuthStateChanged(auth, (user) => {
+  const currentRouteName = router.currentRoute.value.name;
+
   if (user) {
     // User is logged in, redirect to the home page
-    if (router.currentRoute.value.name !== 'home') {
+    if (logInRestrictions.includes(currentRouteName as string)) {
       router.push({ name: 'home' });
     }
   } else {
     // User is logged out, redirect to the login page
-    if (router.currentRoute.value.name !== 'login') {
+    if (logOutRestrictions.includes(currentRouteName as string)) {
       router.push({ name: 'login' });
     }
   }
@@ -106,6 +114,8 @@ router.beforeEach(async (to, from, next) => {
   } else if (to.name === 'home' && !user) {
     next({ name: 'signup' });
   } else if (to.name === 'experiences' && !user) {
+    next({ name: 'signup' });
+  } else if (to.name === 'dashboard' && !user) {
     next({ name: 'signup' });
   } else {
     // proceed normally if user is not logged in
