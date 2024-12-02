@@ -35,11 +35,14 @@ const selectedFilter = ref<string | ''>('');
 // Filter experiences based on experienceType
 const filteredExperiences = computed(() => {
   if (place.details.experiences) {
-    return selectedFilter.value
+    // Filters based on etiquette selection
+    const filtered = selectedFilter.value
       ? place.details.experiences.filter(
           (experience) => experience.etiquettes[0].label === selectedFilter.value,
         )
       : place.details.experiences;
+      // arranges experiences based on helpfulness score in descending order
+      return filtered.sort((a, b) => b.helpfulness - a.helpfulness);
   } else {
     return [];
   }
@@ -213,6 +216,7 @@ const handleVote = async (exid:number, vote:string) => {
                 <path d="M231.39062,123.06152A8,8,0,0,1,224,128H184v80a16.01833,16.01833,0,0,1-16,16H88a16.01833,16.01833,0,0,1-16-16V128H32a8.00065,8.00065,0,0,1-5.65723-13.65723l96-96a8.003,8.003,0,0,1,11.31446,0l96,96A8.002,8.002,0,0,1,231.39062,123.06152Z"/>
               </svg>
             </button>
+            <div class="text-center font-light sm:text-base text-sm">{{ experience.helpfulness }}</div>
             <button
             class="block"
             :class="isDownvote(experience.id) ? 'fill-velvet' : 'fill-charcoal'"
