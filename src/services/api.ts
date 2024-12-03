@@ -21,11 +21,6 @@ type ExperienceAddPackage = {
 };
 
 // Helpfulness voting
-// Fetch all votes
-type allUserHelpfulnessPackage = {
-  experienceID: number;
-}
-
 // Add new vote
 type newUserHelpfulnessPackage = {
   experienceID: number;
@@ -96,9 +91,23 @@ class ApiService {
   }
 
   async retrieveHelpfulnessVote(experienceId: number): ApiResponse<ExperienceHelpfulnessVote[]> {
+    return await this.api.get(`${this.apiUrl}/experiences/${experienceId}/votes`);
+  }
+
+  async addHelpfulnessVote(experienceId: number, vote: string): ApiResponse<newUserHelpfulnessPackage> {
     return await this.api.post(`${this.apiUrl}/experiences/${experienceId}/votes`, {
-      experienceId: experienceId
-    })
+      vote: vote
+    });
+  }
+
+  async deleteHelpfulnessVote(experienceId: number, voteId: number): ApiResponse<deleteUserHelpfulnessPackage> {
+    return await this.api.delete(`${this.apiUrl}/experiences/${experienceId}/votes/${voteId}`)
+  }
+
+  async editHelpfulnessVote(experienceId: number, voteId: number | undefined, vote: string): ApiResponse<editUserHelpfulnessPackage> {
+    return await this.api.patch(`${this.apiUrl}/experiences/${experienceId}/votes/${voteId}`, {
+      vote: vote
+    });
   }
 }
 

@@ -5,7 +5,6 @@ import { usePlaceStore } from '@/stores/PlaceStore';
 import {useExperienceVoteStore} from "@/stores/ExperienceVoteStore";
 import apiService from '@/services/api';
 
-const apiUrl = import.meta.env.VITE_BACKEND_URL;
 const place = usePlaceStore();
 
 const votes = useExperienceVoteStore();
@@ -96,18 +95,14 @@ const handleVote = async (exid:number, vote:string) => {
   // If user is logged in and the vote does not exist, add vote
   if (auth.currentUser && !checkExistingVote(exid) && vote) {
     try {
-      await fetch(`${apiUrl}/experiences/${exid}/votes`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        //vote data
-        userID: auth.currentUser.uid,
-        experienceID: exid,
-        vote: vote,
-      }),
-    });
+      const response = await apiService.addHelpfulnessVote(exid, vote);
+
+      if (response.status === 201) {
+        console.log("Vote posted!")
+      } else {
+        alert("An error has occured.")
+        throw "An error an occured while posting helpfulness vote data."
+      }
     } catch (error) {
     console.error(error);
     }
@@ -118,38 +113,28 @@ const handleVote = async (exid:number, vote:string) => {
     // if the vote info is the same, delete the vote
     if (voteToHandle?.helpfulness === vote) {
       try {
-        await fetch(`${apiUrl}/experiences/${exid}/votes/${voteToHandle?.vote_id}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            //vote data to delete
-            userID: auth.currentUser.uid,
-            experienceID: exid,
-            vote_id: voteToHandle?.vote_id,
-            vote: vote
-          }),
-        });
+        const response = await apiService.deleteHelpfulnessVote(exid, voteToHandle.vote_id)
+
+        if (response.status === 201) {
+        console.log("Vote deleted!")
+      } else {
+        alert("An error has occured.")
+        throw "An error an occured while deleting helpfulness vote data."
+      }
       } catch (error) {
         console.error(error);
       }
       // if the vote info is not the same, edit it
     } else {
       try {
-        await fetch(`${apiUrl}/experiences/${exid}/votes/${voteToHandle?.vote_id}`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            //vote data to edit
-            userID: auth.currentUser.uid,
-            experienceID: exid,
-            vote_id: voteToHandle?.vote_id,
-            vote: vote
-          }),
-        });
+        const response = await apiService.editHelpfulnessVote(exid, voteToHandle?.vote_id, vote);
+
+        if (response.status === 201) {
+        console.log("Vote edited!")
+      } else {
+        alert("An error has occured.")
+        throw "An error an occured while editing helpfulness vote data."
+      }
       } catch (error) {
         console.error(error);
       }
