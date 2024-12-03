@@ -53,15 +53,16 @@ const getPlaceEtiquetteVotesData = async (place:IPlace) => {
     });
 
     etiquetteVotesData.value = await response.json();
+    console.log("This is the etiquetteVotesData", etiquetteVotesData.value);
   } catch (error) {
     console.error("There was an error getting etiquette votes from the database: ", error);
   }
 }
-
 const getPlaceDetails = async (placeId: string) => {
   try {
     const response = await apiService.getPlace(placeId);
     displayedPlace.value = response.data.data;
+    console.log(displayedPlace);
   } catch (e) {
     console.error({
       message: "There was an error getting place details in homeView",
@@ -75,8 +76,11 @@ const handleSearchResults = (event: { event: string, data: IPlaceMarker[] }) => 
   placeMarkers.value = event.data;
 }
 
-const handleMarkerClicked = (event: { event: string, data: string }) => {
-  getPlaceDetails(event.data);
+const handleMarkerClicked = async (event: { event: string, data: string }) => {
+  await getPlaceDetails(event.data);
+  if(displayedPlace.value) {
+    await getPlaceEtiquetteVotesData(displayedPlace.value);
+  }
 }
 
 /**
