@@ -3,11 +3,14 @@ import { ref } from 'vue';
 import { registerUserThroughFirebase } from '@/auth/auth';
 import { getAuth, signOut } from 'firebase/auth';
 import router from '@/router';
+import authService from "@/services/auth.service";
+import {firebaseApp} from "@/firebase";
 
 const displayName = ref('');
 const email = ref('');
 const password = ref('');
 const confirmPassword = ref('');
+
 
 const handleSignUp = async () => {
   const auth = getAuth();
@@ -25,10 +28,15 @@ const handleSignUp = async () => {
     return;
   }
   // Successful sign up should redirect user to login page
-  registerUserThroughFirebase(email.value, password.value, displayName.value);
-  alert('Sign up successful!');
-  await signOut(auth);
-  await router.push({ name: 'login' });
+  const { uid } = await registerUserThroughFirebase(email.value, password.value, displayName.value);
+  // We need to add this to the db
+  const response = await authService.createUser(uid);
+  if (response.status === 201) {
+    await router.push({ name: 'login' });
+  } else {
+    // Error handling here
+    // Maybe we can delete the user
+  }
 };
 </script>
 

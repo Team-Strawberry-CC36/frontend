@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import { getAuth } from 'firebase/auth';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IEtiquettePerPlace } from '@/utils/interfaces/Etiquette';
-import api from "@/services/api";
-import apiService from "@/services/api";
+import apiService from "@/services/api.service";
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 console.log(apiUrl);
-
-const auth = getAuth();
 
 const place = usePlaceStore();
 
@@ -118,7 +114,7 @@ const handleAddExperience = async () => {
             :id="etiquette.label"
             :value="etiquette.label"
             @change="onCheck($event, etiquette.id)"
-            :checked="experiencePackage.selectedEtiquette.includes(etiquette.label)"
+            :checked="experiencePackage.selectedEtiquette.includes(etiquette.id)"
           />
           <label :for="etiquette.label">{{ etiquette.label }}</label><br>
         </div>
