@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { signInThroughFirebase } from '@/utils/auth';
+import { signInThroughFirebase } from '@/auth/auth';
 
 const email = ref('');
 const password = ref('');

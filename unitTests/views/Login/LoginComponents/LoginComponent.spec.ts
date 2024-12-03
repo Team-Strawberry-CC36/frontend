@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import LoginComponent from '../../../../src/views/Login/LoginComponents/LoginComponent.vue';
-import { signInThroughFirebase } from '../../../../src/utils/auth';
+import { signInThroughFirebase } from '../../../../src/auth/auth';
 
 describe('LoginComponent.vue Test', () => {
 

@@ -8,6 +8,8 @@ import HomeMap from '../testing-components/features/HomeMap.vue';
 import AddEtiquetteVote from './HomeComponents/AddEtiquetteVote.vue';
 import ReviewEtiquetteVote from './HomeComponents/ReviewEtiquetteVote.vue';
 import { getAuth } from 'firebase/auth';
+import apiService, { type IPlaceMarker } from "@/services/api";
+
 const auth = getAuth();
 
 // const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
@@ -31,15 +33,18 @@ const auth = getAuth();
 //           { etiquetteId: 5, etiquetteType: 'Existential Dread', vote: undefined },
 //       ],
 //     }
-    
+
 // };
 
-const placeData = ref<IPlace[]>([]);
+const placeMarkers = ref<IPlaceMarker[]>([]);
 const displayedPlace = ref<IPlace| null>(null);
 const etiquetteVotesData = ref<IPlaceEtiquetteVotes | null>(null);
 
+
 const searchQuery = ref('');
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
+
+// Some functions for async
 const getPlaceEtiquetteVotesData = async (place:IPlace) => {
   try {
     const response = await fetch(`${apiUrl}/moreTesting/places/${place.id}/votes`, {
@@ -53,15 +58,25 @@ const getPlaceEtiquetteVotesData = async (place:IPlace) => {
   }
 }
 
-// Handlers
-const handleSearchResults = (event: { event: string, data: IPlace[] }) => {
-  placeData.value = event.data;
+const getPlaceDetails = async (placeId: string) => {
+  try {
+    const response = await apiService.getPlace(placeId);
+    displayedPlace.value = response.data.data;
+  } catch (e) {
+    console.error({
+      message: "There was an error getting place details in homeView",
+      error: e
+    });
+  }
 }
 
-const handleMarkerClicked = (event: { event: string, place: IPlace }) => {
-  displayedPlace.value = event.place;
-  // Make a request to the backend for etiquette votes data about this place
-  getPlaceEtiquetteVotesData(displayedPlace.value);
+// Handlers
+const handleSearchResults = (event: { event: string, data: IPlace[] }) => {
+  placeMarkers.value = event.data;
+}
+
+const handleMarkerClicked = (event: { event: string, data: string }) => {
+  getPlaceDetails(event.data);
 }
 
 /**
@@ -90,22 +105,22 @@ const toggleReviewVoteView = () => {
       <SearchbarComponent @search="handleSearchResults"/>
     </div>
     <div class="flex flex-col lg:flex-row p-4 w-full lg:w-screen bg-mist">
-      <HomeMap style="height: 600px;" :data="placeData" :search-query="searchQuery" @map-marker-clicked="handleMarkerClicked"/>
+      <HomeMap style="height: 600px;" :data="placeMarkers" :search-query="searchQuery" @map-marker-clicked="handleMarkerClicked"/>
       <div v-if="displayedPlace"> <!-- v-if="displayedPlace" put back in div after testing -->
         <h1>Rendering data! {{ displayedPlace }}</h1>
-        <PlaceComponent 
+        <PlaceComponent
           :data="displayedPlace"
           :etiquetteVotesData="etiquetteVotesData"
           v-if="viewPlaceDetails"
           @show-add-vote="toggleVoteView"
           @show-review-vote="toggleReviewVoteView"
         />
-        <AddEtiquetteVote 
+        <AddEtiquetteVote
           v-if="viewEtiquetteVote"
           :etiquetteVotesData="etiquetteVotesData"
           @close-add-vote="toggleVoteView" />
         <!-- Add a component to review your vote -->
-         <ReviewEtiquetteVote 
+         <ReviewEtiquetteVote
           v-if="viewReviewEtiquetteVote"
           :etiquetteVotesData="etiquetteVotesData"
           @close-review-vote="toggleReviewVoteView"
