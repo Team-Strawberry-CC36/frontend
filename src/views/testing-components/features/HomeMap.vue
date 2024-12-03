@@ -2,10 +2,10 @@
 import { Loader } from '@googlemaps/js-api-loader';
 import { environment } from '@/utils/environments/environent';
 import { onMounted, ref, useTemplateRef, watch } from 'vue';
-import type IPlace from '@/utils/interfaces/Place';
+import type {IPlaceMarker} from "@/services/api";
 
 // This component receives the Places as the source of information
-const { data } = defineProps<{ data: IPlace[] }>();
+const { data } = defineProps<{ data: IPlaceMarker[] }>();
 const emit = defineEmits(['map-marker-clicked']);
 
 // Map object
@@ -49,8 +49,8 @@ watch(() => data, async (value) => {
    // Recenter the map
    if (value[0]) {
       location.value = {
-        lat: value[0].location.latitude,
-        lng: value[0].location.longitude
+        lat: value[0].location.lat,
+        lng: value[0].location.lon
       };
       if (map) {
         map.setCenter(location.value);
@@ -59,12 +59,12 @@ watch(() => data, async (value) => {
     }
 
    // We iterate over every place, and we set markers using location in each place
-   value.forEach((place: IPlace) => {
+   value.forEach((place: IPlaceMarker) => {
     const marker = new AdvancedMarkerElement({
       map: map,
       position: {
-        lat: place.location.latitude,
-        lng: place.location.longitude,
+        lat: place.location.lat,
+        lng: place.location.lon,
       },
       // Activate google event!
       gmpClickable: true,
@@ -75,7 +75,7 @@ watch(() => data, async (value) => {
     marker.addEventListener('gmp-click', () => {
       emit('map-marker-clicked', {
         event: 'map-marker-clicked',
-        place: place,
+        data: place.id,
       });
     });
   });

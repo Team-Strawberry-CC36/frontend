@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { registerUserThroughFirebase } from '@/utils/auth';
+import { registerUserThroughFirebase } from '@/auth/auth';
 import { getAuth, signOut } from 'firebase/auth';
 import router from '@/router';
 
