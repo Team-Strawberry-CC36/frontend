@@ -2,7 +2,7 @@
 import { Loader } from '@googlemaps/js-api-loader';
 import { environment } from '@/utils/environments/environent';
 import { onMounted, ref, useTemplateRef, watch } from 'vue';
-import type {IPlaceMarker} from "@/services/api";
+import type {IPlaceMarker} from "@/services/api.service";
 
 // This component receives the Places as the source of information
 const { data } = defineProps<{ data: IPlaceMarker[] }>();
