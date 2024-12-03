@@ -2,33 +2,28 @@
 import { ref, computed, defineEmits } from 'vue';
 import { getAuth } from 'firebase/auth';
 import { usePlaceStore } from '@/stores/PlaceStore';
-import { useExperienceVoteStore } from '@/stores/ExperienceVoteStore';
+import {useExperienceVoteStore} from "@/stores/ExperienceVoteStore";
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
-
 const place = usePlaceStore();
+
 const votes = useExperienceVoteStore();
 
 const auth = getAuth();
 
-//use mock state data
-place.useMock();
-votes.useMock();
-
 const emit = defineEmits(['toggleAddExperience']);
 
-// etiquettes must be taken from Place -> Experience -> Etiquette
-// and add to array only if not contained in the array
-// A set is good for this because sets only accept unique values
+// unique etiquettes from all the experiences
 const uniqueEtiquettes = new Set<string>();
 if (typeof place.details.experiences !== 'undefined') {
   place.details.experiences.forEach((experience) => {
     experience.etiquettes.forEach((etiquette) => {
       uniqueEtiquettes.add(etiquette.label);
     });
-    //uniqueEtiquettes.add(experience.etiquette);
   });
 }
+
+// --- Sorting section
 const etiquetteTypes: string[] = Array.from(uniqueEtiquettes);
 const selectedFilter = ref<string | ''>('');
 

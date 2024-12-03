@@ -2,6 +2,8 @@
 import { getAuth } from 'firebase/auth';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IEtiquettePerPlace } from '@/utils/interfaces/Etiquette';
+import api from "@/services/api";
+import apiService from "@/services/api";
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 console.log(apiUrl);
@@ -18,7 +20,7 @@ const handleToggleAddExperience = () => {
 
 interface ExperiencePackage {
   etiquette: IEtiquettePerPlace[];
-  selectedEtiquette: string[];
+  selectedEtiquette: number[];
   experienceText: string;
   experiences: string;
   dateVisited: Date | null;
@@ -39,12 +41,12 @@ const handleSetDateVisited = (event: Event) => {
 }
 
 // Make sure user can only select up to 3 checkboxes
-const onCheck = (event: Event, label: string) => {
+const onCheck = (event: Event, etiquetteId: number) => {
   const target = event.target as HTMLInputElement;
 
   if (target.checked === false) {
     experiencePackage.selectedEtiquette = experiencePackage.selectedEtiquette.filter(
-      (item) => item != label
+      (item) => item != etiquetteId
     );
   }
 
@@ -54,7 +56,7 @@ const onCheck = (event: Event, label: string) => {
   }
 
   if (target.checked) {
-    experiencePackage.selectedEtiquette.push(label);
+    experiencePackage.selectedEtiquette.push(etiquetteId);
   }
 
 };
@@ -68,33 +70,29 @@ function resetForm() {
 }
 
 const handleAddExperience = async () => {
-  const toSend = {
-        selectedEtiquette: experiencePackage.selectedEtiquette,
-        experienceText: experiencePackage.experienceText,
-        dateVisited: experiencePackage.dateVisited,
-        user_id: auth.currentUser?.uid,
-      };
-      console.log(toSend);
   try {
-    const response = await fetch(`${apiUrl}/places/${place.details.id}/experiences`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(toSend),
+    const formattedEtiquettes = experiencePackage.etiquette.map((item) => {
+      return {
+        etiquette_id: item.id
+      }
+    })
+    const response = await apiService.createExperience(place.details.id, {
+      etiquetteSelected: formattedEtiquettes,
+      dateVisited: new Date().toISOString(),
+      experience: experiencePackage.experienceText,
     });
 
-    if (response.ok) {
+    if (response.status === 201) {
       resetForm();
       handleToggleAddExperience();
+      // add to pinia to recent experience added
+      console.log("inserted!");
     } else {
       resetForm();
       alert("ERROR!");
-      handleToggleAddExperience();
-      throw new Error("There was an error!");
+      // handleToggleAddExperience();
+      throw "There was an error!";
     }
-
   } catch (error) {
     console.error(error);
   }
@@ -119,7 +117,7 @@ const handleAddExperience = async () => {
             type="checkbox"
             :id="etiquette.label"
             :value="etiquette.label"
-            @change="onCheck($event, etiquette.label)"
+            @change="onCheck($event, etiquette.id)"
             :checked="experiencePackage.selectedEtiquette.includes(etiquette.label)"
           />
           <label :for="etiquette.label">{{ etiquette.label }}</label><br>

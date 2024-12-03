@@ -16,6 +16,7 @@ const { data, etiquetteVotesData } = defineProps<{ data: IPlace, etiquetteVotesD
 // If the prop changes, we update details!
 watch(() => data, (value) => {
   place.details = value;
+  console.log(place.details)
 })
 
 //use mock state data

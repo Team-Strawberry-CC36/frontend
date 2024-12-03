@@ -10,6 +10,15 @@ export interface IPlaceMarker {
   };
 }
 
+// Adding a new experience
+type ExperienceAddPackage = {
+  dateVisited: string;
+  experience: string;
+  etiquetteSelected: {
+    etiquette_id: number;
+  }[];
+};
+
 // Wrapper for interfaces
 type ApiResponse<T> = Promise<AxiosResponse<{ message: string; data: T }>>;
 
@@ -52,7 +61,12 @@ class ApiService {
   async getPlace(placeId: string): ApiResponse<IPlace> {
     return await this.api.get(`${this.apiUrl}/places/${placeId}`);
   }
-  // ---
+
+  async createExperience(placeId: number, data: ExperienceAddPackage): ApiResponse<IPlace> {
+    return await this.api.post(`${this.apiUrl}/places/${placeId}/experiences`, {
+      data: data
+    })
+  }
 }
 
 const apiService = new ApiService();
