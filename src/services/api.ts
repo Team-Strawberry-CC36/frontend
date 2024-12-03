@@ -1,5 +1,6 @@
 import Axios, { type AxiosResponse } from 'axios';
 import type IPlace from '@/utils/interfaces/Place';
+import type ExperienceHelpfulnessVote from '@/utils/interfaces/ExperienceHelpfulnessVote';
 
 // TEMP interfaces
 export interface IPlaceMarker {
@@ -18,6 +19,32 @@ type ExperienceAddPackage = {
     etiquette_id: number;
   }[];
 };
+
+// Helpfulness voting
+// Fetch all votes
+type allUserHelpfulnessPackage = {
+  experienceID: number;
+}
+
+// Add new vote
+type newUserHelpfulnessPackage = {
+  experienceID: number;
+  vote: string;
+}
+
+// Delete existing vote
+type deleteUserHelpfulnessPackage = {
+  experienceID: number;
+  vote_id: number;
+  vote: string;
+}
+
+// Edit existing vote
+type editUserHelpfulnessPackage = {
+  experienceID: number;
+  vote_id: number;
+  vote: string;
+}
 
 // Wrapper for interfaces
 type ApiResponse<T> = Promise<AxiosResponse<{ message: string; data: T }>>;
@@ -65,6 +92,12 @@ class ApiService {
   async createExperience(placeId: number, data: ExperienceAddPackage): ApiResponse<IPlace> {
     return await this.api.post(`${this.apiUrl}/places/${placeId}/experiences`, {
       data: data
+    })
+  }
+
+  async retrieveHelpfulnessVote(experienceId: number): ApiResponse<ExperienceHelpfulnessVote[]> {
+    return await this.api.post(`${this.apiUrl}/experiences/${experienceId}/votes`, {
+      experienceId: experienceId
     })
   }
 }

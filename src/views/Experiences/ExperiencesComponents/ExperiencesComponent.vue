@@ -3,6 +3,7 @@ import { ref, computed, defineEmits } from 'vue';
 import { getAuth } from 'firebase/auth';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import {useExperienceVoteStore} from "@/stores/ExperienceVoteStore";
+import apiService from '@/services/api';
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 const place = usePlaceStore();
@@ -73,12 +74,15 @@ const isDownvote = (exid: number) => {
 const retrieveVote = async (exid: number) => {
   if (auth.currentUser) {
     try {
-      const response = await fetch(`${apiUrl}/experiences/${exid}/votes`);
-      if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
+      const response = await apiService.retrieveHelpfulnessVote(exid);
+
+      if (response.status === 201) {
+        console.log("Votes acquired!")
+        votes.details = await response.data.data;
+      } else {
+        alert("An error has occured.")
+        throw "An error an occured while retrieving helpfulness vote data."
       }
-      votes.details = await response.json();
-      console.log(votes.details);
     } catch (error) {
       console.error(error);
     }
@@ -123,7 +127,8 @@ const handleVote = async (exid:number, vote:string) => {
             //vote data to delete
             userID: auth.currentUser.uid,
             experienceID: exid,
-            vote_id: voteToHandle?.vote_id
+            vote_id: voteToHandle?.vote_id,
+            vote: vote
           }),
         });
       } catch (error) {
@@ -141,7 +146,8 @@ const handleVote = async (exid:number, vote:string) => {
             //vote data to edit
             userID: auth.currentUser.uid,
             experienceID: exid,
-            vote_id: voteToHandle?.vote_id
+            vote_id: voteToHandle?.vote_id,
+            vote: vote
           }),
         });
       } catch (error) {
