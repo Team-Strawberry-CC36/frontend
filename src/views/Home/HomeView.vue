@@ -71,7 +71,7 @@ const getPlaceDetails = async (placeId: string) => {
 }
 
 // Handlers
-const handleSearchResults = (event: { event: string, data: IPlace[] }) => {
+const handleSearchResults = (event: { event: string, data: IPlaceMarker[] }) => {
   placeMarkers.value = event.data;
 }
 
