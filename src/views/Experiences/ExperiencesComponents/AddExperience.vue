@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IEtiquettePerPlace } from '@/utils/interfaces/Etiquette';
-import apiService from "@/services/api.service";
+import apiService from '@/services/api.service';
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 console.log(apiUrl);
@@ -27,14 +27,14 @@ const experiencePackage: ExperiencePackage = {
   selectedEtiquette: [],
   experienceText: '',
   experiences: '',
-  dateVisited: null
+  dateVisited: null,
 };
 
 // user sets the date they visited
 const handleSetDateVisited = (event: Event) => {
   const target = event.target as HTMLInputElement;
   experiencePackage.dateVisited = new Date(target.value);
-}
+};
 
 // Make sure user can only select up to 3 checkboxes
 const onCheck = (event: Event, etiquetteId: number) => {
@@ -42,7 +42,7 @@ const onCheck = (event: Event, etiquetteId: number) => {
 
   if (target.checked === false) {
     experiencePackage.selectedEtiquette = experiencePackage.selectedEtiquette.filter(
-      (item) => item != etiquetteId
+      (item) => item != etiquetteId,
     );
   }
 
@@ -54,7 +54,6 @@ const onCheck = (event: Event, etiquetteId: number) => {
   if (target.checked) {
     experiencePackage.selectedEtiquette.push(etiquetteId);
   }
-
 };
 
 function canSubmit() {
@@ -69,9 +68,9 @@ const handleAddExperience = async () => {
   try {
     const formattedEtiquettes = experiencePackage.etiquette.map((item) => {
       return {
-        etiquette_id: item.id
-      }
-    })
+        etiquette_id: item.id,
+      };
+    });
     const response = await apiService.createExperience(place.details.id, {
       etiquetteSelected: formattedEtiquettes,
       dateVisited: new Date().toISOString(),
@@ -82,12 +81,12 @@ const handleAddExperience = async () => {
       resetForm();
       handleToggleAddExperience();
       // add to pinia to recent experience added
-      console.log("inserted!");
+      console.log('inserted!');
     } else {
       resetForm();
-      alert("ERROR!");
+      alert('ERROR!');
       // handleToggleAddExperience();
-      throw "There was an error!";
+      throw 'There was an error!';
     }
   } catch (error) {
     console.error(error);
@@ -107,7 +106,9 @@ const handleAddExperience = async () => {
     <section>
       <!-- Select Etiquette section with checkboxes -->
       <div class="flex flex-row flex-1 justify-around m-3">
-        <label for="etiquette" class="text-xl font-extralight">Select up to 3 etiquettes to discuss:</label>
+        <label for="etiquette" class="text-xl font-extralight"
+          >Select up to 3 etiquettes to discuss:</label
+        >
         <div v-for="etiquette in experiencePackage.etiquette" :key="etiquette.id">
           <input
             type="checkbox"
@@ -116,16 +117,17 @@ const handleAddExperience = async () => {
             @change="onCheck($event, etiquette.id)"
             :checked="experiencePackage.selectedEtiquette.includes(etiquette.id)"
           />
-          <label :for="etiquette.label">{{ etiquette.label }}</label><br>
+          <label :for="etiquette.label">{{ etiquette.label }}</label
+          ><br />
         </div>
       </div>
     </section>
     <section>
       <!-- Date visited selection -->
-       <div class="flex flex-row flex-1 justify-center m-3">
+      <div class="flex flex-row flex-1 justify-center m-3">
         <label class="mr-3" for="date_visited">Date visited:</label>
         <input type="date" id="date_visited" name="date_visited" @change="handleSetDateVisited" />
-       </div>
+      </div>
     </section>
 
     <section class="flex font-light justify-center h-1/2 lg:h-80 mb-3">
@@ -142,7 +144,11 @@ const handleAddExperience = async () => {
       <!-- Post and cancel buttons -->
       <button
         class="mx-5 border-velvet border p-2 rounded-xl text-sm hover:bg-velvet hover:text-white"
-        @click="handleAddExperience" :disabled="!canSubmit">Post</button>
+        @click="handleAddExperience"
+        :disabled="!canSubmit"
+      >
+        Post
+      </button>
       <button
         class="border-velvet border p-2 rounded-xl text-sm hover:bg-velvet hover:text-white"
         @click="handleToggleAddExperience"
