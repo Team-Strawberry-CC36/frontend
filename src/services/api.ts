@@ -64,8 +64,29 @@ class ApiService {
 
   async createExperience(placeId: number, data: ExperienceAddPackage): ApiResponse<IPlace> {
     return await this.api.post(`${this.apiUrl}/places/${placeId}/experiences`, {
-      data: data
-    })
+      data: data,
+    });
+  }
+
+  // you are gonna develop the function similar to those above
+  /**
+   * 
+    async fetchPhotos() {
+    try {
+        const response = await axios.get(`/places/${this.placeId}/photos`);
+        this.photos = response.data.photos;
+    } catch (err) {
+        this.error = 'Failed to load photos.';
+        console.error(err);
+    } finally {
+        this.loading = false;
+    }
+    }
+   */
+
+  // Your function here!
+  async fetchPhotos(placeId: number): ApiResponse<string[]> {
+    return await this.api.get(`${this.apiUrl}/places/${placeId}/photos`);
   }
 }
 
