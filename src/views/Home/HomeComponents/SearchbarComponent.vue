@@ -3,7 +3,7 @@ import { usePlaceStore } from '@/stores/PlaceStore';
 import { ref, watch } from 'vue';
 import apiService from "@/services/api.service";
 const place = usePlaceStore();
-place.useMock();
+//place.useMock();
 
 const searchQuery = ref('onsen');
 const searchCategory = ref('onsen');

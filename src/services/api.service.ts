@@ -1,6 +1,7 @@
 import type IPlace from '@/utils/interfaces/Place';
-import {auth} from "@/firebase";
-import Axios, {type AxiosInstance, type AxiosResponse} from "axios";
+import type ExperienceHelpfulnessVote from '@/utils/interfaces/ExperienceHelpfulnessVote';
+import { auth } from '@/firebase';
+import Axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 
 // TEMP interfaces
 export interface IPlaceMarker {
@@ -20,6 +21,28 @@ type ExperienceAddPackage = {
   }[];
 };
 
+// Helpfulness voting
+// Add new vote
+type newUserHelpfulnessPackage = {
+  experienceID: number;
+  vote: string;
+};
+
+// Delete existing vote
+type deleteUserHelpfulnessPackage = {
+  experienceID: number;
+  vote_id: number;
+  vote: string;
+};
+
+// Edit existing vote
+type editUserHelpfulnessPackage = {
+  experienceID: number;
+  vote_id: number;
+  vote: string;
+};
+
+// Wrapper for interfaces
 type ApiResponse<T> = Promise<AxiosResponse<{ message: string; data: T }>>;
 
 class ApiService {
@@ -33,19 +56,19 @@ class ApiService {
       timeout: 10000,
     });
 
-      this.api.interceptors.request.use(
-        async (config) => {
-          const user = auth.currentUser;
-          if (user) {
-            const token = await user.getIdToken();
-            config.headers.Authorization = `Bearer ${token}`;
-          }
-          return config;
-        },
-        (error) => {
-          return Promise.reject(error);
-        },
-      );
+    this.api.interceptors.request.use(
+      async (config) => {
+        const user = auth.currentUser;
+        if (user) {
+          const token = await user.getIdToken();
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      },
+    );
   }
 
   async search(search: string, category: string): ApiResponse<IPlaceMarker[]> {
@@ -67,8 +90,38 @@ class ApiService {
 
   async createExperience(placeId: number, data: ExperienceAddPackage): ApiResponse<IPlace> {
     return await this.api.post(`${this.apiUrl}/places/${placeId}/experiences`, {
-      data: data
-    })
+      data: data,
+    });
+  }
+
+  async retrieveHelpfulnessVote(): ApiResponse<ExperienceHelpfulnessVote[]> {
+    return await this.api.get(`${this.apiUrl}/experiences/votes`);
+  }
+
+  async addHelpfulnessVote(
+    experienceId: number,
+    vote: string,
+  ): ApiResponse<newUserHelpfulnessPackage> {
+    return await this.api.post(`${this.apiUrl}/experiences/${experienceId}/votes`, {
+      vote: vote,
+    });
+  }
+
+  async deleteHelpfulnessVote(
+    experienceId: number,
+    voteId: number,
+  ): ApiResponse<deleteUserHelpfulnessPackage> {
+    return await this.api.delete(`${this.apiUrl}/experiences/${experienceId}/votes/${voteId}`);
+  }
+
+  async editHelpfulnessVote(
+    experienceId: number,
+    voteId: number | undefined,
+    vote: string,
+  ): ApiResponse<editUserHelpfulnessPackage> {
+    return await this.api.patch(`${this.apiUrl}/experiences/${experienceId}/votes/${voteId}`, {
+      vote: vote,
+    });
   }
 }
 

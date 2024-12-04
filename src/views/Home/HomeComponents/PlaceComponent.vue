@@ -20,7 +20,7 @@ watch(() => data, (value) => {
 })
 
 //use mock state data
-place.useMock();
+//place.useMock();
 </script>
 
 <template>
