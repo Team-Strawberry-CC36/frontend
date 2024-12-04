@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { ref, computed, defineEmits } from 'vue';
 import { getAuth } from 'firebase/auth';
 import { usePlaceStore } from '@/stores/PlaceStore';
@@ -12,6 +13,30 @@ const votes = useExperienceVoteStore();
 const auth = getAuth();
 
 const emit = defineEmits(['toggleAddExperience']);
+
+// Hooks
+onMounted(() => {
+  retrieveVote();
+});
+
+// Requestes to api
+// Function to fetch all votes for a given experience ID
+const retrieveVote = async () => {
+    try {
+      const response = await apiService.retrieveHelpfulnessVote();
+
+      if (response.status === 200) {
+        votes.clear();
+        votes.update(response.data.data);
+      } else {
+        alert("An error has occured.")
+        throw "An error an occured while retrieving helpfulness vote data."
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
 
 // unique etiquettes from all the experiences
 const uniqueEtiquettes = new Set<string>();
@@ -69,27 +94,6 @@ const isDownvote = (exid: number) => {
   return vote && vote.helpfulness === 'down'; // Ensure it exists and is a downvote
 };
 
-// Function to fetch all votes for a given experience ID
-const retrieveVote = async (exid: number) => {
-  if (auth.currentUser) {
-    try {
-      const response = await apiService.retrieveHelpfulnessVote(exid);
-
-      if (response.status === 201) {
-        console.log("Votes acquired!")
-        votes.details = await response.data.data;
-      } else {
-        alert("An error has occured.")
-        throw "An error an occured while retrieving helpfulness vote data."
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  } else {
-    console.log("User not logged in.")
-  }
-}
-
 // Handles the addition, editing, and deletion of votes
 const handleVote = async (exid:number, vote:string) => {
   // If user is logged in and the vote does not exist, add vote
@@ -144,6 +148,13 @@ const handleVote = async (exid:number, vote:string) => {
     console.log("User not logged in.")
   }
 }
+
+// async call to handle before retrieving
+const handleThenRetrieveVote = async (exid: number, vote: string) => {
+  await handleVote(exid, vote); // Wait for handleVote to complete
+  retrieveVote(); // Only execute after handleVote is done
+};
+
 </script>
 
 <template>
@@ -195,7 +206,7 @@ const handleVote = async (exid:number, vote:string) => {
             <button
               class="block mb-1"
               :class="isUpvote(experience.id) ? 'fill-velvet' : 'fill-charcoal'"
-              @click="handleVote(experience.id, 'up'); retrieveVote(experience.id)">
+              @click="handleThenRetrieveVote(experience.id, 'up')">
               <svg viewBox="0 0 256 256" id="Flat" xmlns="http://www.w3.org/2000/svg"
                 class="h-full w-full hover:fill-velvet ease-in-out transition duration-300"
               >
@@ -206,7 +217,7 @@ const handleVote = async (exid:number, vote:string) => {
             <button
             class="block"
             :class="isDownvote(experience.id) ? 'fill-velvet' : 'fill-charcoal'"
-            @click="handleVote(experience.id, 'down'); retrieveVote(experience.id)">
+            @click="handleThenRetrieveVote(experience.id, 'down')">
               <svg viewBox="0 0 256 256" id="Flat" xmlns="http://www.w3.org/2000/svg"
                 class="h-full w-full hover:fill-velvet ease-in-out transition duration-300"
               >

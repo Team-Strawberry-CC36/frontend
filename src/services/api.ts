@@ -90,8 +90,8 @@ class ApiService {
     })
   }
 
-  async retrieveHelpfulnessVote(experienceId: number): ApiResponse<ExperienceHelpfulnessVote[]> {
-    return await this.api.get(`${this.apiUrl}/experiences/${experienceId}/votes`);
+  async retrieveHelpfulnessVote(): ApiResponse<ExperienceHelpfulnessVote[]> {
+    return await this.api.get(`${this.apiUrl}/experiences/votes`);
   }
 
   async addHelpfulnessVote(experienceId: number, vote: string): ApiResponse<newUserHelpfulnessPackage> {

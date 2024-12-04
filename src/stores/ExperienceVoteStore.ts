@@ -41,5 +41,13 @@ export const useExperienceVoteStore = defineStore('experienceVoteStore', () => {
     );
   }
 
-  return { details, useMock };
+  function update(data: ExperienceHelpfulnessVote[]) {
+    details.push(...data)
+  }
+
+  function clear() {
+    details.splice(0, details.length);
+  }
+
+  return { details, useMock, update, clear };
 });
