@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { usePlaceStore } from '@/stores/PlaceStore';
 import { ref, watch } from 'vue';
-import apiService from "@/services/api";
+import apiService from "@/services/api.service";
 const place = usePlaceStore();
 //place.useMock();
 

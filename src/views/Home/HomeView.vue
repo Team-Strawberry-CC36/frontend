@@ -8,7 +8,7 @@ import HomeMap from '../testing-components/features/HomeMap.vue';
 import AddEtiquetteVote from './HomeComponents/AddEtiquetteVote.vue';
 import ReviewEtiquetteVote from './HomeComponents/ReviewEtiquetteVote.vue';
 import { getAuth } from 'firebase/auth';
-import apiService, { type IPlaceMarker } from "@/services/api";
+import apiService, { type IPlaceMarker } from "@/services/api.service";
 
 const auth = getAuth();
 
