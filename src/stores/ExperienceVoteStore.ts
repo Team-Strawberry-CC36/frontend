@@ -3,7 +3,15 @@ import type ExperienceHelpfulnessVote from '@/utils/interfaces/ExperienceHelpful
 import { defineStore } from 'pinia';
 
 export const useExperienceVoteStore = defineStore('experienceVoteStore', () => {
-  const details = reactive<ExperienceHelpfulnessVote[]>([])
+  const details = reactive<ExperienceHelpfulnessVote[]>([]);
+
+  function update(data: ExperienceHelpfulnessVote[]) {
+    details.push(...data)
+  }
+
+  function clear() {
+    details.splice(0, details.length);
+  }
 
   function useMock() {
     details.splice(0, details.length); // Clear existing array
@@ -39,14 +47,6 @@ export const useExperienceVoteStore = defineStore('experienceVoteStore', () => {
         helpfulness: "up",
       }
     );
-  }
-
-  function update(data: ExperienceHelpfulnessVote[]) {
-    details.push(...data)
-  }
-
-  function clear() {
-    details.splice(0, details.length);
   }
 
   return { details, useMock, update, clear };
