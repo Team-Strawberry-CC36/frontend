@@ -9,8 +9,10 @@ import AddEtiquetteVote from './HomeComponents/AddEtiquetteVote.vue';
 import ReviewEtiquetteVote from './HomeComponents/ReviewEtiquetteVote.vue';
 import { getAuth } from 'firebase/auth';
 import apiService, { type IPlaceMarker } from "@/services/api.service";
+import { usePlaceStore } from '@/stores/PlaceStore';
 
 const auth = getAuth();
+const place = usePlaceStore();
 
 // const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
 //     message: "Lovely job!",
@@ -37,7 +39,7 @@ const auth = getAuth();
 // };
 
 const placeMarkers = ref<IPlaceMarker[]>([]);
-const displayedPlace = ref<IPlace| null>(null);
+//const displayedPlace = ref<IPlace| null>(null);
 const etiquetteVotesData = ref<IPlaceEtiquetteVotes | null>(null);
 
 
@@ -61,7 +63,7 @@ const getPlaceEtiquetteVotesData = async (place:IPlace) => {
 const getPlaceDetails = async (placeId: string) => {
   try {
     const response = await apiService.getPlace(placeId);
-    displayedPlace.value = response.data.data;
+    place.details = response.data.data;
   } catch (e) {
     console.error({
       message: "There was an error getting place details in homeView",
@@ -106,12 +108,11 @@ const toggleReviewVoteView = () => {
     </div>
     <div class="flex flex-col lg:flex-row p-4 w-full lg:w-screen bg-mist">
       <HomeMap style="height: 600px;" :data="placeMarkers" :search-query="searchQuery" @map-marker-clicked="handleMarkerClicked"/>
-      <div v-if="displayedPlace"> <!-- v-if="displayedPlace" put back in div after testing -->
-        <h1>Rendering data! {{ displayedPlace }}</h1>
+      <div v-if="place.details"> <!-- v-if="place.details" put back in div after testing -->
+        <!-- <h1>Rendering data! {{ place.details }}</h1> -->
         <PlaceComponent
-          :data="displayedPlace"
           :etiquetteVotesData="etiquetteVotesData"
-          v-if="viewPlaceDetails"
+          v-if="viewPlaceDetails && place.details.id > 0"
           @show-add-vote="toggleVoteView"
           @show-review-vote="toggleReviewVoteView"
         />

@@ -3,21 +3,20 @@
 import { usePlaceStore } from '@/stores/PlaceStore';
 import type IPlace from '@/utils/interfaces/Place';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
-import { defineProps, watch } from 'vue';
+import { defineProps } from 'vue';
 import { defineEmits } from 'vue';
 const emit = defineEmits(['show-add-vote', 'show-review-vote']);
 
 const place = usePlaceStore();
-const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
-const { data, etiquetteVotesData } = defineProps<{ data: IPlace, etiquetteVotesData: IPlaceEtiquetteVotes}>()
+const { etiquetteVotesData } = defineProps<{etiquetteVotesData: IPlaceEtiquetteVotes}>()
 
 // HOTFIX
 // If the prop changes, we update details!
-watch(() => data, (value) => {
-  place.details = value;
-  console.log(place.details)
-})
+// watch(() => data, (value) => {
+//   place.details = value;
+//   console.log(place.details)
+// })
 
 //use mock state data
 //place.useMock();

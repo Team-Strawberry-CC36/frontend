@@ -225,7 +225,7 @@ const handleThenRetrieveVote = async (exid: number, vote: string) => {
               </svg>
             </button>
           </section>
-          <section class="basis-auto">
+          <section class="basis-auto w-full">
             <div class="flex flex-row m-1 justify-between text-xl">
               <h4>Etiquette</h4>
               <p class="text-velvet">{{ experience.etiquettes[0].label }}</p>
