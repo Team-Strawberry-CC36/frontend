@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineProps, reactive, ref } from 'vue';
 import type { IPlaceVisited } from '@/utils/interfaces/PlacesVisited';
-import apiService from '@/services/api';
+import apiService from '@/services/api.service';
 
 const { placesVisitedByTourists } = defineProps<{ placesVisitedByTourists: IPlaceVisited[] | null }>();
 
@@ -161,10 +161,7 @@ const cancelEditExperience = () => {
                         <p class="text-lg font-thin mr-3"> {{ placeVisited.experience }}</p>
                         <button class="border border-velvet h-10 w-14 text-xs p-1 text-bold rounded mt-auto" @click="editExperience(placeVisited.experienceId, placeVisited.experience)">Edit</button>
                      </div>
-                    
-                    
                 </div>
-                
             </div>
         </section>
     </div>

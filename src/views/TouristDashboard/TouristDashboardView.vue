@@ -1,6 +1,6 @@
 <script setup lang="ts">
     // import vue functions
-    import { ref, computed } from 'vue';
+    import { ref } from 'vue';
     import { useRouter } from 'vue-router';
     // import child components
     import VisitedPlaces from './TouristDashboardComponents/VisitedPlaces.vue';
@@ -10,8 +10,7 @@
     import { getAuth } from 'firebase/auth';
     const auth = getAuth();
     // api route
-    const apiUrl = import.meta.env.VITE_BACKEND_URL;
-    import apiService from "@/services/api";
+    import apiService from '@/services/api.service';
 
 
     // Places visited by user

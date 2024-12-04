@@ -1,5 +1,6 @@
-import Axios, { type AxiosResponse } from 'axios';
 import type IPlace from '@/utils/interfaces/Place';
+import {auth} from "@/firebase";
+import Axios, {type AxiosInstance, type AxiosResponse} from "axios";
 import type { IPlaceVisited } from '@/utils/interfaces/PlacesVisited';
 
 // TEMP interfaces
@@ -20,12 +21,11 @@ type ExperienceAddPackage = {
   }[];
 };
 
-// Wrapper for interfaces
 type ApiResponse<T> = Promise<AxiosResponse<{ message: string; data: T }>>;
 
 class ApiService {
-  private api;
-  private apiUrl: string;
+  api: AxiosInstance;
+  apiUrl: string;
 
   constructor() {
     this.apiUrl = import.meta.env.VITE_BACKEND_URL;
@@ -34,18 +34,21 @@ class ApiService {
       timeout: 10000,
     });
 
-    // Set interceptor
-    this.api.interceptors.request.use(
-      (config) => {
-        // Include session for firebase! or do nothing
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      },
-    );
+      this.api.interceptors.request.use(
+        async (config) => {
+          const user = auth.currentUser;
+          if (user) {
+            const token = await user.getIdToken();
+            config.headers.Authorization = `Bearer ${token}`;
+          }
+          return config;
+        },
+        (error) => {
+          return Promise.reject(error);
+        },
+      );
   }
-  // --- PLACES
+
   async search(search: string, category: string): ApiResponse<IPlaceMarker[]> {
     return await this.api.post(`${this.apiUrl}/search`, {
       method: 'POST',
@@ -70,17 +73,11 @@ class ApiService {
   }
 
   async getPlacesVisitedByUser(): ApiResponse<IPlaceVisited[]> {
-    return await this.api.get(`${this.apiUrl}/dashboard/placesVisited`);
+    return await this.api.get(`${this.apiUrl}/places`);
   }
 
-  async updateExperience(experienceId: number, newExperience: string): ApiResponse<string> {
-    return await this.api.patch(`${this.apiUrl}/experiences/${experienceId}`, {
-      data: newExperience
-    });
-  }
-
-  async updateExperienceDate(experienceId: number, newExperienceDate: Date): ApiResponse<string> {
-    return await this.api.patch(`${this.apiUrl}/experiences/${experienceId}/${newExperienceDate}`)
+  async updateExperience(expId: number, newExperience: string): ApiResponse<string> {
+    return await this.api.patch(`${this.apiUrl}/experiences/${expId}`);
   }
 
 }
