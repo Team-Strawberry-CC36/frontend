@@ -1,5 +1,6 @@
 import Axios, { type AxiosResponse } from 'axios';
 import type IPlace from '@/utils/interfaces/Place';
+import type { IPlaceVisited } from '@/utils/interfaces/PlacesVisited';
 
 // TEMP interfaces
 export interface IPlaceMarker {
@@ -67,6 +68,21 @@ class ApiService {
       data: data
     })
   }
+
+  async getPlacesVisitedByUser(): ApiResponse<IPlaceVisited[]> {
+    return await this.api.get(`${this.apiUrl}/dashboard/placesVisited`);
+  }
+
+  async updateExperience(experienceId: number, newExperience: string): ApiResponse<string> {
+    return await this.api.patch(`${this.apiUrl}/experiences/${experienceId}`, {
+      data: newExperience
+    });
+  }
+
+  async updateExperienceDate(experienceId: number, newExperienceDate: Date): ApiResponse<string> {
+    return await this.api.patch(`${this.apiUrl}/experiences/${experienceId}/${newExperienceDate}`)
+  }
+
 }
 
 const apiService = new ApiService();
