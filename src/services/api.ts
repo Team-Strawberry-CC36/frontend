@@ -1,5 +1,6 @@
 import Axios, { type AxiosResponse } from 'axios';
 import type IPlace from '@/utils/interfaces/Place';
+// import { linkWithCredential } from 'firebase/auth';
 
 // TEMP interfaces
 export interface IPlaceMarker {
@@ -68,23 +69,6 @@ class ApiService {
     });
   }
 
-  // you are gonna develop the function similar to those above
-  /**
-   * 
-    async fetchPhotos() {
-    try {
-        const response = await axios.get(`/places/${this.placeId}/photos`);
-        this.photos = response.data.photos;
-    } catch (err) {
-        this.error = 'Failed to load photos.';
-        console.error(err);
-    } finally {
-        this.loading = false;
-    }
-    }
-   */
-
-  // Your function here!
   async fetchPhotos(placeId: number): ApiResponse<string[]> {
     return await this.api.get(`${this.apiUrl}/places/${placeId}/photos`);
   }
