@@ -89,7 +89,9 @@ const handleAddExperience = async () => {
       console.log('inserted!');
     } else {
       resetForm();
-      alert('ERROR!');
+      toast.error('Failed to post experience.', {
+        timeout: 3000
+      });
       // handleToggleAddExperience();
       throw 'There was an error!';
     }
@@ -112,7 +114,9 @@ const onCheck = (event: Event, id: number) => {
       // Prevent checkbox from being checked if the limit is reached
       event.preventDefault();
       target.checked = false;
-      alert('You can only select up to 3 options.');
+      toast.info('You can only select up to 3 etiquette options.', {
+        timeout: 3000
+      });
     }
   } else {
     const index = experiencePackage.selectedEtiquette.indexOf(id);

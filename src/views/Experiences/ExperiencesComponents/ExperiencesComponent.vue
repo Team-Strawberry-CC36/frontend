@@ -5,12 +5,15 @@ import { getAuth } from 'firebase/auth';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import { useExperienceVoteStore } from '@/stores/ExperienceVoteStore';
 import apiService from '@/services/api.service';
+import { useToast } from 'vue-toastification';
 
 const place = usePlaceStore();
 
 const votes = useExperienceVoteStore();
 
 const auth = getAuth();
+
+const toast = useToast();
 
 const emit = defineEmits(['toggleAddExperience']);
 
@@ -29,7 +32,9 @@ const retrieveVote = async () => {
       votes.clear();
       votes.update(response.data.data);
     } else {
-      alert('An error has occured.');
+      toast.error('An error occured while retrieving user information.', {
+        timeout: 3000
+      });
       throw 'An error an occured while retrieving helpfulness vote data.';
     }
   } catch (error) {
@@ -103,7 +108,9 @@ const handleVote = async (exid: number, vote: string) => {
       if (response.status === 201) {
         console.log('Vote posted!');
       } else {
-        alert('An error has occured.');
+        toast.error('An error occured while posting your helpfulness vote.', {
+          timeout: 3000
+        });
         throw 'An error an occured while posting helpfulness vote data.';
       }
     } catch (error) {
@@ -121,7 +128,9 @@ const handleVote = async (exid: number, vote: string) => {
         if (response.status === 201) {
           console.log('Vote deleted!');
         } else {
-          alert('An error has occured.');
+          toast.error('An error occured while removing your helpfulness vote.', {
+            timeout: 3000
+          });
           throw 'An error an occured while deleting helpfulness vote data.';
         }
       } catch (error) {
@@ -135,7 +144,9 @@ const handleVote = async (exid: number, vote: string) => {
         if (response.status === 201) {
           console.log('Vote edited!');
         } else {
-          alert('An error has occured.');
+          toast.error('An error occured while changing your helpfulness vote.', {
+            timeout: 3000
+          });
           throw 'An error an occured while editing helpfulness vote data.';
         }
       } catch (error) {
