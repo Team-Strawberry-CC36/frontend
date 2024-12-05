@@ -2,6 +2,7 @@ import type IPlace from '@/utils/interfaces/Place';
 import {auth} from "@/firebase";
 import Axios, {type AxiosInstance, type AxiosResponse} from "axios";
 import type { IPlaceVisited } from '@/utils/interfaces/PlacesVisited';
+import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
 
 // TEMP interfaces
 export interface IPlaceMarker {
@@ -70,6 +71,14 @@ class ApiService {
     return await this.api.post(`${this.apiUrl}/places/${placeId}/experiences`, {
       data: data
     })
+  }
+
+  async getPlaceEtiquetteVotesData(place: IPlace): ApiResponse<IPlaceEtiquetteVotes> {
+    return await this.api.get(`${this.apiUrl}/moreTesting/places/${place.id}/votes`);
+  }
+
+  async postEtiquetteVotesData() {
+    return await this.api.post(`${this.apiUrl}`);
   }
 
   async getPlacesVisitedByUser(): ApiResponse<IPlaceVisited[]> {
