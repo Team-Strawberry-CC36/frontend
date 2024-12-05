@@ -95,7 +95,7 @@ const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquette
           </div>
         </div>
       </section>
-      <section class="w-full">
+      <section class="w-full mt-5">
         <h2 class="mb-3 text-center text-velvet">See what other tourists are saying!</h2>
         <RouterLink
           class="block mx-auto w-3/4 bg-velvet border border-slate-400 text-frostWhite rounded-3xl text-center p-5"
