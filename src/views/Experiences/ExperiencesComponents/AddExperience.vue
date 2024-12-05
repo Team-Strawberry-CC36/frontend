@@ -131,12 +131,12 @@ const onCheck = (event: Event, id: number) => {
 
     <section>
       <!-- Select Etiquette section with checkboxes -->
-      <div class="flex flex-row flex-1 justify-around m-3">
-        <label for="etiquette" class="text-xl font-extralight"
+      <div class="flex flex-row m-3">
+        <label for="etiquette" class="basis-2/3 text-xl font-extralight w-4/5 sm:3/4"
           >Select up to 3 etiquettes to discuss:</label
         >
         <!-- Dropdown Toggle Button -->
-        <div>
+        <div class="basis-1/3">
           <button
             class="border border-slate-400 px-4 py-2 rounded-lg bg-white text-sm"
             @click="isDropdownOpen = !isDropdownOpen"
