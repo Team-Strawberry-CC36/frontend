@@ -25,9 +25,13 @@ const performSearch = async () => {
     return; // prevents the request being sent.
   }
 
+  // Get user location
+  const coordinates = getUserGeoLocation()
+
   errorMessage.value = '';
 
   try {
+    // [ ] Send coordinates!
     const response = await apiService.search(searchQuery.value, searchCategory.value);
     const data = response.data;
 
@@ -37,6 +41,23 @@ const performSearch = async () => {
     console.error('Search request failed: ', error);
   }
 };
+
+function getUserGeoLocation(): { lat: number; lng: number } | null {
+  if ("geolocation" in navigator) {
+  // Geolocation is available in the browser
+    navigator.geolocation.getCurrentPosition((position) => {
+      return {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      }
+    }, () => {
+      // Error!
+      return null;
+    });
+    }
+    return null;
+  }
+
 </script>
 
 <template>
