@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { usePlaceStore } from '@/stores/PlaceStore';
 import { ref, watch, onMounted, onUnmounted } from 'vue';
 import apiService from '@/services/api.service';
+const place = usePlaceStore();
 
 const searchQuery = ref('onsen');
 const searchCategory = ref('onsen');
@@ -21,9 +23,13 @@ const performSearch = async () => {
     return; // prevents the request being sent.
   }
 
+  // Get user location
+  const coordinates = getUserGeoLocation()
+
   errorMessage.value = '';
 
   try {
+    // [ ] Send coordinates!
     const response = await apiService.search(searchQuery.value, searchCategory.value);
     const data = response.data;
 
@@ -32,6 +38,23 @@ const performSearch = async () => {
     console.error('Search request failed: ', error);
   }
 };
+
+function getUserGeoLocation(): { lat: number; lng: number } | null {
+  if ("geolocation" in navigator) {
+  // Geolocation is available in the browser
+    navigator.geolocation.getCurrentPosition((position) => {
+      return {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      }
+    }, () => {
+      // Error!
+      return null;
+    });
+    }
+    return null;
+  }
+
 
 // Mobile detection code purely just to change the filter options into emojis
 // Reactive property to track mobile view
