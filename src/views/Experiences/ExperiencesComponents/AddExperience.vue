@@ -3,11 +3,14 @@ import { ref } from 'vue';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IEtiquettePerPlace } from '@/utils/interfaces/Etiquette';
 import apiService from '@/services/api.service';
+import { useToast } from 'vue-toastification';
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 console.log(apiUrl);
 
 const place = usePlaceStore();
+
+const toast = useToast();
 
 const emit = defineEmits(['toggleAddExperience']);
 

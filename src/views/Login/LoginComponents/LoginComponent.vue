@@ -1,12 +1,25 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { signInThroughFirebase } from '@/auth/auth';
+import { useToast } from 'vue-toastification';
 
 const email = ref('');
 const password = ref('');
 
-const handleSignIn = () => {
-  signInThroughFirebase(email.value, password.value);
+const toast = useToast();
+
+const handleSignIn = async () => {
+  try {
+    await signInThroughFirebase(email.value, password.value);
+    toast.success('Login successful! Welcome!', {
+      timeout: 3000
+    })
+  } catch (error) {
+    toast.error('Login failed. Please check your login credentials and try again.', {
+      timeout: 3000
+    });
+    console.log('Error logging in:', error)
+  }
 };
 </script>
 
