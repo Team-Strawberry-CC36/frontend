@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { registerUserThroughFirebase } from '@/auth/auth';
 import router from '@/router';
 import authService from '@/services/auth.service';
+import { useToast } from 'vue-toastification';
 
 // Form inputs
 const displayName = ref('');
@@ -21,8 +22,8 @@ const usernameError = computed(() => {
 
 const passwordError = computed(() => {
   if (!password.value) return 'Password is required';
-  if (!/^[a-zA-Z!@#$%^&*(),.?":{}|<>]{8,}$/.test(password.value)) {
-    return 'Password must be at least 8 characters and contain letters or special characters';
+  if (!/^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]{8,}$/.test(password.value)) {
+    return 'Password must be at least 8 characters and contain only letters, numbers, or special characters';
   }
   return null;
 });
@@ -47,7 +48,9 @@ const isFormValid = computed(
 // Form submission
 const handleSignUp = async () => {
   if (!isFormValid.value) {
-    alert('Please fix the errors before submitting.');
+    toast.error('Please fix the errors before submitting.', {
+      timeout: 3000
+    });
     return;
   }
 
@@ -62,13 +65,20 @@ const handleSignUp = async () => {
     if (response.status === 201) {
       await router.push({ name: 'login' });
     } else {
-      alert('Failed to create user in the database.');
+      toast.error('Failed to create user in the database.', {
+      timeout: 3000
+      });
     }
   } catch (error) {
+    toast.error('An error occurred during sign-up. Please try again.', {
+      timeout: 3000
+    });
     console.error('Sign-up error:', error);
-    alert('An error occurred during sign-up. Please try again.');
   }
 };
+
+const toast = useToast();
+
 </script>
 
 <template>
@@ -98,11 +108,7 @@ const handleSignUp = async () => {
           type="email"
           v-model="email"
           placeholder="Email"
-          :class="{
-            'mb-0': isEmailValid,
-            'mb-3': !isEmailValid,
-          }"
-          class="block p-1 border border-slate-400 rounded-xl w-full"
+          class="block p-1 mb-3 border border-slate-400 rounded-xl w-full"
         />
         <p v-if="!isEmailValid && email" class="text-red-500 text-sm absolute -bottom-4 left-1">
           Please enter a valid email
