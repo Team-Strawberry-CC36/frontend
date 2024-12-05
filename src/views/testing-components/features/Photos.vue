@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { apiService } from '@/services/api.service.ts';
+import apiService from '@/services/api.ts';
+import { ref, onMounted } from 'vue';
 import { usePlaceStore } from '@/stores/PlaceStore.ts';
 
 const placeStore = usePlaceStore();
@@ -15,6 +16,7 @@ onMounted(async () => {
   try {
     const response = await apiService.fetchPhotos(placeStore.details.id);
     photos.value = response.data.data;
+    console.log(response);
   } catch (err) {
     console.error(err);
     error.value = 'Failed to load photos.';

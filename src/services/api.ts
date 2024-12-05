@@ -1,6 +1,5 @@
 import Axios, { type AxiosResponse } from 'axios';
 import type IPlace from '@/utils/interfaces/Place';
-// import { linkWithCredential } from 'firebase/auth';
 
 // TEMP interfaces
 export interface IPlaceMarker {
@@ -31,6 +30,7 @@ class ApiService {
     this.apiUrl = import.meta.env.VITE_BACKEND_URL;
 
     this.api = Axios.create({
+      // withCredentials: true,
       timeout: 10000,
     });
 
