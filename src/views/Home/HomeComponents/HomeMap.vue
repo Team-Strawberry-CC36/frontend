@@ -57,7 +57,7 @@ async function initMap() {
 
 // Watcher for new markers from data
 watch(() => data, async (newMarkers) => {
-  const { AdvancedMarkerElement } = await loader.importLibrary('marker');
+  const { AdvancedMarkerElement, PinElement } = await loader.importLibrary('marker');
 
    // Recenter the map
    if (newMarkers[0]) {
@@ -80,15 +80,23 @@ watch(() => data, async (newMarkers) => {
 
    // We iterate over every place, and we set markers using location in each place
    newMarkers.forEach((marker: IPlaceMarker) => {
+    const pinElement = new PinElement({
+      scale: 1.3
+    });
+
     const markerMapObject = new AdvancedMarkerElement({
       map: map,
       position: {
         lat: marker.location.lat,
         lng: marker.location.lon,
       },
+      title: "Marker",
+      content: pinElement.element,
       // Activate clickable market!
       gmpClickable: true,
-    }) as google.maps.marker.AdvancedMarkerElement;
+      // Show all places
+      collisionBehavior: google.maps.CollisionBehavior.REQUIRED
+   }) as google.maps.marker.AdvancedMarkerElement;
 
     // Add to the existing markers
     currentMarkers.push(markerMapObject)
