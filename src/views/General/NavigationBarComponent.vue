@@ -6,7 +6,6 @@ import { useRouter } from 'vue-router';
 const openSidebar = ref<boolean>(false);
 const toggleSidebar = () => {
   openSidebar.value = !openSidebar.value;
-  console.log(openSidebar.value)
 };
 
 const router = useRouter();

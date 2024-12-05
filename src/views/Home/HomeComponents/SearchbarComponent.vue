@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { usePlaceStore } from '@/stores/PlaceStore';
 import { ref, watch, onMounted, onUnmounted } from 'vue';
 import apiService from "@/services/api.service";
-const place = usePlaceStore();
-//place.useMock();
 
 const searchQuery = ref('onsen');
 const searchCategory = ref('onsen');
@@ -38,7 +35,7 @@ const performSearch = async () => {
   }
 };
 
-// Mobile detection code purely just to change the filter options in emojis
+// Mobile detection code purely just to change the filter options into emojis
 // Reactive property to track mobile view
 const isMobileView = ref(window.innerWidth < 640);
 
