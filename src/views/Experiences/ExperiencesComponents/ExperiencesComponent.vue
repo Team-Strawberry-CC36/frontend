@@ -4,7 +4,7 @@ import { ref, computed, defineEmits } from 'vue';
 import { getAuth } from 'firebase/auth';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import {useExperienceVoteStore} from "@/stores/ExperienceVoteStore";
-import apiService from '@/services/api';
+import apiService from '@/services/api.service';
 
 const place = usePlaceStore();
 
