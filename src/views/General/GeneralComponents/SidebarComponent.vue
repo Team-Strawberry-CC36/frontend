@@ -41,7 +41,7 @@ const emit = defineEmits(['close-sidebar']);
 
 <template>
     <nav
-      class="absolute top-16 bg-velvet transition-all duration-500 h-screen w-[300px] p-5 z-10"
+      class="absolute top-16 bg-gradient-to-b from-velvet from-70% transition-all duration-500 h-5/6 w-[300px] p-5 z-10"
       :class="{ 'left-0':  openSidebar, 'left-[-500px]': !openSidebar }"
     >
       <section v-if="username" class="block bg-charcoal text-frostWhite w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl">
