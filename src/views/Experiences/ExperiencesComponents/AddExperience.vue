@@ -98,15 +98,17 @@ const handleAddExperience = async () => {
 const isDropdownOpen = ref(false);
 
 // Function to handle checkbox changes
-const onCheck = (event, id: number) => {
-  const { checked } = event.target;
+const onCheck = (event: Event, id: number) => {
+  const target = event.target as HTMLInputElement;
+  const { checked } = target;
 
   if (checked) {
     if (experiencePackage.selectedEtiquette.length < 3) {
       experiencePackage.selectedEtiquette.push(id);
     } else {
       // Prevent checkbox from being checked if the limit is reached
-      event.target.checked = false;
+      event.preventDefault();
+      target.checked = false;
       alert('You can only select up to 3 options.');
     }
   } else {
@@ -134,39 +136,41 @@ const onCheck = (event, id: number) => {
           >Select up to 3 etiquettes to discuss:</label
         >
         <!-- Dropdown Toggle Button -->
-        <button
-          class="border border-slate-400 px-4 py-2 rounded-lg bg-white text-sm"
-          @click="isDropdownOpen = !isDropdownOpen"
-        >
-          {{
-            experiencePackage.selectedEtiquette.length
-              ? `${experiencePackage.selectedEtiquette.length} selected`
-              : 'Select Etiquette'
-          }}
-        </button>
-        <!-- Dropdown Content -->
-        <div
-          v-if="isDropdownOpen"
-          class="absolute mt-2 w-fit border border-slate-400 bg-white shadow-lg rounded-lg z-10"
-        >
-          <div
-            class="flex items-center px-4 py-2 hover:bg-gray-100"
-            v-for="etiquette in experiencePackage.etiquette"
-            :key="etiquette.id"
+        <div>
+          <button
+            class="border border-slate-400 px-4 py-2 rounded-lg bg-white text-sm"
+            @click="isDropdownOpen = !isDropdownOpen"
           >
-            <input
-              type="checkbox"
-              :id="etiquette.label"
-              :value="etiquette.label"
-              :checked="experiencePackage.selectedEtiquette.includes(etiquette.id)"
-              @change="onCheck($event, etiquette.id)"
-              class="mr-2"
-              :disabled="
-                !experiencePackage.selectedEtiquette.includes(etiquette.id) &&
-                experiencePackage.selectedEtiquette.length >= 3
-              "
-            />
-            <label :for="etiquette.label" class="text-sm">{{ etiquette.label }}</label>
+            {{
+              experiencePackage.selectedEtiquette.length
+                ? `${experiencePackage.selectedEtiquette.length} selected`
+                : 'Select Etiquette'
+            }}
+          </button>
+          <!-- Dropdown Content -->
+          <div
+            v-if="isDropdownOpen"
+            class="absolute mt-2 w-fit border border-slate-400 bg-white shadow-lg rounded-lg z-10"
+          >
+            <div
+              class="flex items-center px-4 py-2 hover:bg-gray-100"
+              v-for="etiquette in experiencePackage.etiquette"
+              :key="etiquette.id"
+            >
+              <input
+                type="checkbox"
+                :id="etiquette.label"
+                :value="etiquette.label"
+                :checked="experiencePackage.selectedEtiquette.includes(etiquette.id)"
+                @change="onCheck($event, etiquette.id)"
+                class="mr-2"
+                :disabled="
+                  !experiencePackage.selectedEtiquette.includes(etiquette.id) &&
+                  experiencePackage.selectedEtiquette.length >= 3
+                "
+              />
+              <label :for="etiquette.label" class="text-sm">{{ etiquette.label }}</label>
+            </div>
           </div>
         </div>
       </div>
