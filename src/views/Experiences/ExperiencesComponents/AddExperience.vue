@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IEtiquettePerPlace } from '@/utils/interfaces/Etiquette';
-import apiService from "@/services/api.service";
+import apiService from '@/services/api.service';
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 console.log(apiUrl);
@@ -28,14 +28,14 @@ const experiencePackage: ExperiencePackage = {
   selectedEtiquette: [],
   experienceText: '',
   experiences: '',
-  dateVisited: null
+  dateVisited: null,
 };
 
 // user sets the date they visited
 const handleSetDateVisited = (event: Event) => {
   const target = event.target as HTMLInputElement;
   experiencePackage.dateVisited = new Date(target.value);
-}
+};
 
 // Make sure user can only select up to 3 checkboxes
 // const onCheck = (event: Event, etiquetteId: number) => {
@@ -70,9 +70,9 @@ const handleAddExperience = async () => {
   try {
     const formattedEtiquettes = experiencePackage.etiquette.map((item) => {
       return {
-        etiquette_id: item.id
-      }
-    })
+        etiquette_id: item.id,
+      };
+    });
     const response = await apiService.createExperience(place.details.id, {
       etiquetteSelected: formattedEtiquettes,
       dateVisited: new Date().toISOString(),
@@ -83,12 +83,12 @@ const handleAddExperience = async () => {
       resetForm();
       handleToggleAddExperience();
       // add to pinia to recent experience added
-      console.log("inserted!");
+      console.log('inserted!');
     } else {
       resetForm();
-      alert("ERROR!");
+      alert('ERROR!');
       // handleToggleAddExperience();
-      throw "There was an error!";
+      throw 'There was an error!';
     }
   } catch (error) {
     console.error(error);
@@ -116,7 +116,6 @@ const onCheck = (event, id: number) => {
     }
   }
 };
-
 </script>
 
 <template>
@@ -131,13 +130,19 @@ const onCheck = (event, id: number) => {
     <section>
       <!-- Select Etiquette section with checkboxes -->
       <div class="flex flex-row flex-1 justify-around m-3">
-        <label for="etiquette" class="text-xl font-extralight">Select up to 3 etiquettes to discuss:</label>
-          <!-- Dropdown Toggle Button -->
+        <label for="etiquette" class="text-xl font-extralight"
+          >Select up to 3 etiquettes to discuss:</label
+        >
+        <!-- Dropdown Toggle Button -->
         <button
           class="border border-slate-400 px-4 py-2 rounded-lg bg-white text-sm"
           @click="isDropdownOpen = !isDropdownOpen"
         >
-        {{ experiencePackage.selectedEtiquette.length ? `${experiencePackage.selectedEtiquette.length} selected` : 'Select Etiquette' }}
+          {{
+            experiencePackage.selectedEtiquette.length
+              ? `${experiencePackage.selectedEtiquette.length} selected`
+              : 'Select Etiquette'
+          }}
         </button>
         <!-- Dropdown Content -->
         <div
@@ -148,27 +153,30 @@ const onCheck = (event, id: number) => {
             class="flex items-center px-4 py-2 hover:bg-gray-100"
             v-for="etiquette in experiencePackage.etiquette"
             :key="etiquette.id"
-        >
-          <input
-                type="checkbox"
-                :id="etiquette.label"
-                :value="etiquette.label"
-                :checked="experiencePackage.selectedEtiquette.includes(etiquette.id)"
-                @change="onCheck($event, etiquette.id)"
-                class="mr-2"
-                :disabled="!experiencePackage.selectedEtiquette.includes(etiquette.id) && experiencePackage.selectedEtiquette.length >= 3"
-              />
-              <label :for="etiquette.label" class="text-sm">{{ etiquette.label }}</label>
-            </div>
+          >
+            <input
+              type="checkbox"
+              :id="etiquette.label"
+              :value="etiquette.label"
+              :checked="experiencePackage.selectedEtiquette.includes(etiquette.id)"
+              @change="onCheck($event, etiquette.id)"
+              class="mr-2"
+              :disabled="
+                !experiencePackage.selectedEtiquette.includes(etiquette.id) &&
+                experiencePackage.selectedEtiquette.length >= 3
+              "
+            />
+            <label :for="etiquette.label" class="text-sm">{{ etiquette.label }}</label>
           </div>
+        </div>
       </div>
     </section>
     <section>
       <!-- Date visited selection -->
-       <div class="flex flex-row flex-1 justify-center m-3">
+      <div class="flex flex-row flex-1 justify-center m-3">
         <label class="mr-3" for="date_visited">Date visited:</label>
         <input type="date" id="date_visited" name="date_visited" @change="handleSetDateVisited" />
-       </div>
+      </div>
     </section>
 
     <section class="flex font-light justify-center h-1/2 lg:h-80 mb-3">
@@ -185,7 +193,11 @@ const onCheck = (event, id: number) => {
       <!-- Post and cancel buttons -->
       <button
         class="mx-5 border-velvet border p-2 rounded-xl text-sm hover:bg-velvet hover:text-white"
-        @click="handleAddExperience" :disabled="!canSubmit">Post</button>
+        @click="handleAddExperience"
+        :disabled="!canSubmit"
+      >
+        Post
+      </button>
       <button
         class="border-velvet border p-2 rounded-xl text-sm hover:bg-velvet hover:text-white"
         @click="handleToggleAddExperience"

@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted } from 'vue';
-import apiService from "@/services/api.service";
+import apiService from '@/services/api.service';
 
 const searchQuery = ref('onsen');
 const searchCategory = ref('onsen');
 const errorMessage = ref('');
 const emit = defineEmits(['search']);
-
 
 // Watch the searchQuery so any changes clear the error message
 watch(searchQuery, () => {
@@ -28,8 +27,7 @@ const performSearch = async () => {
     const response = await apiService.search(searchQuery.value, searchCategory.value);
     const data = response.data;
 
-    emit("search", data);
-
+    emit('search', data);
   } catch (error) {
     console.error('Search request failed: ', error);
   }

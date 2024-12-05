@@ -5,10 +5,10 @@ import NavigationBarComponent from './views/General/NavigationBarComponent.vue';
 
 <template>
   <div class="flex flex-col min-h-screen">
-  <NavigationBarComponent class="z-50"/>
+    <NavigationBarComponent class="z-50" />
 
-  <main class="flex flex-grow bg-mist">
-    <RouterView class="w-full"/>
-  </main>
-</div>
+    <main class="flex flex-grow bg-mist">
+      <RouterView class="w-full" />
+    </main>
+  </div>
 </template>

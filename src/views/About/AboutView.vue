@@ -12,8 +12,8 @@
         these unspoken rules? We at Jappuri would like to solve that.
       </p>
       <p class="mb-3">
-        Through input from both locals and tourists like yourselves. Jappuri would like to bridge the
-        gap to create a more welcoming Japan.
+        Through input from both locals and tourists like yourselves. Jappuri would like to bridge
+        the gap to create a more welcoming Japan.
       </p>
     </div>
   </main>

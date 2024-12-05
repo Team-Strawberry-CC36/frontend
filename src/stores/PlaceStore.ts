@@ -42,7 +42,7 @@ export const usePlaceStore = defineStore('placeStore', () => {
         etiquettes: [{ id: 1, label: 'Smoking' }],
         experience:
           'I truly appreciated the no-smoking policy—it created a much cleaner and healthier environment. It made the experience more enjoyable for everyone.',
-          helpfulness: 34,
+        helpfulness: 34,
         metadata: {
           createdAt: new Date('2024-11-27T10:00:00Z'),
           updatedAt: new Date('2024-11-27T10:00:00Z'),
@@ -55,7 +55,7 @@ export const usePlaceStore = defineStore('placeStore', () => {
         etiquettes: [{ id: 2, label: 'Tattoos' }],
         experience:
           'I was a bit surprised by the "No tattoos" rule—it felt a bit restrictive. However, the ambiance was nice and quite serene.',
-          helpfulness: 27,
+        helpfulness: 27,
         metadata: {
           createdAt: new Date('2024-11-28T14:30:00Z'),
           updatedAt: new Date('2024-11-28T14:30:00Z'),
@@ -81,7 +81,7 @@ export const usePlaceStore = defineStore('placeStore', () => {
         etiquettes: [{ id: 4, label: 'Swimming' }],
         experience:
           'The "No swimming" policy was disappointing as I was looking forward to taking a dip. Nonetheless, the other facilities were great, so it balanced out.',
-          helpfulness: 12,
+        helpfulness: 12,
         metadata: {
           createdAt: new Date('2024-11-26T18:20:00Z'),
           updatedAt: new Date('2024-11-26T18:20:00Z'),
@@ -94,7 +94,7 @@ export const usePlaceStore = defineStore('placeStore', () => {
         etiquettes: [{ id: 1, label: 'Ambiance' }],
         experience:
           'The ambiance was reflective and a bit overwhelming—it felt designed to provoke deep existential questions.',
-          helpfulness: 102,
+        helpfulness: 102,
         metadata: {
           createdAt: new Date('2024-11-25T16:00:00Z'),
           updatedAt: new Date('2024-11-25T16:00:00Z'),

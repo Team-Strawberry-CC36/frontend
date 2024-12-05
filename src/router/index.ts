@@ -52,8 +52,8 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: TouristDashboard
-    }
+      component: TouristDashboard,
+    },
   ],
 });
 

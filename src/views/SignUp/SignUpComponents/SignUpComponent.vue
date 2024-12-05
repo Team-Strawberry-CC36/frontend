@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import { registerUserThroughFirebase } from '@/auth/auth';
 import router from '@/router';
-import authService from "@/services/auth.service";
+import authService from '@/services/auth.service';
 
 // Form inputs
 const displayName = ref('');
@@ -36,11 +36,12 @@ const confirmPasswordError = computed(() => {
 
 const isEmailValid = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value));
 
-const isFormValid = computed(() =>
-  !usernameError.value &&
-  isEmailValid.value &&
-  !passwordError.value &&
-  !confirmPasswordError.value
+const isFormValid = computed(
+  () =>
+    !usernameError.value &&
+    isEmailValid.value &&
+    !passwordError.value &&
+    !confirmPasswordError.value,
 );
 
 // Form submission
@@ -54,7 +55,7 @@ const handleSignUp = async () => {
     const { uid } = await registerUserThroughFirebase(
       email.value,
       password.value,
-      displayName.value
+      displayName.value,
     );
 
     const response = await authService.createUser(uid);
@@ -82,7 +83,7 @@ const handleSignUp = async () => {
           placeholder="Username"
           :class="{
             'mb-0': usernameError,
-            'mb-3': !usernameError
+            'mb-3': !usernameError,
           }"
           class="block p-1 border border-slate-400 rounded-xl w-full"
         />
@@ -99,7 +100,7 @@ const handleSignUp = async () => {
           placeholder="Email"
           :class="{
             'mb-0': isEmailValid,
-            'mb-3': !isEmailValid
+            'mb-3': !isEmailValid,
           }"
           class="block p-1 border border-slate-400 rounded-xl w-full"
         />
@@ -116,7 +117,7 @@ const handleSignUp = async () => {
           placeholder="Password"
           :class="{
             'mb-0': passwordError,
-            'mb-3': !passwordError
+            'mb-3': !passwordError,
           }"
           class="block p-1 border border-slate-400 rounded-xl w-full"
         />
@@ -133,7 +134,7 @@ const handleSignUp = async () => {
           placeholder="Confirm password"
           :class="{
             'mb-0': confirmPasswordError,
-            'mb-3': !confirmPasswordError
+            'mb-3': !confirmPasswordError,
           }"
           class="block p-1 border border-slate-400 rounded-xl w-full"
         />

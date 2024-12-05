@@ -6,7 +6,7 @@ export const useExperienceVoteStore = defineStore('experienceVoteStore', () => {
   const details = reactive<ExperienceHelpfulnessVote[]>([]);
 
   function update(data: ExperienceHelpfulnessVote[]) {
-    details.push(...data)
+    details.push(...data);
   }
 
   function clear() {
@@ -18,34 +18,34 @@ export const useExperienceVoteStore = defineStore('experienceVoteStore', () => {
     details.push(
       {
         vote_id: 1,
-        user_id: "fxQ7AmIq1ZR0cge9EIBUAHXWt5e2",
+        user_id: 'fxQ7AmIq1ZR0cge9EIBUAHXWt5e2',
         experience_id: 1,
-        helpfulness: "up",
+        helpfulness: 'up',
       },
       {
         vote_id: 2,
-        user_id: "fxQ7AmIq1ZR0cge9EIBUAHXWt5e2",
+        user_id: 'fxQ7AmIq1ZR0cge9EIBUAHXWt5e2',
         experience_id: 2,
-        helpfulness: "down",
+        helpfulness: 'down',
       },
       {
         vote_id: 3,
-        user_id: "fxQ7AmIq1ZR0cge9EIBUAHXWt5e2",
+        user_id: 'fxQ7AmIq1ZR0cge9EIBUAHXWt5e2',
         experience_id: 3,
-        helpfulness: "up",
+        helpfulness: 'up',
       },
       {
         vote_id: 4,
-        user_id: "fxQ7AmIq1ZR0cge9EIBUAHXWt5e2",
+        user_id: 'fxQ7AmIq1ZR0cge9EIBUAHXWt5e2',
         experience_id: 4,
-        helpfulness: "down",
+        helpfulness: 'down',
       },
       {
         vote_id: 5,
-        user_id: "fxQ7AmIq1ZR0cge9EIBUAHXWt5e2",
+        user_id: 'fxQ7AmIq1ZR0cge9EIBUAHXWt5e2',
         experience_id: 5,
-        helpfulness: "up",
-      }
+        helpfulness: 'up',
+      },
     );
   }
 
