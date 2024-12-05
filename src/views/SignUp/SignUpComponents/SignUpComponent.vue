@@ -64,8 +64,5 @@ const handleSignUp = async () => {
       </div>
     </form>
     <RouterLink class="mb-3 text-center underline" to="/login"> To login </RouterLink>
-    <div class="text-center w-5/6 border-b border-slate-400"></div>
-    <span class="m-3">Alternative Login</span>
-    <div></div>
   </div>
 </template>

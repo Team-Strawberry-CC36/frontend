@@ -25,8 +25,5 @@ const handleSignIn = () => {
       </div>
     </form>
     <RouterLink class="mb-3 text-center underline" to="/signup">Don't have an account? Sign up!</RouterLink>
-    <div class="text-center w-5/6 border-b border-slate-400"></div>
-    <span class="m-3">Alternative Login</span>
-    <div></div>
   </div>
 </template>
