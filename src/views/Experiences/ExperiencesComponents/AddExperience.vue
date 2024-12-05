@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IEtiquettePerPlace } from '@/utils/interfaces/Etiquette';
 import apiService from '@/services/api.service';
@@ -37,24 +38,25 @@ const handleSetDateVisited = (event: Event) => {
 };
 
 // Make sure user can only select up to 3 checkboxes
-const onCheck = (event: Event, etiquetteId: number) => {
-  const target = event.target as HTMLInputElement;
+// const onCheck = (event: Event, etiquetteId: number) => {
+//   const target = event.target as HTMLInputElement;
 
-  if (target.checked === false) {
-    experiencePackage.selectedEtiquette = experiencePackage.selectedEtiquette.filter(
-      (item) => item != etiquetteId,
-    );
-  }
+//   if (target.checked === false) {
+//     experiencePackage.selectedEtiquette = experiencePackage.selectedEtiquette.filter(
+//       (item) => item != etiquetteId
+//     );
+//   }
 
-  if (experiencePackage.selectedEtiquette.length === 3) {
-    target.checked = false;
-    return;
-  }
+//   if (experiencePackage.selectedEtiquette.length === 3) {
+//     target.checked = false;
+//     return;
+//   }
 
-  if (target.checked) {
-    experiencePackage.selectedEtiquette.push(etiquetteId);
-  }
-};
+//   if (target.checked) {
+//     experiencePackage.selectedEtiquette.push(etiquetteId);
+//   }
+
+// };
 
 function canSubmit() {
   return experiencePackage.selectedEtiquette && experiencePackage.experienceText.trim();
@@ -92,11 +94,35 @@ const handleAddExperience = async () => {
     console.error(error);
   }
 };
+
+const isDropdownOpen = ref(false);
+
+// Function to handle checkbox changes
+const onCheck = (event: Event, id: number) => {
+  const target = event.target as HTMLInputElement;
+  const { checked } = target;
+
+  if (checked) {
+    if (experiencePackage.selectedEtiquette.length < 3) {
+      experiencePackage.selectedEtiquette.push(id);
+    } else {
+      // Prevent checkbox from being checked if the limit is reached
+      event.preventDefault();
+      target.checked = false;
+      alert('You can only select up to 3 options.');
+    }
+  } else {
+    const index = experiencePackage.selectedEtiquette.indexOf(id);
+    if (index > -1) {
+      experiencePackage.selectedEtiquette.splice(index, 1);
+    }
+  }
+};
 </script>
 
 <template>
   <div
-    class="sm:w-1/2 w-full sm:h-fit h-full sm:border border-slate-400 p-3 overflow-hidden sm:rounded-xl shadow-2xl bg-frostWhite"
+    class="sm:w-1/2 w-full sm:h-fit h-screen sm:border border-slate-400 sm:m-3 p-3 overflow-hidden sm:rounded-xl shadow-2xl bg-frostWhite"
   >
     <section class="flex flex-row justify-between m-3">
       <!-- Place Name + add Experiences button-->
@@ -105,20 +131,47 @@ const handleAddExperience = async () => {
 
     <section>
       <!-- Select Etiquette section with checkboxes -->
-      <div class="flex flex-row flex-1 justify-around m-3">
-        <label for="etiquette" class="text-xl font-extralight"
+      <div class="flex flex-row m-3">
+        <label for="etiquette" class="basis-2/3 text-xl font-extralight w-4/5 sm:3/4"
           >Select up to 3 etiquettes to discuss:</label
         >
-        <div v-for="etiquette in experiencePackage.etiquette" :key="etiquette.id">
-          <input
-            type="checkbox"
-            :id="etiquette.label"
-            :value="etiquette.label"
-            @change="onCheck($event, etiquette.id)"
-            :checked="experiencePackage.selectedEtiquette.includes(etiquette.id)"
-          />
-          <label :for="etiquette.label">{{ etiquette.label }}</label
-          ><br />
+        <!-- Dropdown Toggle Button -->
+        <div class="basis-1/3">
+          <button
+            class="border border-slate-400 px-4 py-2 rounded-lg bg-white text-sm"
+            @click="isDropdownOpen = !isDropdownOpen"
+          >
+            {{
+              experiencePackage.selectedEtiquette.length
+                ? `${experiencePackage.selectedEtiquette.length} selected`
+                : 'Select Etiquette'
+            }}
+          </button>
+          <!-- Dropdown Content -->
+          <div
+            v-if="isDropdownOpen"
+            class="absolute mt-2 w-fit border border-slate-400 bg-white shadow-lg rounded-lg z-10"
+          >
+            <div
+              class="flex items-center px-4 py-2 hover:bg-gray-100"
+              v-for="etiquette in experiencePackage.etiquette"
+              :key="etiquette.id"
+            >
+              <input
+                type="checkbox"
+                :id="etiquette.label"
+                :value="etiquette.label"
+                :checked="experiencePackage.selectedEtiquette.includes(etiquette.id)"
+                @change="onCheck($event, etiquette.id)"
+                class="mr-2"
+                :disabled="
+                  !experiencePackage.selectedEtiquette.includes(etiquette.id) &&
+                  experiencePackage.selectedEtiquette.length >= 3
+                "
+              />
+              <label :for="etiquette.label" class="text-sm">{{ etiquette.label }}</label>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -156,15 +209,5 @@ const handleAddExperience = async () => {
         Cancel
       </button>
     </section>
-
-    <!-- <div v-if="experiencePackage.experiences">
-      <h2>Your Experiences</h2>
-      <ul>
-        <li v-for="(exp, index) in experiencePackage.experiences" :key="index">
-          <strong>Etiquette:</strong> {{ exp.etiquette }} <br />
-          <strong>Content:</strong> {{ exp.text }}
-        </li>
-      </ul>
-    </div> -->
   </div>
 </template>

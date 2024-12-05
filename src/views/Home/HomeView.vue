@@ -4,14 +4,15 @@ import SearchbarComponent from './HomeComponents/SearchbarComponent.vue';
 import { ref } from 'vue';
 import type IPlace from '@/utils/interfaces/Place';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
-import HomeMap from '../testing-components/features/HomeMap.vue';
+import HomeMap from './HomeComponents/HomeMap.vue';
 import AddEtiquetteVote from './HomeComponents/AddEtiquetteVote.vue';
 import ReviewEtiquetteVote from './HomeComponents/ReviewEtiquetteVote.vue';
 import { getAuth } from 'firebase/auth';
-import apiService, { type IPlaceMarker } from '@/services/api.service';
-import Photos from '../testing-components/features/Photos.vue';
+import apiService from '@/services/api.service';
+import { usePlaceStore } from '@/stores/PlaceStore';
 
 const auth = getAuth();
+const place = usePlaceStore();
 
 // const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
 //     message: "Lovely job!",
@@ -38,7 +39,7 @@ const auth = getAuth();
 // };
 
 const placeMarkers = ref<IPlaceMarker[]>([]);
-const displayedPlace = ref<IPlace | null>(null);
+//const displayedPlace = ref<IPlace| null>(null);
 const etiquetteVotesData = ref<IPlaceEtiquetteVotes | null>(null);
 
 const searchQuery = ref('');
@@ -61,7 +62,9 @@ const getPlaceEtiquetteVotesData = async (place: IPlace) => {
 const getPlaceDetails = async (placeId: string) => {
   try {
     const response = await apiService.getPlace(placeId);
-    displayedPlace.value = response.data.data;
+    place.$patch({
+      details: response.data.data,
+    });
   } catch (e) {
     console.error({
       message: 'There was an error getting place details in homeView',
@@ -110,13 +113,12 @@ const toggleReviewVoteView = () => {
         :search-query="searchQuery"
         @map-marker-clicked="handleMarkerClicked"
       />
-      <div v-if="displayedPlace">
-        <!-- v-if="displayedPlace" put back in div after testing -->
-        <h1>Rendering data! {{ displayedPlace }}</h1>
+      <div v-if="place.details">
+        <!-- v-if="place.details" put back in div after testing -->
+        <!-- <h1>Rendering data! {{ place.details }}</h1> -->
         <PlaceComponent
-          :data="displayedPlace"
           :etiquetteVotesData="etiquetteVotesData"
-          v-if="viewPlaceDetails"
+          v-if="viewPlaceDetails && place.details.id > 0"
           @show-add-vote="toggleVoteView"
           @show-review-vote="toggleReviewVoteView"
         />
@@ -131,7 +133,6 @@ const toggleReviewVoteView = () => {
           :etiquetteVotesData="etiquetteVotesData"
           @close-review-vote="toggleReviewVoteView"
         />
-        <Photos />
       </div>
     </div>
   </main>

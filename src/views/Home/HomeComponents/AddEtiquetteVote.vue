@@ -118,7 +118,6 @@ const submitVote = async () => {
               />
               <label class="ml-3" :for="etiquette.etiquetteType + '-allowed'">allowed</label>
               <input
-                6
                 class="ml-3"
                 type="checkbox"
                 :id="etiquette.etiquetteType + '-not-allowed'"

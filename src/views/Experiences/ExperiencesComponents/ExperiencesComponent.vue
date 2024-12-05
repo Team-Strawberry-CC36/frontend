@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { ref, computed, defineEmits } from 'vue';
 import { getAuth } from 'firebase/auth';
 import { usePlaceStore } from '@/stores/PlaceStore';
@@ -153,6 +153,23 @@ const handleThenRetrieveVote = async (exid: number, vote: string) => {
   await handleVote(exid, vote); // Wait for handleVote to complete
   retrieveVote(); // Only execute after handleVote is done
 };
+
+// Mobile detection code purely just to change the add experience button into a small +
+// Reactive property to track mobile view
+const isMobileView = ref(window.innerWidth < 640);
+
+// Listener to update `isMobileView` based on window size
+const updateView = () => {
+  isMobileView.value = window.innerWidth < 640;
+};
+
+// Add event listeners for responsive behavior
+onMounted(() => {
+  window.addEventListener('resize', updateView);
+});
+onUnmounted(() => {
+  window.removeEventListener('resize', updateView);
+});
 </script>
 
 <template>
@@ -163,6 +180,7 @@ const handleThenRetrieveVote = async (exid: number, vote: string) => {
       <!-- Place Name + add Experiences button-->
       <h1 class="text-3xl">{{ place.details.name }}</h1>
       <button
+        v-if="!isMobileView"
         class="border-velvet border p-2 rounded-xl font-extralight text-sm hover:bg-velvet hover:text-white ease-in-out transition duration-300"
         @click="handleAddExperience"
       >
@@ -180,7 +198,15 @@ const handleThenRetrieveVote = async (exid: number, vote: string) => {
         />
       </div>
     </section>
-
+    <section class="flex justify-end">
+      <button
+        v-if="isMobileView"
+        class="border-velvet border mx-3 mt-3 p-2 rounded-xl font-extralight text-sm hover:bg-velvet hover:text-white ease-in-out transition duration-300"
+        @click="handleAddExperience"
+      >
+        + Tell us your experience
+      </button>
+    </section>
     <section>
       <!-- Filter Experiences section -->
       <div class="flex flex-row justify-around m-3">
@@ -238,7 +264,7 @@ const handleThenRetrieveVote = async (exid: number, vote: string) => {
               </svg>
             </button>
           </section>
-          <section class="basis-auto">
+          <section class="basis-auto w-full">
             <div class="flex flex-row m-1 justify-between text-xl">
               <h4>Etiquette</h4>
               <p class="text-velvet">{{ experience.etiquettes[0].label }}</p>

@@ -17,7 +17,7 @@ class AuthService {
 
   async createUser(uid: string): ApiResponse<null> {
     return await this.api.post(`${this.apiUrl}/auth/user`, {
-      uid: uid
+      uid: uid,
     });
   }
 }
