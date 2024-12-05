@@ -18,7 +18,6 @@ onAuthStateChanged(auth, (user) => {
     // https://firebase.google.com/docs/reference/js/auth.user
     username.value = user.displayName;
   } else {
-    alert('Logged out');
     username.value = null;
     // User is signed out
   }
