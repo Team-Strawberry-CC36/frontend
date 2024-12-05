@@ -4,15 +4,28 @@ import { environment } from '@/utils/environments/environent';
 import { onMounted, ref, useTemplateRef, watch } from 'vue';
 import type {IPlaceMarker} from "@/services/api.service";
 
+// Constans
+const tokyoCenter = {
+  lat: 35.6764,
+  lng: 139.65
+}
+
+
 // This component receives the Places as the source of information
 const { data } = defineProps<{ data: IPlaceMarker[] }>();
 const emit = defineEmits(['map-marker-clicked']);
+const currentMarkers: google.maps.marker.AdvancedMarkerElement[] = [];
+
 
 // Map object
 let map: google.maps.Map;
-// Initial variables
-// const tokyoLocation = { lat: 35.6764, lng: 139.65 };
-const location = ref<{ lat: number, lng: number}>({ lat: 35.6765, lng: 139.65 }); // starting point is Tokyo
+
+// Location
+const mapLocation = ref<{ lat: number, lng: number}>({
+  lat: tokyoCenter.lat,
+  lng: tokyoCenter.lng
+});
+
 // Load container
 const mapElementRef = useTemplateRef('map-container');
 
@@ -23,6 +36,7 @@ const loader = new Loader({
   libraries: ['places'],
 });
 
+// Hooks
 onMounted(() => {
   initMap();
 });
@@ -34,48 +48,57 @@ async function initMap() {
   if (!mapElementRef.value) return;
 
   map = new Map(mapElementRef.value, {
-    center: location.value,
+    center: mapLocation.value,
     zoom: 12,
     mapId: 'DEMO_MAP_ID',
   });
 }
 
 
-
 // Watcher for new markers from data
-watch(() => data, async (value) => {
+watch(() => data, async (newMarkers) => {
   const { AdvancedMarkerElement } = await loader.importLibrary('marker');
 
    // Recenter the map
-   if (value[0]) {
-      location.value = {
-        lat: value[0].location.lat,
-        lng: value[0].location.lon
+   if (newMarkers[0]) {
+      mapLocation.value = {
+        lat: newMarkers[0].location.lat,
+        lng: newMarkers[0].location.lon
       };
       if (map) {
-        map.setCenter(location.value);
+        map.setCenter(mapLocation.value);
         map.setZoom(12);
       }
     }
 
+  // Clean up markers
+  for (const item of currentMarkers) {
+    if (item.map) {
+      item.map = null;
+    }
+  }
+
    // We iterate over every place, and we set markers using location in each place
-   value.forEach((place: IPlaceMarker) => {
-    const marker = new AdvancedMarkerElement({
+   newMarkers.forEach((marker: IPlaceMarker) => {
+    const markerMapObject = new AdvancedMarkerElement({
       map: map,
       position: {
-        lat: place.location.lat,
-        lng: place.location.lon,
+        lat: marker.location.lat,
+        lng: marker.location.lon,
       },
-      // Activate google event!
+      // Activate clickable market!
       gmpClickable: true,
     }) as google.maps.marker.AdvancedMarkerElement;
 
+    // Add to the existing markers
+    currentMarkers.push(markerMapObject)
+
     // If the marker its clicked, we emit an event including
     // the place information
-    marker.addEventListener('gmp-click', () => {
+    markerMapObject.addEventListener('gmp-click', () => {
       emit('map-marker-clicked', {
         event: 'map-marker-clicked',
-        data: place.id,
+        data: marker.id,
       });
     });
   });

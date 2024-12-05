@@ -4,7 +4,7 @@ import SearchbarComponent from './HomeComponents/SearchbarComponent.vue';
 import { ref } from 'vue';
 import type IPlace from '@/utils/interfaces/Place';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
-import HomeMap from '../testing-components/features/HomeMap.vue';
+import HomeMap from './HomeComponents/HomeMap.vue';
 import AddEtiquetteVote from './HomeComponents/AddEtiquetteVote.vue';
 import ReviewEtiquetteVote from './HomeComponents/ReviewEtiquetteVote.vue';
 import { getAuth } from 'firebase/auth';
