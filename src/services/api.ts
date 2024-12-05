@@ -30,7 +30,7 @@ class ApiService {
     this.apiUrl = import.meta.env.VITE_BACKEND_URL;
 
     this.api = Axios.create({
-      // withCredentials: true,
+      withCredentials: true,
       timeout: 10000,
     });
 
@@ -69,9 +69,11 @@ class ApiService {
     });
   }
 
-  async fetchPhotos(placeId: number): ApiResponse<string[]> {
-    return await this.api.get(`${this.apiUrl}/places/${placeId}/photos`);
-  }
+  // async fetchPhotos(placeId: number): ApiResponse<string[]> {
+  //   return await this.api.get(`${this.apiUrl}/places/${placeId}/photos`, {
+  //     headers: { authorization: `Bearer ${token}` },
+  //   });
+  // }
 }
 
 const apiService = new ApiService();

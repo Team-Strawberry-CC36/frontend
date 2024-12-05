@@ -1,14 +1,35 @@
 <script setup lang="ts">
 //import type Place from '@/utils/interfaces/Place';
+import apiService from '@/services/api.service';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
-import { defineProps } from 'vue';
+import { defineProps, onMounted, ref } from 'vue';
 import { defineEmits } from 'vue';
 const emit = defineEmits(['show-add-vote', 'show-review-vote']);
 
 const place = usePlaceStore();
 
 const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquetteVotes }>();
+const photos = ref<string[]>([]);
+const loading = ref(false);
+const error = ref<string | null>(null);
+
+onMounted(async () => {
+  loading.value = true;
+  error.value = null;
+
+  try {
+    const response = await apiService.fetchPhotos(place.details.id);
+    // Need to change unknow to something
+    photos.value = response.data as unknown as string[];
+    place.details.photos = photos.value;
+  } catch (err) {
+    console.error(err);
+    error.value = 'Failed to load photos.';
+  } finally {
+    loading.value = false;
+  }
+});
 </script>
 
 <template>
