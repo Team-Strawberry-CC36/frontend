@@ -115,4 +115,7 @@ export const usePlaceStore = defineStore('placeStore', () => {
   }
 
   return { details, useMock };
+},
+{
+  persist: true,
 });

@@ -48,6 +48,8 @@ export const useExperienceVoteStore = defineStore('experienceVoteStore', () => {
       },
     );
   }
-
   return { details, useMock, update, clear };
+},
+{
+  persist: true,
 });

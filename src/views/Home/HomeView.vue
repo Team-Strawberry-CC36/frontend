@@ -62,7 +62,9 @@ const getPlaceEtiquetteVotesData = async (place: IPlace) => {
 const getPlaceDetails = async (placeId: string) => {
   try {
     const response = await apiService.getPlace(placeId);
-    place.details = response.data.data;
+    place.$patch({
+      details: response.data.data,
+    });
   } catch (e) {
     console.error({
       message: 'There was an error getting place details in homeView',
