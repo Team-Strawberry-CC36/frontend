@@ -8,9 +8,11 @@ import HomeMap from './HomeComponents/HomeMap.vue';
 import AddEtiquetteVote from './HomeComponents/AddEtiquetteVote.vue';
 import ReviewEtiquetteVote from './HomeComponents/ReviewEtiquetteVote.vue';
 import { getAuth } from 'firebase/auth';
-import apiService, { type IPlaceMarker } from "@/services/api.service";
+import apiService from '@/services/api.service';
+import { usePlaceStore } from '@/stores/PlaceStore';
 
 const auth = getAuth();
+const place = usePlaceStore();
 
 // const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
 //     message: "Lovely job!",
@@ -37,47 +39,48 @@ const auth = getAuth();
 // };
 
 const placeMarkers = ref<IPlaceMarker[]>([]);
-const displayedPlace = ref<IPlace| null>(null);
+//const displayedPlace = ref<IPlace| null>(null);
 const etiquetteVotesData = ref<IPlaceEtiquetteVotes | null>(null);
-
 
 const searchQuery = ref('');
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 // Some functions for async
-const getPlaceEtiquetteVotesData = async (place:IPlace) => {
+const getPlaceEtiquetteVotesData = async (place: IPlace) => {
   try {
     const response = await fetch(`${apiUrl}/moreTesting/places/${place.id}/votes`, {
       method: 'GET',
-      credentials: 'include'
+      credentials: 'include',
     });
 
     etiquetteVotesData.value = await response.json();
   } catch (error) {
-    console.error("There was an error getting etiquette votes from the database: ", error);
+    console.error('There was an error getting etiquette votes from the database: ', error);
   }
-}
+};
 
 const getPlaceDetails = async (placeId: string) => {
   try {
     const response = await apiService.getPlace(placeId);
-    displayedPlace.value = response.data.data;
+    place.$patch({
+      details: response.data.data,
+    });
   } catch (e) {
     console.error({
-      message: "There was an error getting place details in homeView",
-      error: e
+      message: 'There was an error getting place details in homeView',
+      error: e,
     });
   }
-}
+};
 
 // Handlers
-const handleSearchResults = (event: { event: string, data: IPlaceMarker[] }) => {
+const handleSearchResults = (event: { event: string; data: IPlaceMarker[] }) => {
   placeMarkers.value = event.data;
-}
+};
 
-const handleMarkerClicked = (event: { event: string, data: string }) => {
+const handleMarkerClicked = (event: { event: string; data: string }) => {
   getPlaceDetails(event.data);
-}
+};
 
 /**
  * Adding and reviewing etiquette
@@ -95,38 +98,42 @@ const toggleVoteView = () => {
 const toggleReviewVoteView = () => {
   viewReviewEtiquetteVote.value = !viewReviewEtiquetteVote.value;
   viewPlaceDetails.value = !viewPlaceDetails.value;
-}
-
+};
 </script>
 
 <template>
   <main class="flex flex-col">
     <div class="">
-      <SearchbarComponent @search="handleSearchResults"/>
+      <SearchbarComponent @search="handleSearchResults" />
     </div>
     <div class="flex flex-col lg:flex-row p-4 w-full lg:w-screen bg-mist">
-      <HomeMap style="height: 600px;" :data="placeMarkers" :search-query="searchQuery" @map-marker-clicked="handleMarkerClicked"/>
-      <div v-if="displayedPlace"> <!-- v-if="displayedPlace" put back in div after testing -->
-        <h1>Rendering data! {{ displayedPlace }}</h1>
+      <HomeMap
+        style="height: 600px"
+        :data="placeMarkers"
+        :search-query="searchQuery"
+        @map-marker-clicked="handleMarkerClicked"
+      />
+      <div v-if="place.details">
+        <!-- v-if="place.details" put back in div after testing -->
+        <!-- <h1>Rendering data! {{ place.details }}</h1> -->
         <PlaceComponent
-          :data="displayedPlace"
           :etiquetteVotesData="etiquetteVotesData"
-          v-if="viewPlaceDetails"
+          v-if="viewPlaceDetails && place.details.id > 0"
           @show-add-vote="toggleVoteView"
           @show-review-vote="toggleReviewVoteView"
         />
         <AddEtiquetteVote
           v-if="viewEtiquetteVote"
           :etiquetteVotesData="etiquetteVotesData"
-          @close-add-vote="toggleVoteView" />
+          @close-add-vote="toggleVoteView"
+        />
         <!-- Add a component to review your vote -->
-         <ReviewEtiquetteVote
+        <ReviewEtiquetteVote
           v-if="viewReviewEtiquetteVote"
           :etiquetteVotesData="etiquetteVotesData"
           @close-review-vote="toggleReviewVoteView"
-         />
+        />
       </div>
     </div>
   </main>
 </template>
-
