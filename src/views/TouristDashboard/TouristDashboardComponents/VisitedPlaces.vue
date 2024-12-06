@@ -153,7 +153,8 @@ const deleteExperience = async (expId: number) => {
   <div class="flex flex-col w-full">
     <section class="pb-3 text-center text-xl">
       <!-- A short header -->
-      <p>You have shared the following experiences!</p>
+      <p v-if="localPlacesVisited.data.length < 1">You have not shared any experiences yet!</p>
+      <p v-else>You have shared the following experiences!</p>
     </section>
     <section>
       <!-- Allow sorting in this section-->

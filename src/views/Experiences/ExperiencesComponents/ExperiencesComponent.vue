@@ -62,7 +62,7 @@ const filteredExperiences = computed(() => {
     // Filters based on etiquette selection
     const filtered = selectedFilter.value
       ? place.details.experiences.filter(
-          (experience) => experience.etiquettes[0].label === selectedFilter.value,
+          (experience) => experience.etiquettes.some((etiquette) => etiquette.label === selectedFilter.value),
         )
       : place.details.experiences;
     // arranges experiences based on helpfulness score in descending order
@@ -201,12 +201,12 @@ onUnmounted(() => {
     <section class="h-[20vh]">
       <!-- Cover Photo -->
       <div class="h-full w-full sm:border-t sm:border-b border-slate-400">
-        <!-- <img
+        <img
           v-if="place.details.photos?.length > 0 && place.details.photos"
           class="w-full h-full object-cover"
-          :src="place.details.photos[0].fileData"
+          :src="place.details.photos[Math.floor(Math.random() * 3)]"
           alt="place_photo"
-        /> -->
+        />
       </div>
     </section>
     <section class="flex justify-end">
@@ -278,7 +278,7 @@ onUnmounted(() => {
           <section class="basis-auto w-full">
             <div class="flex flex-row m-1 justify-between text-xl">
               <h4>Etiquette</h4>
-              <p class="text-velvet">{{ experience.etiquettes[0].label }}</p>
+              <p class="text-velvet">{{ experience.etiquettes.map(e => e.label).join(' | ') }}</p>
             </div>
             <div class="flex flex-col m-1 justify-between">
               <h4 class="text-xl">Experience</h4>

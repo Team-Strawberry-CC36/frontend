@@ -69,10 +69,10 @@ const handleSignOut = async () => {
       <!-- Section for badges -->
       <div class="flex flex-col w-full sm:w-3/4 p-3 rounded-xl border border-slate-400 bg-frostWhite justify-center">
         <h1 class="m-1 text-center">Badges and Titles</h1>
-        <p v-if="placesVisitedByUser?.data.length === undefined || placesVisitedByUser?.data.length < 5" class="m-1 text-center font-extralight">No badge titles earned yet. Share more experiences to earn some!</p>
-        <p v-else-if="placesVisitedByUser?.data.length >= 5 || placesVisitedByUser?.data.length < 10" class="m-1 text-center font-extralight">Noice Traveller</p>
-        <p v-else-if="placesVisitedByUser?.data.length >= 10 || placesVisitedByUser?.data.length < 20" class="m-1 text-center font-extralight">Well-Travelled</p>
-        <p v-else-if="placesVisitedByUser?.data.length >= 20" class="m-1 text-center font-extralight">Local Expert!</p>
+        <p v-if="placesVisitedByUser?.length === undefined || placesVisitedByUser?.length < 5" class="m-1 text-center font-extralight">No badge titles earned yet. Share more experiences to earn some!</p>
+        <p v-else-if="placesVisitedByUser?.length >= 5 || placesVisitedByUser?.length < 10" class="m-1 text-center font-extralight">Noice Traveller</p>
+        <p v-else-if="placesVisitedByUser?.length >= 10 || placesVisitedByUser?.length < 20" class="m-1 text-center font-extralight">Well-Travelled</p>
+        <p v-else-if="placesVisitedByUser?.length >= 20" class="m-1 text-center font-extralight">Local Expert!</p>
       </div>
     </section>
     <section class="p-3 flex flex-row justify-between">
@@ -81,11 +81,12 @@ const handleSignOut = async () => {
     </section>
     <section class="justify-items-center p-3">
       <!-- Section for buttons-->
-      <button
+      <!-- Commenting out this search button until further notice -->
+      <!-- <button
         class="border border-velvet bg-frostWhite text-velvet text-xl rounded p-3 m-3 hover:bg-velvet hover:text-frostWhite"
       >
         Search
-      </button>
+      </button> -->
       <button
         class="border border-charcoal bg-frostWhite text-charcoal text-xl rounded p-3 m-3 hover:bg-charcoal hover:text-frostWhite"
         @click.prevent="handleSignOut"
