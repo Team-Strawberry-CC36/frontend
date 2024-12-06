@@ -71,9 +71,9 @@ function resetForm() {
 
 const handleAddExperience = async () => {
   try {
-    const formattedEtiquettes = experiencePackage.etiquette.map((item) => {
+    const formattedEtiquettes = experiencePackage.selectedEtiquette.map((item) => {
       return {
-        etiquette_id: item.id,
+        etiquette_id: item,
       };
     });
     const response = await apiService.createExperience(place.details.id, {
