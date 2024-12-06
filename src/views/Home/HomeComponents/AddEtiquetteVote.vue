@@ -68,15 +68,15 @@ const submitVote = async () => {
         headers,
         credentials: 'include',
         body: JSON.stringify({
-            votes: voteData,
-            placeId: place.details.id,
-        }),
+                votes: voteData,
+                placeId: place.details.id,
+            }),
         });
 
         if (!response.ok) {
-        toast.error('An error occured while sending your input.', {
-            timeout: 3000
-        });
+            toast.error('An error occured while sending your input.', {
+                timeout: 3000
+            });
         throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
     } catch (error) {

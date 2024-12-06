@@ -75,7 +75,7 @@ const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquette
           </li>
         </ul>
         <div v-if="etiquetteVotesData.data.userHasVoted === false">
-          <p>Agree with these etiquette rules for this place? Let us know.</p>
+          <p>Visited here? Tell us about the etiquette rules.</p>
           <div>
             <button
               class="block mx-auto w-3/4 p-5 rounded-3xl border border-slate-400 hover:bg-white bg-velvet text-frostWhite hover:text-velvet hover:cursor-pointer"
@@ -86,7 +86,7 @@ const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquette
           </div>
         </div>
         <div v-if="etiquetteVotesData.data.userHasVoted === true">
-          <p>Want to review your vote?</p>
+          <p>Want to review the etiquette rules you told us about?</p>
           <div>
             <button
               class="block mx-auto w-3/4 p-5 rounded-3xl border border-slate-400 hover:bg-white bg-velvet text-frostWhite hover:text-velvet hover:cursor-pointer"

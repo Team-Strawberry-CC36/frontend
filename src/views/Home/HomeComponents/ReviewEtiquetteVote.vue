@@ -30,6 +30,7 @@ const etiquetteSelections = reactive(new Map<number, EtiquetteStatus>());
 etiquetteVotesData?.data.usersVote.forEach((etiquetteVote) => {
   etiquetteSelections.set(etiquetteVote.etiquetteId, etiquetteVote.vote);
 });
+
 const updateSelection = (etiquetteLabelId: number, value: 'allowed' | 'not-allowed') => {
   etiquetteSelections.set(etiquetteLabelId, value);
 };
@@ -40,10 +41,14 @@ const handleClick = async () => {
   emit('close-review-vote');
 };
 
+const handleCancel = () => {
+  emit('close-review-vote');
+}
+
 // For submitting the vote
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 const updateVote = async () => {
-  console.log(etiquetteSelections);
+
   // Convert to an array for easier processing
   const voteData = Array.from(etiquetteSelections.entries()).map(([key, value]) => ({
     etiquetteId: Number(key),
@@ -52,6 +57,7 @@ const updateVote = async () => {
     )?.etiquetteType,
     vote: value,
   }));
+
   try {
     const response = await fetch(`${apiUrl}/moreTesting/places/${place.details.id}/votes`, {
       method: 'PATCH',
@@ -61,7 +67,6 @@ const updateVote = async () => {
       credentials: 'include',
       body: JSON.stringify({
         votes: voteData,
-        //userId: auth.currentUser?.uid,
         placeId: place.details.id,
       }),
     });
@@ -73,6 +78,7 @@ const updateVote = async () => {
       })
       throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
+
   } catch (error) {
     console.log('There was an error posting the vote:', error);
   }
@@ -143,6 +149,12 @@ const updateVote = async () => {
             @click="handleClick"
           >
             Done!
+          </button>
+          <button
+            class="h-12 w-1/2 rounded-lg border border-charcoal hover:bg-white bg-green-600 text-white hover:text-velvet hover:cursor-pointer"
+            @click="handleCancel"
+          >
+            Cancel
           </button>
         </div>
       </section>

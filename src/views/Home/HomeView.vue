@@ -11,6 +11,7 @@ import { getAuth } from 'firebase/auth';
 import apiService from '@/services/api.service';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IPlaceMarker } from '@/services/api.service';
+import type { EtiquetteStatus } from '@/utils/interfaces/Etiquette';
 
 const auth = getAuth();
 const place = usePlaceStore();
@@ -62,6 +63,16 @@ const getPlaceEtiquetteVotesData = async (placeId: string) => {
         credentials: 'include',
       });
       etiquetteVotesData.value = await response.json();
+      etiquetteVotesData.value?.data.usersVote.forEach(vote => {
+        if (vote.vote) {
+          const transformedVote = vote.vote.toLowerCase().replace(/_/g, '-');
+          if (['allowed', 'not-allowed'].includes(transformedVote)) {
+            vote.vote = transformedVote as EtiquetteStatus;
+          } else {
+            vote.vote = undefined;
+          }
+        }
+      });
       console.log("Here is your etiquette votes data:", etiquetteVotesData.value);
     } catch (error) {
       console.error('There was an error getting etiquette votes from the database: ', error);
