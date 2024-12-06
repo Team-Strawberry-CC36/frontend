@@ -59,9 +59,9 @@ const getPlaceEtiquetteVotesData = async (place: IPlace) => {
   }
 };
 
-const getPlaceDetails = async (placeId: string) => {
+const getPlaceDetails = async (placeId: number, category: string) => {
   try {
-    const response = await apiService.getPlace(placeId);
+    const response = await apiService.getPlace(placeId, category);
     place.$patch({
       details: response.data.data,
     });

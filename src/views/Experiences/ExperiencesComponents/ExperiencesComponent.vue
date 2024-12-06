@@ -33,7 +33,7 @@ const retrieveVote = async () => {
       votes.update(response.data.data);
     } else {
       toast.error('An error occured while retrieving user information.', {
-        timeout: 3000
+        timeout: 3000,
       });
       throw 'An error an occured while retrieving helpfulness vote data.';
     }
@@ -109,7 +109,7 @@ const handleVote = async (exid: number, vote: string) => {
         console.log('Vote posted!');
       } else {
         toast.error('An error occured while posting your helpfulness vote.', {
-          timeout: 3000
+          timeout: 3000,
         });
         throw 'An error an occured while posting helpfulness vote data.';
       }
@@ -129,7 +129,7 @@ const handleVote = async (exid: number, vote: string) => {
           console.log('Vote deleted!');
         } else {
           toast.error('An error occured while removing your helpfulness vote.', {
-            timeout: 3000
+            timeout: 3000,
           });
           throw 'An error an occured while deleting helpfulness vote data.';
         }
@@ -145,7 +145,7 @@ const handleVote = async (exid: number, vote: string) => {
           console.log('Vote edited!');
         } else {
           toast.error('An error occured while changing your helpfulness vote.', {
-            timeout: 3000
+            timeout: 3000,
           });
           throw 'An error an occured while editing helpfulness vote data.';
         }
@@ -201,12 +201,12 @@ onUnmounted(() => {
     <section class="h-[20vh]">
       <!-- Cover Photo -->
       <div class="h-full w-full sm:border-t sm:border-b border-slate-400">
-        <img
+        <!-- <img
           v-if="place.details.photos?.length > 0 && place.details.photos"
           class="w-full h-full object-cover"
           :src="place.details.photos[0].fileData"
           alt="place_photo"
-        />
+        /> -->
       </div>
     </section>
     <section class="flex justify-end">
