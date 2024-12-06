@@ -49,7 +49,7 @@ const isFormValid = computed(
 const handleSignUp = async () => {
   if (!isFormValid.value) {
     toast.error('Please fix the errors before submitting.', {
-      timeout: 3000
+      timeout: 3000,
     });
     return;
   }
@@ -66,19 +66,18 @@ const handleSignUp = async () => {
       await router.push({ name: 'login' });
     } else {
       toast.error('Failed to create user in the database.', {
-      timeout: 3000
+        timeout: 3000,
       });
     }
   } catch (error) {
     toast.error('An error occurred during sign-up. Please try again.', {
-      timeout: 3000
+      timeout: 3000,
     });
     console.error('Sign-up error:', error);
   }
 };
 
 const toast = useToast();
-
 </script>
 
 <template>

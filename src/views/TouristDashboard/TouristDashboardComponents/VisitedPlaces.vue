@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, reactive } from 'vue';
+import { ref, defineProps, reactive } from 'vue';
 import type { IPlacesVisited } from '@/utils/interfaces/PlacesVisited';
 
 const { placesVisitedByTourists } = defineProps<{ placesVisitedByTourists: IPlacesVisited }>();
@@ -64,13 +64,40 @@ const sortByPlaceName = (order: string) => {
   });
   localPlacesVisited.data = sortedArray;
 };
+
+// For editing the experience
+const isEditing = ref<number | null>(null);
+const temporaryExperienceInfo = ref<string | null>(null);
+
+const editExperience = (id: number, currentExperience: string) => {
+  isEditing.value = id;
+  temporaryExperienceInfo.value = currentExperience;
+};
+
+const saveExperience = (expId: number, newExperience: string) => {
+  const place = localPlacesVisited.data.find((item) => item.experienceId === expId);
+  if (place) {
+    place.experience = newExperience;
+  }
+  apiService.updateExperience(expId, newExperience);
+  isEditing.value = null; // exit the editing mode
+};
+
+const cancelEditExperience = () => {
+  const place = localPlacesVisited.data.find((item) => item.experienceId === isEditing.value);
+  if (place && temporaryExperienceInfo.value !== null) {
+    place.experience = temporaryExperienceInfo.value;
+  }
+  isEditing.value = null;
+  temporaryExperienceInfo.value = null;
+};
 </script>
 
 <template>
   <div class="flex flex-col w-full">
     <section class="p-3">
       <!-- A short header -->
-      <p>According to your experiences, you have visited these places!</p>
+      <p>According to you, you have visited these places!</p>
     </section>
     <section>
       <!-- Allow sorting in this section-->
@@ -109,20 +136,47 @@ const sortByPlaceName = (order: string) => {
       <!-- Main body of cards containing info -->
       <div
         v-for="placeVisited in localPlacesVisited?.data"
-        :key="placeVisited.placeId"
-        class="p-3 border border-slate-400 bg-frostWhite rounded-lg mt-3"
+        :key="placeVisited.experienceId"
+        class="p-3 border border-velvet rounded-lg mt-3"
       >
         <h3 class="text-lg font-extralight">
           {{ placeVisited.placeName }} : {{ placeVisited.placeType }}
         </h3>
         <p class="text-sm font-bold">You visited here {{ placeVisited.dateVisited }}</p>
 
-        <p class="text-lg font-bold my-3 pb-2 border-b border-slate-400">Your experience:</p>
+        <p class="text-lg font-bold mt-3">Your experience:</p>
+        <hr class="w-full mb-3" />
         <div class="flex flex-row items-start">
-          <p class="text-lg font-thin mr-3">{{ placeVisited.experience }}</p>
-          <button class="border border-velvet h-10 w-14 text-xs p-1 text-bold rounded mt-auto">
-            Edit
-          </button>
+          <!-- A form that is editable -->
+          <div v-if="isEditing === placeVisited.experienceId" class="flex flex-col w-full">
+            <textarea
+              v-model="placeVisited.experience"
+              class="p-2 h-32 border border-gray-300 rounded-lg"
+            ></textarea>
+            <div class="flex mt-2">
+              <button
+                class="border border-green-500 bg-green-100 p-1 rounded mr-2"
+                @click="saveExperience(placeVisited.experienceId, placeVisited.experience)"
+              >
+                Save
+              </button>
+              <button
+                class="border border-red-500 bg-red-100 p-1 rounded"
+                @click="cancelEditExperience()"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+          <div v-else class="flex items-center">
+            <p class="text-lg font-thin mr-3">{{ placeVisited.experience }}</p>
+            <button
+              class="border border-velvet h-10 w-14 text-xs p-1 text-bold rounded mt-auto"
+              @click="editExperience(placeVisited.experienceId, placeVisited.experience)"
+            >
+              Edit
+            </button>
+          </div>
         </div>
       </div>
     </section>

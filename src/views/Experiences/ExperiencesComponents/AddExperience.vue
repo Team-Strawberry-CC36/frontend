@@ -90,7 +90,7 @@ const handleAddExperience = async () => {
     } else {
       resetForm();
       toast.error('Failed to post experience.', {
-        timeout: 3000
+        timeout: 3000,
       });
       // handleToggleAddExperience();
       throw 'There was an error!';
@@ -115,7 +115,7 @@ const onCheck = (event: Event, id: number) => {
       event.preventDefault();
       target.checked = false;
       toast.info('You can only select up to 3 etiquette options.', {
-        timeout: 3000
+        timeout: 3000,
       });
     }
   } else {
