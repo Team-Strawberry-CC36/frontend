@@ -21,11 +21,4 @@ export default interface IPlace {
 
 type IPlaceType = 'shrine' | 'onsen' | 'restaurant';
 
-interface IPhoto {
-  id: number;
-  fileData: string;
-  metadata: {
-    createdAt: string;
-    authorName: string;
-  };
-}
+type IPhoto = string;

@@ -1,9 +1,12 @@
 <script setup lang="ts">
 //import type Place from '@/utils/interfaces/Place';
+import apiService from '@/services/api.service';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
-import { defineProps } from 'vue';
+import { defineProps, onMounted, ref } from 'vue';
 import { defineEmits } from 'vue';
+import PhotosComponent from './PhotosComponent.vue';
+
 const emit = defineEmits(['show-add-vote', 'show-review-vote']);
 
 const place = usePlaceStore();
@@ -18,12 +21,7 @@ const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquette
     <section class="h-[20vh]">
       <!-- Cover Photo -->
       <div class="h-full w-full">
-        <img
-          v-if="place.details.photos?.length > 0 && place.details.photos"
-          class="w-full h-full object-cover border-b border-slate-400"
-          :src="place.details.photos[0].fileData"
-          alt="place_photo"
-        />
+        <PhotosComponent />
       </div>
     </section>
     <div class="flex flex-col p-5 items-center">
