@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { defineEmits } from 'vue';
+import { useToast } from 'vue-toastification';
+
 const emit = defineEmits(['close-add-vote']);
+
+const toast = useToast();
 
 // Props
 import { defineProps } from 'vue';
@@ -64,7 +68,9 @@ const submitVote = async () => {
     });
 
     if (!response.ok) {
-      alert('ERROR!');
+      toast.error('An error occured while sending your input.', {
+          timeout: 3000
+      });
       throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
   } catch (error) {
