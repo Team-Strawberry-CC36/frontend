@@ -17,6 +17,33 @@ localPlacesVisited?.data.sort((placeVisitedA, placeVisitedB) => {
   return placeVisitedB.dateVisited.getTime() - placeVisitedA.dateVisited.getTime();
 });
 
+const selectedSorting = ref("date-latest"); // Default sorting value
+
+const handleSortingChange = () => {
+  switch (selectedSorting.value) {
+    case "date-latest":
+      sortByDate("latest-first");
+      break;
+    case "date-oldest":
+      sortByDate("latest-last");
+      break;
+    case "type-asc":
+      sortByType("ascending");
+      break;
+    case "type-desc":
+      sortByType("descending");
+      break;
+    case "name-asc":
+      sortByPlaceName("ascending");
+      break;
+    case "name-desc":
+      sortByPlaceName("descending");
+      break;
+    default:
+      console.warn("Unknown sorting option selected:", selectedSorting.value);
+  }
+};
+
 const sortByDate = (order: string) => {
   if (!localPlacesVisited?.data) return;
 
@@ -118,13 +145,14 @@ const deleteExperience = async (expId: number) => {
 
 <template>
   <div class="flex flex-col w-full">
-    <section class="p-3">
+    <section class="pb-3 text-center text-xl">
       <!-- A short header -->
-      <p>According to you, you have visited these places!</p>
+      <p>You have shared the following experiences!</p>
     </section>
     <section>
       <!-- Allow sorting in this section-->
-      <div class="flex flex-row w-full ml-3">
+
+      <!-- <div class="flex flex-row w-full ml-3">
         <div class="text-sm flex flex-row p-3">
           <p>Sort by date:</p>
           <button class="mr-1 ml-1 hover:cursor-pointer" @click="sortByDate('latest-first')">
@@ -153,7 +181,31 @@ const deleteExperience = async (expId: number) => {
             ⬇
           </button>
         </div>
+      </div> -->
+
+      <div class="flex flex-row w-full ml-3">
+        <div class="text-sm flex flex-row p-3 items-center">
+          <label for="sorting-method" class="mr-2">Sort by:</label>
+          <div>
+            <select
+              id="sorting-method"
+              v-model="selectedSorting"
+              @change="handleSortingChange"
+              class="border border-gray-300 rounded-md p-2 pr-8 focus:outline-none"
+            >
+              <option value="date-latest">Date (Latest First)</option>
+              <option value="date-oldest">Date (Oldest First)</option>
+              <option value="type-asc">Place Type (Ascending)</option>
+              <option value="type-desc">Place Type (Descending)</option>
+              <option value="name-asc">Place Name (Ascending)</option>
+              <option value="name-desc">Place Name (Descending)</option>
+            </select>
+          </div>
+        </div>
       </div>
+
+
+
     </section>
     <section class="p-3">
       <!-- Main body of cards containing info -->
