@@ -9,8 +9,6 @@ import type { IPlacesVisited } from '@/utils/interfaces/PlacesVisited';
 import { getAuth } from 'firebase/auth';
 import apiService from '@/services/api.service';
 const auth = getAuth();
-// api route
-const apiUrl = import.meta.env.VITE_BACKEND_URL;
 // toasts
 import { useToast } from 'vue-toastification';
 const toast = useToast();
