@@ -8,6 +8,7 @@ import type { IPlaceVisitedAlias } from '@/utils/interfaces/PlacesVisited';
 // TEMP interfaces
 export interface IPlaceMarker {
   id: string;
+  category: string;
   location: {
     lat: number;
     lon: number;
@@ -73,7 +74,7 @@ class ApiService {
     );
   }
 
-  async search(search: string, category: string): ApiResponse<IPlaceMarker[]> {
+  async search(search: string, category: string): ApiResponse<Omit<IPlaceMarker[], 'category'>> {
     return await this.api.post(`${this.apiUrl}/search`, {
       method: 'POST',
       headers: {
@@ -86,8 +87,16 @@ class ApiService {
     });
   }
 
-  async getPlace(placeId: string): ApiResponse<IPlace> {
-    return await this.api.get(`${this.apiUrl}/places/${placeId}`);
+  async getPlace(placeId: string, category: string): ApiResponse<IPlace> {
+    return await this.api.get(`${this.apiUrl}/places/${placeId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: {
+        category: category,
+      },
+    });
   }
 
   async getUserExperience(): ApiResponse<IPlaceVisitedAlias[]> {

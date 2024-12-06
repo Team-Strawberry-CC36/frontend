@@ -85,14 +85,14 @@ const updateVote = async () => {
   >
     <section class="h-[20vh]">
       <!-- Cover Photo -->
-      <div class="h-full w-full">
+      <!-- <div class="h-full w-full">
         <img
           v-if="place.details.photos?.length > 0 && place.details.photos"
           class="w-full h-full object-cover border-b border-slate-400"
           :src="place.details.photos[0].fileData"
           alt="place_photo"
         />
-      </div>
+      </div> -->
     </section>
     <div class="flex flex-col p-5 items-center">
       <section class="text-center w-full pb-5 border-b border-slate-400">

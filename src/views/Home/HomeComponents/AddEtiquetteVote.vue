@@ -86,12 +86,12 @@ const submitVote = async () => {
     <section class="h-[20vh]">
       <!-- Cover Photo -->
       <div class="h-full w-full">
-        <img
+        <!-- <img
           v-if="place.details.photos?.length > 0 && place.details.photos"
           class="w-full h-full object-cover border-b border-slate-400"
           :src="place.details.photos[0].fileData"
           alt="place_photo"
-        />
+        /> -->
       </div>
     </section>
     <div class="flex flex-col p-5 items-center">
