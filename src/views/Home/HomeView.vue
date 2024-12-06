@@ -10,6 +10,7 @@ import ReviewEtiquetteVote from './HomeComponents/ReviewEtiquetteVote.vue';
 import { getAuth } from 'firebase/auth';
 import apiService from '@/services/api.service';
 import { usePlaceStore } from '@/stores/PlaceStore';
+import type { IPlaceMarker } from '@/services/api.service';
 
 const auth = getAuth();
 const place = usePlaceStore();
@@ -46,16 +47,25 @@ const searchQuery = ref('');
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 // Some functions for async
-const getPlaceEtiquetteVotesData = async (place: IPlace) => {
-  try {
-    const response = await fetch(`${apiUrl}/moreTesting/places/${place.id}/votes`, {
-      method: 'GET',
-      credentials: 'include',
-    });
-
-    etiquetteVotesData.value = await response.json();
-  } catch (error) {
-    console.error('There was an error getting etiquette votes from the database: ', error);
+const getPlaceEtiquetteVotesData = async (placeId: string) => {
+  const user = auth.currentUser;
+  if (user) {
+    const token = await user.getIdToken();
+    const headers: Record<string, string> = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+      };
+    try {
+      const response = await fetch(`${apiUrl}/moreTesting/places/${placeId}/votes`, {
+        method: 'GET',
+        headers,
+        credentials: 'include',
+      });
+      etiquetteVotesData.value = await response.json();
+      console.log("Here is your etiquette votes data:", etiquetteVotesData.value);
+    } catch (error) {
+      console.error('There was an error getting etiquette votes from the database: ', error);
+    }
   }
 };
 
@@ -79,7 +89,9 @@ const handleSearchResults = (event: { event: string; data: IPlaceMarker[] }) => 
 };
 
 const handleMarkerClicked = (event: { event: string; data: string }) => {
+  console.log(event.data); // find out what data is!
   getPlaceDetails(event.data);
+  getPlaceEtiquetteVotesData(event.data); // then change the type in this fetch request
 };
 
 /**

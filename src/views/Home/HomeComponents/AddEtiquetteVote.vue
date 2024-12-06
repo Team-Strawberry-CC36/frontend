@@ -53,29 +53,37 @@ const submitVote = async () => {
     )?.etiquetteType,
     vote: value,
   }));
-  try {
-    const response = await fetch(`${apiUrl}/moreTesting/places/${place.details.id}/votes`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        votes: voteData,
-        //userId: auth.currentUser?.uid,
-        placeId: place.details.id,
-      }),
-    });
 
-    if (!response.ok) {
-      toast.error('An error occured while sending your input.', {
-          timeout: 3000
-      });
-      throw new Error(`Error: ${response.status} ${response.statusText}`);
+  const user = auth.currentUser;
+  if (user) {
+    const token = await user.getIdToken();
+    const headers: Record<string, string> = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+      };
+
+    try {
+        const response = await fetch(`${apiUrl}/moreTesting/places/${place.details.id}/votes`, {
+        method: 'POST',
+        headers,
+        credentials: 'include',
+        body: JSON.stringify({
+            votes: voteData,
+            placeId: place.details.id,
+        }),
+        });
+
+        if (!response.ok) {
+        toast.error('An error occured while sending your input.', {
+            timeout: 3000
+        });
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+    } catch (error) {
+        console.log('There was an error posting the vote:', error);
     }
-  } catch (error) {
-    console.log('There was an error posting the vote:', error);
   }
+  
 };
 </script>
 
