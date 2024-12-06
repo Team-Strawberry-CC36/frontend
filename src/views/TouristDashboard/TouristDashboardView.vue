@@ -50,7 +50,7 @@ const fetchPlacesVisitedByUser = async () => {
     placesVisitedByUser.value = response.data.data;
   } catch (error) {
     toast.error("An error occured while retrieving your experiences.", {
-      timeout: 3000
+      timeout: 5000
     })
     console.log('Error fetching experiences:', error);
   }
