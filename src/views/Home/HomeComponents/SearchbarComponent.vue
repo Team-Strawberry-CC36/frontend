@@ -41,7 +41,10 @@ const performSearch = async () => {
       };
     });
 
-    emit('search', markers);
+    emit('search', {
+      event: 'search-perfomed',
+      data: markers,
+    });
   } catch (error) {
     console.error('Search request failed: ', error);
   }

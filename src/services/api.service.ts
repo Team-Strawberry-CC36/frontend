@@ -85,8 +85,8 @@ class ApiService {
     });
   }
 
-  async getPlace(placeId: number, category: string): ApiResponse<IPlace> {
-    return await this.api.get(`${this.apiUrl}/places/${placeId}/`, {
+  async getPlace(placeId: string, category: string): ApiResponse<IPlace> {
+    return await this.api.get(`${this.apiUrl}/places/${placeId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
