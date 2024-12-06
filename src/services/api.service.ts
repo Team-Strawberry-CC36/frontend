@@ -135,6 +135,10 @@ class ApiService {
       vote: vote,
     });
   }
+
+  async fetchPhotos(placeId: number): ApiResponse<string[]> {
+    return await this.api.get(`${this.apiUrl}/places/${placeId}/photos`);
+  }
 }
 
 const apiService = new ApiService();

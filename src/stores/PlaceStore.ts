@@ -103,20 +103,14 @@ export const usePlaceStore = defineStore(
           },
         },
       ];
-      details.photos = [
-        {
-          id: 1,
-          fileData:
-            'https://cdn.cheapoguides.com/wp-content/uploads/sites/2/2023/04/Onsen-in-snow-Akita_Aimee-Gardner-770x513.jpg',
-          metadata: {
-            createdAt: 'Sometime',
-            authorName: 'Someone',
-          },
-        },
-      ];
+      details.photos = [];
     }
 
-    return { details, useMock };
+    function updatePhotos(img: string[]) {
+      details.photos = img;
+    }
+
+    return { details, useMock, updatePhotos };
   },
   {
     persist: true,
