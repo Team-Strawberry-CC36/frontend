@@ -2,7 +2,7 @@
 import { defineEmits } from 'vue';
 import { useToast } from 'vue-toastification';
 
-const emit = defineEmits(['close-review-vote']);
+const emit = defineEmits(['close-review-vote', 'refresh-votes-data']);
 
 const toast = useToast();
 
@@ -32,7 +32,14 @@ etiquetteVotesData?.data.usersVote.forEach((etiquetteVote) => {
 });
 
 const updateSelection = (etiquetteLabelId: number, value: 'allowed' | 'not-allowed') => {
-  etiquetteSelections.set(etiquetteLabelId, value);
+  const currentSelection = etiquetteSelections.get(etiquetteLabelId);
+
+  // Deselect if the same value is clicked again, otherwise update the selection
+  if (currentSelection === value) {
+    etiquetteSelections.set(etiquetteLabelId, 'neutral');
+  } else {
+    etiquetteSelections.set(etiquetteLabelId, value);
+  }
 };
 
 // Handle click of the button
@@ -68,21 +75,28 @@ const updateVote = async () => {
 
     try {
         const response = await fetch(`${apiUrl}/moreTesting/places/${place.details.id}/votes`, {
-        method: 'PATCH',
-        headers,
-        credentials: 'include',
-        body: JSON.stringify({
-                votes: voteData,
-                placeId: place.details.id,
-            }),
-        });
+          method: 'PATCH',
+          headers,
+          credentials: 'include',
+          body: JSON.stringify({
+                  votes: voteData,
+                  placeId: place.details.id,
+              }),
+          });
 
         if (!response.ok) {
             toast.error('An error occured while sending your input.', {
                 timeout: 3000
             });
-        throw new Error(`Error: ${response.status} ${response.statusText}`);
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
+
+        const result = await response.json();
+
+        if (result.message === "Votes updated successfully") {
+            emit('refresh-votes-data');
+        }
+
     } catch (error) {
         console.log('There was an error posting the vote:', error);
     }

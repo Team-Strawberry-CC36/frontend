@@ -31,9 +31,15 @@ etiquetteVotesData?.data.usersVote.forEach((vote) => {
   etiquetteSelections.set(vote.etiquetteId, undefined);
 });
 const updateSelection = (etiquetteLabelId: number, value: 'allowed' | 'not-allowed') => {
-  etiquetteSelections.set(etiquetteLabelId, value);
+  const currentSelection = etiquetteSelections.get(etiquetteLabelId);
+
+  // Deselect if the same value is clicked again, otherwise update the selection
+  if (currentSelection === value) {
+    etiquetteSelections.set(etiquetteLabelId, 'neutral');
+  } else {
+    etiquetteSelections.set(etiquetteLabelId, value);
+  }
 };
-console.log(etiquetteSelections);
 
 // Handle click of the button
 const handleClick = async () => {

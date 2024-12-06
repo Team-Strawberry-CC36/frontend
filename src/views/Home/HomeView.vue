@@ -43,6 +43,9 @@ const place = usePlaceStore();
 const placeMarkers = ref<IPlaceMarker[]>([]);
 //const displayedPlace = ref<IPlace| null>(null);
 const etiquetteVotesData = ref<IPlaceEtiquetteVotes | null>(null);
+
+// This is necessary to refresh the voting data, otherwise the placeId becomes the placeId from the database
+// which is different from the googlePlaceId.
 const googlePlaceId = ref<string | null>(null);
 
 const searchQuery = ref('');
@@ -50,7 +53,6 @@ const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 // Some functions for async
 const getPlaceEtiquetteVotesData = async (placeId: string) => {
-  console.log("The place id is: ", placeId);
   const user = auth.currentUser;
   if (user) {
     const token = await user.getIdToken();
@@ -165,6 +167,7 @@ const toggleReviewVoteView = () => {
           v-if="viewReviewEtiquetteVote"
           :etiquetteVotesData="etiquetteVotesData"
           @close-review-vote="toggleReviewVoteView"
+          @refresh-votes-data="handleRefreshVotes"
         />
       </div>
     </div>
