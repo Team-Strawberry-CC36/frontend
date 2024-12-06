@@ -70,7 +70,7 @@ const sortByPlaceName = (order: string) => {
   <div class="flex flex-col w-full">
     <section class="p-3">
       <!-- A short header -->
-      <p>According to you, you have visited these places!</p>
+      <p>According to your experiences, you have visited these places!</p>
     </section>
     <section>
       <!-- Allow sorting in this section-->
@@ -109,6 +109,7 @@ const sortByPlaceName = (order: string) => {
       <!-- Main body of cards containing info -->
       <div
         v-for="placeVisited in localPlacesVisited?.data"
+        :key="placeVisited.placeId"
         class="p-3 border border-velvet rounded-lg mt-3"
       >
         <h3 class="text-lg font-extralight">

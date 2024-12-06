@@ -60,8 +60,7 @@ fetchPlacesVisitedByUser(); // fetch the places visited by the user from the dat
   <div class="flex flex-col w-full">
     <section class="flex flex-row justify-between p-3">
       <!-- Header section -->
-      <h1 class="text-3xl m-3">Dashboard</h1>
-      <h1 class="text-3xl m-3">Username</h1>
+      <h1 class="text-3xl m-3">{{ auth.currentUser?.displayName }}'s Dashboard</h1>
     </section>
     <section class="p-3 justify-items-center">
       <!-- Section for badges -->
