@@ -2,8 +2,10 @@
 import { ref, defineProps, reactive } from 'vue';
 import type { IPlacesVisited } from '@/utils/interfaces/PlacesVisited';
 import apiService from '@/services/api.service';
+import { useToast } from 'vue-toastification';
 
 const { placesVisitedByTourists } = defineProps<{ placesVisitedByTourists: IPlacesVisited }>();
+const toast = useToast();
 
 // create a local reactive copy of the data to allow interaction locally such as sorting
 const localPlacesVisited = reactive({
@@ -92,6 +94,26 @@ const cancelEditExperience = () => {
   isEditing.value = null;
   temporaryExperienceInfo.value = null;
 };
+
+// For deleting the experience
+const deleteExperience = async (expId: number) => {
+  const placeIndex = localPlacesVisited.data.findIndex((item) => item.experienceId === expId);
+
+  if (placeIndex === -1) {
+    toast.error("The experience you are trying to delete was not found.");
+    return;
+  }
+
+  try {
+    await apiService.deleteExperience(expId);
+    localPlacesVisited.data.splice(placeIndex, 1);
+    toast.info("Experience deleted.")
+  } catch (error) {
+    toast.error("An error occured while deleting your experience.")
+    console.log("Error deleting experience:", error)
+  }
+}
+
 </script>
 
 <template>
@@ -172,10 +194,16 @@ const cancelEditExperience = () => {
           <div v-else class="flex items-center">
             <p class="text-lg font-thin mr-3">{{ placeVisited.experience }}</p>
             <button
-              class="border border-slate-400 bg-velvet text-frostWhite hover:animate-pulse h-10 w-14 text-xs p-1 text-bold rounded mt-auto"
+              class="border border-slate-400 bg-velvet text-frostWhite hover:animate-pulse h-10 w-14 text-xs mx-1 p-1 text-bold rounded mt-auto"
               @click="editExperience(placeVisited.experienceId, placeVisited.experience)"
             >
               Edit
+            </button>
+            <button
+              class="border border-slate-400 bg-velvet text-frostWhite hover:animate-pulse h-10 w-14 text-xs mx-1 p-1 text-bold rounded mt-auto"
+              @click="deleteExperience(placeVisited.experienceId)"
+            >
+              Delete
             </button>
           </div>
         </div>

@@ -106,6 +106,10 @@ class ApiService {
     });
   }
 
+  async deleteExperience(experienceId: number) {
+    return await this.api.delete(`${this.apiUrl}/experiences/${experienceId}/delete`);
+  }
+
   async retrieveHelpfulnessVote(): ApiResponse<ExperienceHelpfulnessVote[]> {
     return await this.api.get(`${this.apiUrl}/experiences/votes`);
   }
