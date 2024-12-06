@@ -4,7 +4,7 @@ import { ref } from 'vue';
 // import child components
 import VisitedPlaces from './TouristDashboardComponents/VisitedPlaces.vue';
 // import types and interfaces needed
-import type { IPlacesVisited } from '@/utils/interfaces/PlacesVisited';
+import type { IPlaceVisitedAlias } from '@/utils/interfaces/PlacesVisited';
 // authorization
 import { getAuth, signOut } from 'firebase/auth';
 import apiService from '@/services/api.service';
@@ -14,34 +14,10 @@ import { useToast } from 'vue-toastification';
 const toast = useToast();
 
 // Places visited by user
-const placesVisitedByUser = ref<IPlacesVisited | null>(null);
+const placesVisitedByUser = ref<IPlaceVisitedAlias[]>([]);
+
+// Good example of
 // Mock data for places visited by user
-const mockPlacesVisitedByUser = {
-  message: 'Well done!',
-  data: [
-    {
-      experienceId: 1,
-      placeName: 'Code Chrysalis Onsen',
-      placeType: 'onsen',
-      experience: 'Towels were provided. If you want to smoke, best smoke outside.',
-      dateVisited: new Date('2024/11/12'),
-    },
-    {
-      experienceId: 2,
-      placeName: 'Code Chrysalis Shrine',
-      placeType: 'shrine',
-      experience: "Don't forget to wash your hands before entering. Owner was pretty strict about it. Take shoes off, too. And donate 5 yen or more when you pray.",
-      dateVisited: new Date('2024/11/13'),
-    },
-    {
-      experienceId: 3,
-      placeName: 'Code Chrysalis Restaurant',
-      placeType: 'restaurant',
-      experience: 'It might be all you can eat, but try not to eat all the food in the restaurant. The owner looked worried when I ate so much!',
-      dateVisited: new Date('2024/11/14'),
-    },
-  ],
-};
 
 // database fetch requests for places visited
 const fetchPlacesVisitedByUser = async () => {
@@ -101,7 +77,7 @@ const handleSignOut = async () => {
     </section>
     <section class="p-3 flex flex-row justify-between">
       <!-- Section listing places you visited and experiences contributed -->
-      <VisitedPlaces class="p-3" :placesVisitedByTourists="mockPlacesVisitedByUser" />
+      <VisitedPlaces class="p-3" :placesVisitedByTourists="placesVisitedByUser" />
     </section>
     <section class="justify-items-center p-3">
       <!-- Section for buttons-->

@@ -1,19 +1,25 @@
 <script setup lang="ts">
-import { ref, defineProps, reactive } from 'vue';
-import type { IPlacesVisited } from '@/utils/interfaces/PlacesVisited';
+import { ref, defineProps, reactive, watch } from 'vue';
+import type { IPlaceVisitedAlias } from '@/utils/interfaces/PlacesVisited';
 import apiService from '@/services/api.service';
 import { useToast } from 'vue-toastification';
 
-const { placesVisitedByTourists } = defineProps<{ placesVisitedByTourists: IPlacesVisited }>();
 const toast = useToast();
+const { placesVisitedByTourists } = defineProps<{ placesVisitedByTourists: IPlaceVisitedAlias[] }>();
 
 // create a local reactive copy of the data to allow interaction locally such as sorting
 const localPlacesVisited = reactive({
-  data: [...(placesVisitedByTourists?.data || [])],
+  data: [...(placesVisitedByTourists || [])],
 });
 
+// Change local placed in prop change
+watch(() => placesVisitedByTourists, (value) => {
+  localPlacesVisited.data = value
+})
+
+
 // Initially sort places visited according to date, with latest first
-localPlacesVisited?.data.sort((placeVisitedA, placeVisitedB) => {
+localPlacesVisited.data.sort((placeVisitedA, placeVisitedB) => {
   return placeVisitedB.dateVisited.getTime() - placeVisitedA.dateVisited.getTime();
 });
 
@@ -243,6 +249,7 @@ const deleteExperience = async (expId: number) => {
               </button>
             </div>
           </div>
+          <!-- EDITING COMPONENT -->
           <div v-else class="flex items-center">
             <p class="text-lg font-thin mr-3">{{ placeVisited.experience }}</p>
             <button

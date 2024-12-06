@@ -1,4 +1,4 @@
-interface IPlaceVisitedAlias {
+export interface IPlaceVisitedAlias {
   experienceId: number; // ID of experience from Experiences table: id
   placeName: string; // Name of the place described in the experience
   placeType: string; // Type of the place described in the experience

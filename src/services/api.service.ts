@@ -3,7 +3,7 @@ import type ExperienceHelpfulnessVote from '@/utils/interfaces/ExperienceHelpful
 import { auth } from '@/firebase';
 import Axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 import type IExperience from '@/utils/interfaces/Experience';
-import type { IPlacesVisited } from '@/utils/interfaces/PlacesVisited';
+import type { IPlaceVisitedAlias } from '@/utils/interfaces/PlacesVisited';
 
 // TEMP interfaces
 export interface IPlaceMarker {
@@ -90,8 +90,8 @@ class ApiService {
     return await this.api.get(`${this.apiUrl}/places/${placeId}`);
   }
 
-  async getUserExperience() :ApiResponse<IPlacesVisited> {
-    return await this.api.get(`${this.apiUrl}/experiences`)
+  async getUserExperience(): ApiResponse<IPlaceVisitedAlias[]> {
+    return await this.api.get(`${this.apiUrl}/user/experiences`);
   }
 
   async createExperience(placeId: number, data: ExperienceAddPackage): ApiResponse<IExperience> {
@@ -100,14 +100,14 @@ class ApiService {
     });
   }
 
-  async updateExperience(experienceId: number, experience: string): ApiResponse<IExperience>{
-    return await this.api.patch(`${this.apiUrl}/experiences/${experienceId}/edit`, {
+  async updateExperience(experienceId: number, experience: string): ApiResponse<IExperience> {
+    return await this.api.patch(`${this.apiUrl}/experiences/${experienceId}`, {
       data: experience,
     });
   }
 
   async deleteExperience(experienceId: number) {
-    return await this.api.delete(`${this.apiUrl}/experiences/${experienceId}/delete`);
+    return await this.api.delete(`${this.apiUrl}/experiences/${experienceId}`);
   }
 
   async retrieveHelpfulnessVote(): ApiResponse<ExperienceHelpfulnessVote[]> {
