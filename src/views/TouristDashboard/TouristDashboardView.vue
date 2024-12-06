@@ -7,9 +7,13 @@ import VisitedPlaces from './TouristDashboardComponents/VisitedPlaces.vue';
 import type { IPlacesVisited } from '@/utils/interfaces/PlacesVisited';
 // authorization
 import { getAuth } from 'firebase/auth';
+import apiService from '@/services/api.service';
 const auth = getAuth();
 // api route
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
+// toasts
+import { useToast } from 'vue-toastification';
+const toast = useToast();
 
 // Places visited by user
 const placesVisitedByUser = ref<IPlacesVisited | null>(null);
@@ -43,6 +47,15 @@ const mockPlacesVisitedByUser = {
 
 // database fetch requests for places visited
 const fetchPlacesVisitedByUser = async () => {
+  try {
+    const response = await apiService.getUserExperience();
+    placesVisitedByUser.value = response.data.data;
+  } catch (error) {
+    toast.error("An error occured while retrieving your experiences.", {
+      timeout: 3000
+    })
+    console.log('Error fetching experiences:', error);
+  }
   // TO DO: Uncomment when database is ready
   // TO DO: Replace mockPlacesVisitedByUser with placesVisitedByUser
   // const response = await fetch(`${apiUrl}/dashboard/placesVisited`, {
@@ -51,6 +64,7 @@ const fetchPlacesVisitedByUser = async () => {
   // });
   // placesVisitedByUser.value = await response.json();
 };
+
 fetchPlacesVisitedByUser(); // fetch the places visited by the user from the database
 </script>
 
