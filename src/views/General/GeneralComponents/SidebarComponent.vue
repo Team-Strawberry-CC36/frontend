@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { RouterLink } from 'vue-router';
 import { defineEmits } from 'vue';
+import { useToast } from 'vue-toastification';
 
 defineProps({
   openSidebar: Boolean,
@@ -11,6 +12,8 @@ defineProps({
 const username = ref<string | null>(null);
 
 const auth = getAuth();
+
+const toast = useToast();
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
@@ -23,15 +26,22 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-const handleSignOut = async () =>
+const handleSignOut = async () => {
   signOut(auth)
     .then(() => {
       // Sign-out successful.
+      toast.info("Sign out successful. See you next time!", {
+        timeout: 3000
+      })
     })
     .catch((error) => {
       // An error happened.
+      toast.error("An error occured while signing you out.", {
+        timeout: 3000
+      })
       console.log('Error: ' + error);
     });
+}
 
 // handle emits to close sidebar when clicking on link
 const emit = defineEmits(['close-sidebar']);
@@ -87,6 +97,13 @@ const emit = defineEmits(['close-sidebar']);
       class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse"
     >
       Welcome
+    </RouterLink>
+    <RouterLink
+      @click="emit('close-sidebar')"
+      to="/guides"
+      class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse"
+    >
+      Guides
     </RouterLink>
     <RouterLink
       @click="emit('close-sidebar')"

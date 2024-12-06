@@ -2,6 +2,8 @@ import type IPlace from '@/utils/interfaces/Place';
 import type ExperienceHelpfulnessVote from '@/utils/interfaces/ExperienceHelpfulnessVote';
 import { auth } from '@/firebase';
 import Axios, { type AxiosInstance, type AxiosResponse } from 'axios';
+import type IExperience from '@/utils/interfaces/Experience';
+import type { IPlaceVisitedAlias } from '@/utils/interfaces/PlacesVisited';
 
 // TEMP interfaces
 export interface IPlaceMarker {
@@ -97,10 +99,24 @@ class ApiService {
     });
   }
 
-  async createExperience(placeId: number, data: ExperienceAddPackage): ApiResponse<IPlace> {
+  async getUserExperience(): ApiResponse<IPlaceVisitedAlias[]> {
+    return await this.api.get(`${this.apiUrl}/user/experiences`);
+  }
+
+  async createExperience(placeId: number, data: ExperienceAddPackage): ApiResponse<IExperience> {
     return await this.api.post(`${this.apiUrl}/places/${placeId}/experiences`, {
       data: data,
     });
+  }
+
+  async updateExperience(experienceId: number, experience: string): ApiResponse<IExperience> {
+    return await this.api.patch(`${this.apiUrl}/experiences/${experienceId}`, {
+      data: experience,
+    });
+  }
+
+  async deleteExperience(experienceId: number) {
+    return await this.api.delete(`${this.apiUrl}/experiences/${experienceId}`);
   }
 
   async retrieveHelpfulnessVote(): ApiResponse<ExperienceHelpfulnessVote[]> {

@@ -12,13 +12,13 @@ const handleSignIn = async () => {
   try {
     await signInThroughFirebase(email.value, password.value);
     toast.success('Login successful! Welcome!', {
-      timeout: 3000
-    })
+      timeout: 3000,
+    });
   } catch (error) {
     toast.error('Login failed. Please check your login credentials and try again.', {
-      timeout: 3000
+      timeout: 3000,
     });
-    console.log('Error logging in:', error)
+    console.log('Error logging in:', error);
   }
 };
 </script>
