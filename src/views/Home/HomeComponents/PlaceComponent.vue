@@ -5,31 +5,13 @@ import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
 import { defineProps, onMounted, ref } from 'vue';
 import { defineEmits } from 'vue';
+import PhotosComponent from './PhotosComponent.vue';
+
 const emit = defineEmits(['show-add-vote', 'show-review-vote']);
 
 const place = usePlaceStore();
 
 const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquetteVotes }>();
-const photos = ref<string[]>([]);
-const loading = ref(false);
-const error = ref<string | null>(null);
-
-onMounted(async () => {
-  loading.value = true;
-  error.value = null;
-
-  try {
-    const response = await apiService.fetchPhotos(place.details.id);
-    // Need to change unknow to something
-    photos.value = response.data as unknown as string[];
-    place.details.photos = photos.value;
-  } catch (err) {
-    console.error(err);
-    error.value = 'Failed to load photos.';
-  } finally {
-    loading.value = false;
-  }
-});
 </script>
 
 <template>
@@ -39,12 +21,7 @@ onMounted(async () => {
     <section class="h-[20vh]">
       <!-- Cover Photo -->
       <div class="h-full w-full">
-        <img
-          v-if="place.details.photos?.length > 0 && place.details.photos"
-          class="w-full h-full object-cover border-b border-slate-400"
-          :src="place.details.photos[0].fileData"
-          alt="place_photo"
-        />
+        <PhotosComponent />
       </div>
     </section>
     <div class="flex flex-col p-5 items-center">
