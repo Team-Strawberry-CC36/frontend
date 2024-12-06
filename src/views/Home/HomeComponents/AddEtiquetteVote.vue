@@ -2,7 +2,7 @@
 import { defineEmits } from 'vue';
 import { useToast } from 'vue-toastification';
 
-const emit = defineEmits(['close-add-vote']);
+const emit = defineEmits(['close-add-vote', 'refresh-votes-data']);
 
 const toast = useToast();
 
@@ -64,21 +64,28 @@ const submitVote = async () => {
 
     try {
         const response = await fetch(`${apiUrl}/moreTesting/places/${place.details.id}/votes`, {
-        method: 'POST',
-        headers,
-        credentials: 'include',
-        body: JSON.stringify({
-                votes: voteData,
-                placeId: place.details.id,
-            }),
+            method: 'POST',
+            headers,
+            credentials: 'include',
+            body: JSON.stringify({
+                    votes: voteData,
+                    placeId: place.details.id,
+                }),
         });
-
+        
         if (!response.ok) {
             toast.error('An error occured while sending your input.', {
                 timeout: 3000
             });
-        throw new Error(`Error: ${response.status} ${response.statusText}`);
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
+
+        const result = await response.json();
+        console.log(result);
+        if (result.message === "Inserted successfully") {
+            emit('refresh-votes-data');
+        }
+
     } catch (error) {
         console.log('There was an error posting the vote:', error);
     }

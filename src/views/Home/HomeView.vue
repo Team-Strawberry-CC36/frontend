@@ -43,12 +43,14 @@ const place = usePlaceStore();
 const placeMarkers = ref<IPlaceMarker[]>([]);
 //const displayedPlace = ref<IPlace| null>(null);
 const etiquetteVotesData = ref<IPlaceEtiquetteVotes | null>(null);
+const googlePlaceId = ref<string | null>(null);
 
 const searchQuery = ref('');
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 // Some functions for async
 const getPlaceEtiquetteVotesData = async (placeId: string) => {
+  console.log("The place id is: ", placeId);
   const user = auth.currentUser;
   if (user) {
     const token = await user.getIdToken();
@@ -80,6 +82,12 @@ const getPlaceEtiquetteVotesData = async (placeId: string) => {
   }
 };
 
+const handleRefreshVotes = async () => {
+  if (googlePlaceId.value) {
+    await getPlaceEtiquetteVotesData(googlePlaceId.value);
+  }
+}
+
 const getPlaceDetails = async (placeId: string) => {
   try {
     const response = await apiService.getPlace(placeId);
@@ -101,6 +109,7 @@ const handleSearchResults = (event: { event: string; data: IPlaceMarker[] }) => 
 
 const handleMarkerClicked = (event: { event: string; data: string }) => {
   console.log(event.data); // find out what data is!
+  googlePlaceId.value = event.data;
   getPlaceDetails(event.data);
   getPlaceEtiquetteVotesData(event.data); // then change the type in this fetch request
 };
@@ -149,6 +158,7 @@ const toggleReviewVoteView = () => {
           v-if="viewEtiquetteVote"
           :etiquetteVotesData="etiquetteVotesData"
           @close-add-vote="toggleVoteView"
+          @refresh-votes-data="handleRefreshVotes"
         />
         <!-- Add a component to review your vote -->
         <ReviewEtiquetteVote
