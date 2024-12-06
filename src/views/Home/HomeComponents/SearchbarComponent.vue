@@ -24,7 +24,7 @@ const performSearch = async () => {
   }
 
   // Get user location
-  const coordinates = getUserGeoLocation()
+  const coordinates = getUserGeoLocation();
 
   errorMessage.value = '';
 
@@ -40,21 +40,23 @@ const performSearch = async () => {
 };
 
 function getUserGeoLocation(): { lat: number; lng: number } | null {
-  if ("geolocation" in navigator) {
-  // Geolocation is available in the browser
-    navigator.geolocation.getCurrentPosition((position) => {
-      return {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      }
-    }, () => {
-      // Error!
-      return null;
-    });
-    }
-    return null;
+  if ('geolocation' in navigator) {
+    // Geolocation is available in the browser
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        return {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+      },
+      () => {
+        // Error!
+        return null;
+      },
+    );
   }
-
+  return null;
+}
 
 // Mobile detection code purely just to change the filter options into emojis
 // Reactive property to track mobile view

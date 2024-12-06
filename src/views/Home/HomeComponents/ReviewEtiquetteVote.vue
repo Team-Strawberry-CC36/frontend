@@ -69,8 +69,8 @@ const updateVote = async () => {
     if (!response.ok) {
       alert('ERROR!');
       toast.error('An error occured while sending your input.', {
-        timeout: 3000
-      })
+        timeout: 3000,
+      });
       throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
   } catch (error) {
