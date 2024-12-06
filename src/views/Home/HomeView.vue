@@ -10,7 +10,6 @@ import ReviewEtiquetteVote from './HomeComponents/ReviewEtiquetteVote.vue';
 import { getAuth } from 'firebase/auth';
 import apiService, { type IPlaceMarker } from '@/services/api.service';
 import { usePlaceStore } from '@/stores/PlaceStore';
-import type { IPlaceMarker } from '@/services/api.service';
 
 const auth = getAuth();
 const place = usePlaceStore();
