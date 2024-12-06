@@ -59,9 +59,14 @@ const getPlaceEtiquetteVotesData = async (place: IPlace) => {
   }
 };
 
-const getPlaceDetails = async (placeId: number, category: string) => {
+const getPlaceDetails = async (placeId: string, category: string) => {
   try {
-    const response = await apiService.getPlace(placeId, category);
+    const numericPlaceId = Number(placeId);
+    if (isNaN(numericPlaceId)) {
+      throw new Error(`Invalid placeId: ${placeId}`);
+    }
+
+    const response = await apiService.getPlace(numericPlaceId, category);
     place.$patch({
       details: response.data.data,
     });
@@ -83,7 +88,8 @@ const handleSearchResults = (event: { event: string; data: IPlaceMarker[] }) => 
 };
 
 const handleMarkerClicked = (event: { event: string; data: string }) => {
-  getPlaceDetails(event.data);
+  const category = 'defaultCategory';
+  getPlaceDetails(event.data, category);
 };
 
 /**
