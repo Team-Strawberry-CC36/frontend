@@ -110,15 +110,14 @@ const sortByPlaceName = (order: string) => {
       <div
         v-for="placeVisited in localPlacesVisited?.data"
         :key="placeVisited.placeId"
-        class="p-3 border border-velvet rounded-lg mt-3"
+        class="p-3 border border-slate-400 bg-frostWhite rounded-lg mt-3"
       >
         <h3 class="text-lg font-extralight">
           {{ placeVisited.placeName }} : {{ placeVisited.placeType }}
         </h3>
         <p class="text-sm font-bold">You visited here {{ placeVisited.dateVisited }}</p>
 
-        <p class="text-lg font-bold mt-3">Your experience:</p>
-        <hr class="w-full mb-3" />
+        <p class="text-lg font-bold my-3 pb-2 border-b border-slate-400">Your experience:</p>
         <div class="flex flex-row items-start">
           <p class="text-lg font-thin mr-3">{{ placeVisited.experience }}</p>
           <button class="border border-velvet h-10 w-14 text-xs p-1 text-bold rounded mt-auto">
