@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { RouterLink } from 'vue-router';
 import { defineEmits } from 'vue';
+import { useToast } from 'vue-toastification';
 
 defineProps({
   openSidebar: Boolean,
@@ -11,6 +12,8 @@ defineProps({
 const username = ref<string | null>(null);
 
 const auth = getAuth();
+
+const toast = useToast();
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
@@ -23,15 +26,22 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-const handleSignOut = async () =>
+const handleSignOut = async () => {
   signOut(auth)
     .then(() => {
       // Sign-out successful.
+      toast.info("Sign out successful. See you next time!", {
+        timeout: 3000
+      })
     })
     .catch((error) => {
       // An error happened.
+      toast.error("An error occured while signing you out.", {
+        timeout: 3000
+      })
       console.log('Error: ' + error);
     });
+}
 
 // handle emits to close sidebar when clicking on link
 const emit = defineEmits(['close-sidebar']);

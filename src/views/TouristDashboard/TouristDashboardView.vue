@@ -6,7 +6,7 @@ import VisitedPlaces from './TouristDashboardComponents/VisitedPlaces.vue';
 // import types and interfaces needed
 import type { IPlacesVisited } from '@/utils/interfaces/PlacesVisited';
 // authorization
-import { getAuth } from 'firebase/auth';
+import { getAuth, signOut } from 'firebase/auth';
 import apiService from '@/services/api.service';
 const auth = getAuth();
 // toasts
@@ -64,17 +64,40 @@ const fetchPlacesVisitedByUser = async () => {
 };
 
 fetchPlacesVisitedByUser(); // fetch the places visited by the user from the database
+
+const handleSignOut = async () => {
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+      toast.info("Sign out successful. See you next time!", {
+        timeout: 3000
+      })
+    })
+    .catch((error) => {
+      // An error happened.
+      toast.error("An error occured while signing you out.", {
+        timeout: 3000
+      })
+      console.log('Error: ' + error);
+    });
+}
 </script>
 
 <template>
   <div class="flex flex-col w-full">
-    <section class="flex flex-row justify-between p-3">
+    <section class="flex flex-row justify-center sm:justify-start p-3">
       <!-- Header section -->
       <h1 class="text-3xl m-3">{{ auth.currentUser?.displayName }}'s Dashboard</h1>
     </section>
     <section class="p-3 justify-items-center">
       <!-- Section for badges -->
-      <p class="m-3">Badges info in this section</p>
+      <div class="flex flex-col w-full sm:w-3/4 p-3 rounded-xl border border-slate-400 bg-frostWhite justify-center">
+        <h1 class="m-1 text-center">Badges and Titles</h1>
+        <p v-if="placesVisitedByUser?.data.length === undefined || placesVisitedByUser?.data.length < 5" class="m-1 text-center font-extralight">No badge titles earned yet. Share more experiences to earn some!</p>
+        <p v-else-if="placesVisitedByUser?.data.length >= 5 || placesVisitedByUser?.data.length < 10" class="m-1 text-center font-extralight">Noice Traveller</p>
+        <p v-else-if="placesVisitedByUser?.data.length >= 10 || placesVisitedByUser?.data.length < 20" class="m-1 text-center font-extralight">Well-Travelled</p>
+        <p v-else-if="placesVisitedByUser?.data.length >= 20" class="m-1 text-center font-extralight">Local Expert!</p>
+      </div>
     </section>
     <section class="p-3 flex flex-row justify-between">
       <!-- Section listing places you visited and experiences contributed -->
@@ -89,6 +112,7 @@ fetchPlacesVisitedByUser(); // fetch the places visited by the user from the dat
       </button>
       <button
         class="border border-charcoal bg-frostWhite text-charcoal text-xl rounded p-3 m-3 hover:bg-charcoal hover:text-frostWhite"
+        @click.prevent="handleSignOut"
       >
         Logout
       </button>
