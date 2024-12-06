@@ -105,7 +105,7 @@ watch(
       markerMapObject.addEventListener('gmp-click', () => {
         emit('map-marker-clicked', {
           event: 'map-marker-clicked',
-          data: marker.id,
+          data: marker,
         });
       });
     });

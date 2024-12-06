@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { usePlaceStore } from '@/stores/PlaceStore';
 import { ref, watch, onMounted, onUnmounted } from 'vue';
-import apiService from '@/services/api.service';
+import apiService, { type IPlaceMarker } from '@/services/api.service';
+
 const place = usePlaceStore();
 
 const searchQuery = ref('onsen');
@@ -31,9 +32,19 @@ const performSearch = async () => {
   try {
     // [ ] Send coordinates!
     const response = await apiService.search(searchQuery.value, searchCategory.value);
-    const data = response.data;
+    const data = response.data.data;
 
-    emit('search', data);
+    const markers: IPlaceMarker[] = data.map((item) => {
+      return {
+        ...item,
+        category: searchCategory.value,
+      };
+    });
+
+    emit('search', {
+      event: 'search-perfomed',
+      data: markers,
+    });
   } catch (error) {
     console.error('Search request failed: ', error);
   }
