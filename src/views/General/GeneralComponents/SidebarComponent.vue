@@ -90,6 +90,13 @@ const emit = defineEmits(['close-sidebar']);
     </RouterLink>
     <RouterLink
       @click="emit('close-sidebar')"
+      to="/guides"
+      class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse"
+    >
+      Guides
+    </RouterLink>
+    <RouterLink
+      @click="emit('close-sidebar')"
       to="/about"
       class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse"
     >
