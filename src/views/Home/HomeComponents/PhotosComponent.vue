@@ -17,7 +17,7 @@ const placeStore = usePlaceStore();
         :pauseAutoplayOnHover="true"
       >
         <Slide v-for="(url, key) in placeStore.details.photos" :key="key">
-          <img :src="url" alt="Place Photo" class="block w-full h-[20vh] object-cover" />
+          <img :src="url" alt="Place Photo" class="w-full h-[20vh] object-cover" />
         </Slide>
         <template #addons>
           <Navigation />
