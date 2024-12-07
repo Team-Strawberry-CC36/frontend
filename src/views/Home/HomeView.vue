@@ -67,6 +67,7 @@ const getPlaceEtiquetteVotesData = async (placeId: string) => {
         credentials: 'include',
       });
       etiquetteVotesData.value = await response.json();
+      console.log("Data received back is: ", etiquetteVotesData.value);
       etiquetteVotesData.value?.data.usersVote.forEach(vote => {
         if (vote.vote) {
           const transformedVote = vote.vote.toLowerCase().replace(/_/g, '-');
@@ -126,6 +127,7 @@ const viewPlaceDetails = ref<boolean>(true);
 
 const toggleVoteView = () => {
   viewEtiquetteVote.value = !viewEtiquetteVote.value;
+  console.log(viewEtiquetteVote.value);
   viewPlaceDetails.value = !viewPlaceDetails.value;
 };
 

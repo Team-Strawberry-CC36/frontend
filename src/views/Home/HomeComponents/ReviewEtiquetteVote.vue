@@ -12,6 +12,8 @@ import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVote
 import type { EtiquetteStatus } from '@/utils/interfaces/Etiquette';
 const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquetteVotes | null }>();
 
+console.log("In review etiquette votes:", etiquetteVotesData);
+
 // Authorization
 import { getAuth } from 'firebase/auth';
 const auth = getAuth();
