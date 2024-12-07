@@ -11,6 +11,7 @@ import { getAuth } from 'firebase/auth';
 import apiService, { type IPlaceMarker } from '@/services/api.service';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import { useLoadingStore } from '@/stores/LoadingStore';
+import type { EtiquetteStatus } from '@/utils/interfaces/Etiquette';
 
 const auth = getAuth();
 const place = usePlaceStore();
@@ -43,20 +44,44 @@ const load = useLoadingStore();
 const placeMarkers = ref<IPlaceMarker[]>([]);
 const etiquetteVotesData = ref<IPlaceEtiquetteVotes | null>(null);
 
+// This is necessary to refresh the voting data, otherwise the placeId becomes the placeId from the database
+// which is different from the googlePlaceId.
+const googlePlaceId = ref<string | null>(null);
+
 const searchQuery = ref('');
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 // Some functions for async
-const getPlaceEtiquetteVotesData = async (place: IPlace) => {
-  try {
-    const response = await fetch(`${apiUrl}/moreTesting/places/${place.id}/votes`, {
-      method: 'GET',
-      credentials: 'include',
-    });
+const getPlaceEtiquetteVotesData = async (placeId: string) => {
+  const user = auth.currentUser;
 
-    etiquetteVotesData.value = await response.json();
-  } catch (error) {
-    console.error('There was an error getting etiquette votes from the database: ', error);
+  if (user) {
+    const token = await user.getIdToken();
+    const headers: Record<string, string> = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+      };
+    try {
+      const response = await fetch(`${apiUrl}/moreTesting/places/${placeId}/votes`, {
+        method: 'GET',
+        headers,
+      });
+      etiquetteVotesData.value = await response.json();
+      console.log("Data received back is: ", etiquetteVotesData.value);
+      etiquetteVotesData.value?.data.usersVote.forEach(vote => {
+        if (vote.vote) {
+          const transformedVote = vote.vote.toLowerCase().replace(/_/g, '-');
+          if (['allowed', 'not-allowed'].includes(transformedVote)) {
+            vote.vote = transformedVote as EtiquetteStatus;
+          } else {
+            vote.vote = undefined;
+          }
+        }
+      });
+      console.log("Here is your etiquette votes data:", etiquetteVotesData.value);
+    } catch (error) {
+      console.error('There was an error getting etiquette votes from the database: ', error);
+    }
   }
 };
 
@@ -85,8 +110,26 @@ const handleSearchResults = (event: { event: string; data: IPlaceMarker[] }) => 
   placeMarkers.value = event.data;
 };
 
+const handleRefreshVotes = async () => {
+  if (googlePlaceId.value) {
+    await getPlaceEtiquetteVotesData(googlePlaceId.value);
+  }
+}
+
 const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
-  getPlaceDetails(event.data.id, event.data.category);
+  console.log(event.data);
+  // NOTE ! set a googlePlaceId variable?
+  googlePlaceId.value = event.data.id;
+
+  // 1. First get place details!
+  getPlaceDetails(event.data.id, event.data.category)
+    .then(() => {
+    // 2. Then get etiquttes voting data
+      getPlaceEtiquetteVotesData(event.data.id); // then change the type in this fetch request
+    }).catch(() => {
+      // [ ] Add error validation
+      console.error("Ops! something happend in handleMarkerClicked")
+    })
 };
 
 /**
@@ -99,6 +142,7 @@ const viewPlaceDetails = ref<boolean>(true);
 
 const toggleVoteView = () => {
   viewEtiquetteVote.value = !viewEtiquetteVote.value;
+  console.log(viewEtiquetteVote.value);
   viewPlaceDetails.value = !viewPlaceDetails.value;
 };
 
@@ -106,6 +150,7 @@ const toggleReviewVoteView = () => {
   viewReviewEtiquetteVote.value = !viewReviewEtiquetteVote.value;
   viewPlaceDetails.value = !viewPlaceDetails.value;
 };
+
 </script>
 
 <template>
@@ -133,12 +178,14 @@ const toggleReviewVoteView = () => {
           v-if="viewEtiquetteVote"
           :etiquetteVotesData="etiquetteVotesData"
           @close-add-vote="toggleVoteView"
+          @refresh-votes-data="handleRefreshVotes"
         />
         <!-- Add a component to review your vote -->
         <ReviewEtiquetteVote
           v-if="viewReviewEtiquetteVote"
           :etiquetteVotesData="etiquetteVotesData"
           @close-review-vote="toggleReviewVoteView"
+          @refresh-votes-data="handleRefreshVotes"
         />
       </div>
     </div>

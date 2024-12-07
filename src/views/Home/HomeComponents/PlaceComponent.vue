@@ -65,17 +65,19 @@ const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquette
       <section v-if="etiquetteVotesData" class="m-5 w-full pb-5 border-b border-slate-400">
         <h2 class="text-center text-velvet text-xl">Etiquette Rules</h2>
         <ul class="list-disc list-inside font-light">
-          <li v-for="item in etiquetteVotesData.data.etiquetteVotes" :key="item.etiquetteId">
-            {{ item.etiquetteType }} :
+          <li class="pb-3" v-for="item in etiquetteVotesData.data.etiquetteVotes" :key="item.etiquetteId">
+            <span class="font-bold">{{ item.etiquetteType }}</span> :
             {{
-              item.numberOfVotesForAllowed >= 2 * item.numberOfVotesForNotAllowed
+              item.numberOfVotesForAllowed === 0 && item.numberOfVotesForNotAllowed === 0
+                ? 'Be the first to share' : 
+              item.numberOfVotesForAllowed >= item.numberOfVotesForNotAllowed
                 ? 'allowed'
                 : 'not allowed'
             }}
           </li>
         </ul>
         <div v-if="etiquetteVotesData.data.userHasVoted === false">
-          <p>Agree with these etiquette rules for this place? Let us know.</p>
+          <p>Visited here? Tell us about the etiquette rules.</p>
           <div>
             <button
               class="block mx-auto w-3/4 p-5 rounded-3xl border border-slate-400 hover:bg-white bg-velvet text-frostWhite hover:text-velvet hover:cursor-pointer"
@@ -86,10 +88,10 @@ const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquette
           </div>
         </div>
         <div v-if="etiquetteVotesData.data.userHasVoted === true">
-          <p>Want to review your vote?</p>
+          <p>Want to review the etiquette rules you told us about?</p>
           <div>
             <button
-              class="block mx-auto w-3/4 p-5 rounded-3xl border border-salte-400 hover:bg-white bg-velvet text-frostWhite hover:text-velvet hover:cursor-pointer"
+              class="block mx-auto w-3/4 p-5 rounded-3xl border border-slate-400 hover:bg-white bg-velvet text-frostWhite hover:text-velvet hover:cursor-pointer"
               @click="emit('show-review-vote')"
             >
               Review vote
