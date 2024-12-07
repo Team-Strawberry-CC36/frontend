@@ -2,10 +2,13 @@ import type IPlace from '@/utils/interfaces/Place';
 import type ExperienceHelpfulnessVote from '@/utils/interfaces/ExperienceHelpfulnessVote';
 import { auth } from '@/firebase';
 import Axios, { type AxiosInstance, type AxiosResponse } from 'axios';
+import type IExperience from '@/utils/interfaces/Experience';
+import type { IPlaceVisitedAlias } from '@/utils/interfaces/PlacesVisited';
 
 // TEMP interfaces
 export interface IPlaceMarker {
   id: string;
+  category: string;
   location: {
     lat: number;
     lon: number;
@@ -71,7 +74,7 @@ class ApiService {
     );
   }
 
-  async search(search: string, category: string): ApiResponse<IPlaceMarker[]> {
+  async search(search: string, category: string): ApiResponse<Omit<IPlaceMarker[], 'category'>> {
     return await this.api.post(`${this.apiUrl}/search`, {
       method: 'POST',
       headers: {
@@ -84,14 +87,36 @@ class ApiService {
     });
   }
 
-  async getPlace(placeId: string): ApiResponse<IPlace> {
-    return await this.api.get(`${this.apiUrl}/places/${placeId}`);
+  async getPlace(placeId: string, category: string): ApiResponse<IPlace> {
+    return await this.api.get(`${this.apiUrl}/places/${placeId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: {
+        category: category,
+      },
+    });
   }
 
-  async createExperience(placeId: number, data: ExperienceAddPackage): ApiResponse<IPlace> {
+  async getUserExperience(): ApiResponse<IPlaceVisitedAlias[]> {
+    return await this.api.get(`${this.apiUrl}/user/experiences`);
+  }
+
+  async createExperience(placeId: number, data: ExperienceAddPackage): ApiResponse<IExperience> {
     return await this.api.post(`${this.apiUrl}/places/${placeId}/experiences`, {
       data: data,
     });
+  }
+
+  async updateExperience(experienceId: number, experience: string): ApiResponse<IExperience> {
+    return await this.api.patch(`${this.apiUrl}/experiences/${experienceId}`, {
+      data: experience,
+    });
+  }
+
+  async deleteExperience(experienceId: number) {
+    return await this.api.delete(`${this.apiUrl}/experiences/${experienceId}`);
   }
 
   async retrieveHelpfulnessVote(): ApiResponse<ExperienceHelpfulnessVote[]> {
@@ -122,6 +147,10 @@ class ApiService {
     return await this.api.patch(`${this.apiUrl}/experiences/${experienceId}/votes/${voteId}`, {
       vote: vote,
     });
+  }
+
+  async fetchPhotos(placeId: number): ApiResponse<string[]> {
+    return await this.api.get(`${this.apiUrl}/places/${placeId}/photos`);
   }
 }
 

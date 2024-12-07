@@ -8,13 +8,14 @@ import HomeMap from './HomeComponents/HomeMap.vue';
 import AddEtiquetteVote from './HomeComponents/AddEtiquetteVote.vue';
 import ReviewEtiquetteVote from './HomeComponents/ReviewEtiquetteVote.vue';
 import { getAuth } from 'firebase/auth';
-import apiService from '@/services/api.service';
+import apiService, { type IPlaceMarker } from '@/services/api.service';
 import { usePlaceStore } from '@/stores/PlaceStore';
-import type { IPlaceMarker } from '@/services/api.service';
+import { useLoadingStore } from '@/stores/LoadingStore';
 import type { EtiquetteStatus } from '@/utils/interfaces/Etiquette';
 
 const auth = getAuth();
 const place = usePlaceStore();
+const load = useLoadingStore();
 
 // const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
 //     message: "Lovely job!",
@@ -41,7 +42,6 @@ const place = usePlaceStore();
 // };
 
 const placeMarkers = ref<IPlaceMarker[]>([]);
-//const displayedPlace = ref<IPlace| null>(null);
 const etiquetteVotesData = ref<IPlaceEtiquetteVotes | null>(null);
 
 // This is necessary to refresh the voting data, otherwise the placeId becomes the placeId from the database
@@ -54,6 +54,7 @@ const apiUrl = import.meta.env.VITE_BACKEND_URL;
 // Some functions for async
 const getPlaceEtiquetteVotesData = async (placeId: string) => {
   const user = auth.currentUser;
+
   if (user) {
     const token = await user.getIdToken();
     const headers: Record<string, string> = {
@@ -64,7 +65,6 @@ const getPlaceEtiquetteVotesData = async (placeId: string) => {
       const response = await fetch(`${apiUrl}/moreTesting/places/${placeId}/votes`, {
         method: 'GET',
         headers,
-        credentials: 'include',
       });
       etiquetteVotesData.value = await response.json();
       console.log("Data received back is: ", etiquetteVotesData.value);
@@ -85,18 +85,18 @@ const getPlaceEtiquetteVotesData = async (placeId: string) => {
   }
 };
 
-const handleRefreshVotes = async () => {
-  if (googlePlaceId.value) {
-    await getPlaceEtiquetteVotesData(googlePlaceId.value);
-  }
-}
-
-const getPlaceDetails = async (placeId: string) => {
+const getPlaceDetails = async (placeId: string, category: string) => {
   try {
-    const response = await apiService.getPlace(placeId);
+    load.loading = true;
+    const response = await apiService.getPlace(placeId, category);
     place.$patch({
       details: response.data.data,
     });
+
+    const photosResponse = await apiService.fetchPhotos(response.data.data.id);
+
+    place.updatePhotos(photosResponse.data.data);
+    load.loading = false;
   } catch (e) {
     console.error({
       message: 'There was an error getting place details in homeView',
@@ -110,11 +110,26 @@ const handleSearchResults = (event: { event: string; data: IPlaceMarker[] }) => 
   placeMarkers.value = event.data;
 };
 
-const handleMarkerClicked = (event: { event: string; data: string }) => {
-  console.log(event.data); // find out what data is!
-  googlePlaceId.value = event.data;
-  getPlaceDetails(event.data);
-  getPlaceEtiquetteVotesData(event.data); // then change the type in this fetch request
+const handleRefreshVotes = async () => {
+  if (googlePlaceId.value) {
+    await getPlaceEtiquetteVotesData(googlePlaceId.value);
+  }
+}
+
+const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
+  console.log(event.data);
+  // NOTE ! set a googlePlaceId variable?
+  googlePlaceId.value = event.data.id;
+
+  // 1. First get place details!
+  getPlaceDetails(event.data.id, event.data.category)
+    .then(() => {
+    // 2. Then get etiquttes voting data
+      getPlaceEtiquetteVotesData(event.data.id); // then change the type in this fetch request
+    }).catch(() => {
+      // [ ] Add error validation
+      console.error("Ops! something happend in handleMarkerClicked")
+    })
 };
 
 /**
@@ -135,6 +150,7 @@ const toggleReviewVoteView = () => {
   viewReviewEtiquetteVote.value = !viewReviewEtiquetteVote.value;
   viewPlaceDetails.value = !viewPlaceDetails.value;
 };
+
 </script>
 
 <template>

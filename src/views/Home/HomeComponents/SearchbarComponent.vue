@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { usePlaceStore } from '@/stores/PlaceStore';
 import { ref, watch, onMounted, onUnmounted } from 'vue';
-import apiService from '@/services/api.service';
+import apiService, { type IPlaceMarker } from '@/services/api.service';
+import { useToast } from 'vue-toastification';
+import { useLoadingStore } from '@/stores/LoadingStore';
+
 const place = usePlaceStore();
+const toast = useToast();
+const load = useLoadingStore();
 
 const searchQuery = ref('onsen');
 const searchCategory = ref('onsen');
@@ -24,37 +29,55 @@ const performSearch = async () => {
   }
 
   // Get user location
-  const coordinates = getUserGeoLocation()
+  const coordinates = getUserGeoLocation();
 
   errorMessage.value = '';
 
   try {
     // [ ] Send coordinates!
+    load.loading = true;
     const response = await apiService.search(searchQuery.value, searchCategory.value);
-    const data = response.data;
+    const data = response.data.data;
+    load.loading = false;
 
-    emit('search', data);
+    const markers: IPlaceMarker[] = data.map((item) => {
+      return {
+        ...item,
+        category: searchCategory.value,
+      };
+    });
+
+    emit('search', {
+      event: 'search-perfomed',
+      data: markers,
+    });
   } catch (error) {
+    load.loading = false;
+    toast.error("An error occured while performing your search.", {
+      timeout: 3000
+    })
     console.error('Search request failed: ', error);
   }
 };
 
 function getUserGeoLocation(): { lat: number; lng: number } | null {
-  if ("geolocation" in navigator) {
-  // Geolocation is available in the browser
-    navigator.geolocation.getCurrentPosition((position) => {
-      return {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      }
-    }, () => {
-      // Error!
-      return null;
-    });
-    }
-    return null;
+  if ('geolocation' in navigator) {
+    // Geolocation is available in the browser
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        return {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+      },
+      () => {
+        // Error!
+        return null;
+      },
+    );
   }
-
+  return null;
+}
 
 // Mobile detection code purely just to change the filter options into emojis
 // Reactive property to track mobile view

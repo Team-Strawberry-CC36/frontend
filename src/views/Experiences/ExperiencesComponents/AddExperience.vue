@@ -4,11 +4,13 @@ import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IEtiquettePerPlace } from '@/utils/interfaces/Etiquette';
 import apiService from '@/services/api.service';
 import { useToast } from 'vue-toastification';
+import { useLoadingStore } from '@/stores/LoadingStore';
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 console.log(apiUrl);
 
 const place = usePlaceStore();
+const load = useLoadingStore();
 
 const toast = useToast();
 
@@ -71,9 +73,10 @@ function resetForm() {
 
 const handleAddExperience = async () => {
   try {
-    const formattedEtiquettes = experiencePackage.etiquette.map((item) => {
+    load.loading = true;
+    const formattedEtiquettes = experiencePackage.selectedEtiquette.map((item) => {
       return {
-        etiquette_id: item.id,
+        etiquette_id: item,
       };
     });
     const response = await apiService.createExperience(place.details.id, {
@@ -85,17 +88,26 @@ const handleAddExperience = async () => {
     if (response.status === 201) {
       resetForm();
       handleToggleAddExperience();
+      load.loading = false;
+      toast.success("Thank you for sharing your experience!", {
+        timeout: 3000
+      })
       // add to pinia to recent experience added
       console.log('inserted!');
     } else {
       resetForm();
+      load.loading = false;
       toast.error('Failed to post experience.', {
-        timeout: 3000
+        timeout: 3000,
       });
       // handleToggleAddExperience();
       throw 'There was an error!';
     }
   } catch (error) {
+    load.loading = false;
+    toast.error("Something unexpected happened.", {
+      timeout: 3000
+    })
     console.error(error);
   }
 };
@@ -115,7 +127,7 @@ const onCheck = (event: Event, id: number) => {
       event.preventDefault();
       target.checked = false;
       toast.info('You can only select up to 3 etiquette options.', {
-        timeout: 3000
+        timeout: 3000,
       });
     }
   } else {

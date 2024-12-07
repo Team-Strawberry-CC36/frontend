@@ -33,11 +33,14 @@ const retrieveVote = async () => {
       votes.update(response.data.data);
     } else {
       toast.error('An error occured while retrieving user information.', {
-        timeout: 3000
+        timeout: 3000,
       });
       throw 'An error an occured while retrieving helpfulness vote data.';
     }
   } catch (error) {
+    toast.error("Something unexpected happened.", {
+      timeout: 3000
+    })
     console.error(error);
   }
 };
@@ -62,7 +65,7 @@ const filteredExperiences = computed(() => {
     // Filters based on etiquette selection
     const filtered = selectedFilter.value
       ? place.details.experiences.filter(
-          (experience) => experience.etiquettes[0].label === selectedFilter.value,
+          (experience) => experience.etiquettes.some((etiquette) => etiquette.label === selectedFilter.value),
         )
       : place.details.experiences;
     // arranges experiences based on helpfulness score in descending order
@@ -109,7 +112,7 @@ const handleVote = async (exid: number, vote: string) => {
         console.log('Vote posted!');
       } else {
         toast.error('An error occured while posting your helpfulness vote.', {
-          timeout: 3000
+          timeout: 3000,
         });
         throw 'An error an occured while posting helpfulness vote data.';
       }
@@ -129,7 +132,7 @@ const handleVote = async (exid: number, vote: string) => {
           console.log('Vote deleted!');
         } else {
           toast.error('An error occured while removing your helpfulness vote.', {
-            timeout: 3000
+            timeout: 3000,
           });
           throw 'An error an occured while deleting helpfulness vote data.';
         }
@@ -145,7 +148,7 @@ const handleVote = async (exid: number, vote: string) => {
           console.log('Vote edited!');
         } else {
           toast.error('An error occured while changing your helpfulness vote.', {
-            timeout: 3000
+            timeout: 3000,
           });
           throw 'An error an occured while editing helpfulness vote data.';
         }
@@ -204,7 +207,7 @@ onUnmounted(() => {
         <img
           v-if="place.details.photos?.length > 0 && place.details.photos"
           class="w-full h-full object-cover"
-          :src="place.details.photos[0].fileData"
+          :src="place.details.photos[Math.floor(Math.random() * 3)]"
           alt="place_photo"
         />
       </div>
@@ -278,7 +281,7 @@ onUnmounted(() => {
           <section class="basis-auto w-full">
             <div class="flex flex-row m-1 justify-between text-xl">
               <h4>Etiquette</h4>
-              <p class="text-velvet">{{ experience.etiquettes[0].label }}</p>
+              <p class="text-velvet">{{ experience.etiquettes.map(e => e.label).join(' | ') }}</p>
             </div>
             <div class="flex flex-col m-1 justify-between">
               <h4 class="text-xl">Experience</h4>
