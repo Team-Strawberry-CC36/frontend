@@ -1,34 +1,42 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="shrine-guide p-5">
-    <h1 class="text-3xl font-bold text-center">⛩️ Shrine Guide ⛩️</h1>
-    <h2 class="mt-3 text-center">What’s Shrine?</h2>
-    <p>
+  <div class="shrine-guide p-6 rounded-lg border border-gray-200 shadow-sm">
+    <h1 class="text-3xl font-bold text-center mb-4">⛩️ Shrine Guide ⛩️</h1>
+    <h2 class="text-xl font-semibold text-center mb-3">What’s Shrine?</h2>
+    <p class="text-gray-800 leading-7 mb-4">
       Shrines are sacred spaces dedicated to a god. Shrines are places to pray for good fortune,
       give thanks, and connect with Japan’s gods. Common features include torii (gates),
       purification fountains, and the main worship hall (haiden).
     </p>
-    <p class="mt-3 text-center">Key Etiquette</p>
-    <ul class="mt-5 list-disc px-10">
-      <li>Bow once before passing through the torii gates</li>
+    <h3 class="text-lg font-semibold text-center mt-6 mb-3">Key Etiquette</h3>
+    <ul class="list-disc list-inside space-y-3 text-gray-700">
+      <li>Bow once before passing through the torii gates.</li>
       <li>
-        There’s Temizuya (Purification Ritual) where you must cleanse your hands and mouth. First,
-        use the ladle to pour water over your left hand, then your right hand. After that, pour
-        water into your left hand to rinse your mouth (but don’t swallow it). Finally, let the
-        remaining water flow down the handle before placing the ladle back.
+        <span class="font-medium">Temizuya (Purification Ritual):</span> Cleanse your hands and
+        mouth:
+        <ul class="list-decimal list-inside mt-2 pl-5 text-gray-600">
+          <li>Use the ladle to pour water over your left hand, then your right hand.</li>
+          <li>Pour water into your left hand to rinse your mouth (don’t swallow it).</li>
+          <li>Let the remaining water flow down the handle before placing the ladle back.</li>
+        </ul>
       </li>
       <li>
-        At the offering box (saisenbako), follow this: Bow twice. Clap twice. Say your prayer
-        silently. Bow once to conclude.  * If you’re at a Temple, don’t do this sequence. It’s only
-        for Shrines.
+        At the offering box (<span class="font-medium">saisenbako</span>), follow this:
+        <ul class="list-decimal list-inside mt-2 pl-5 text-gray-600">
+          <li>Bow twice.</li>
+          <li>Clap twice.</li>
+          <li>Say your prayer silently.</li>
+          <li>Bow once to conclude.</li>
+        </ul>
+        <span class="text-sm italic text-gray-600">
+          * If you’re at a temple, this sequence is not performed. It’s only for shrines.
+        </span>
       </li>
       <li>
-        Try to visit Shrines before 4pm. There’s a legend that the god leaves the shrine after 4pm
-        so usually Japanese people try to visit shrines early.
+        Try to visit shrines before 4pm. There’s a legend that the god leaves the shrine after 4pm,
+        so Japanese people usually visit earlier.
       </li>
     </ul>
   </div>
 </template>
-
-<style scoped></style>
