@@ -7,7 +7,6 @@
       <h2 class="text-xl font-semibold text-left mb-3">
         What’s specific rule at Japanese Restaurant?
       </h2>
-      <h3 class="text-lg font-semibold text-left mt-6 mb-3">Key Etiquette</h3>
       <ul class="list-disc list-inside space-y-3 text-gray-700">
         <li>
           <span class="font-medium">Using Chopsticks:</span> Don’t point, wave, or stick chopsticks
