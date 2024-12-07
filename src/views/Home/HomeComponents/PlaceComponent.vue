@@ -46,19 +46,19 @@ const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquette
         <RouterLink
           v-if="place.details.placeType === 'onsen'"
           class="block mx-auto w-3/4 bg-velvet border border-slate-400 text-frostWhite rounded-3xl text-center p-5"
-          to="/onsenguide"
+          to="/guides/onsen"
           >Onsen Guide →</RouterLink
         >
         <RouterLink
           v-if="place.details.placeType === 'shrine'"
           class="block mx-auto w-3/4 bg-velvet border border-slate-400 text-frostWhite rounded-3xl text-center p-5"
-          to="/shrineguide"
+          to="/guides/shrine"
           >Shrine Guide →</RouterLink
         >
         <RouterLink
           v-if="place.details.placeType === 'restaurant'"
           class="block mx-auto w-3/4 bg-velvet border border-slate-400 text-frostWhite rounded-3xl text-center p-5"
-          to="/restaurantguide"
+          to="/guides/restaurant"
           >Restaurant Guide →</RouterLink
         >
       </section>
