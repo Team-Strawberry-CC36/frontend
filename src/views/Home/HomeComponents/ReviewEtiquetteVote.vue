@@ -134,13 +134,20 @@ const updateVote = async () => {
       </section>
 
       <section class="w-full">
+        <p class="md:text-lg lg:text-xl">
+          You shared the following information with the community. Feel free to update you knowledge of this location.
+        </p>
         <!-- Voting section -->
         <div v-for="etiquette in etiquetteVotesData?.data.usersVote">
-          <div class="flex flex-row">
-            <div class="p-3 w-1/2">
+          <div class="flex flex-col">
+            <div class="p-3 w-full text-center md:text-xl lg:text-2xl">
               {{ etiquette.etiquetteType }}
             </div>
-            <div class="p-3">
+            <div class="flex flex-row justify-around">
+              <span>allowed</span>
+              <span>not allowed</span>
+            </div>
+            <div class="p-3 flex flex-row justify-around">
               <input
                 class="ml-3"
                 type="checkbox"
@@ -149,7 +156,7 @@ const updateVote = async () => {
                 :checked="etiquetteSelections.get(etiquette.etiquetteId) === 'allowed'"
                 @change="updateSelection(etiquette.etiquetteId, 'allowed')"
               />
-              <label class="ml-3" :for="etiquette.etiquetteType + '-allowed'">allowed</label>
+              
               <input
                 class="ml-3"
                 type="checkbox"
@@ -158,9 +165,6 @@ const updateVote = async () => {
                 :checked="etiquetteSelections.get(etiquette.etiquetteId) === 'not-allowed'"
                 @change="updateSelection(etiquette.etiquetteId, 'not-allowed')"
               />
-              <label class="ml-3" :for="etiquette.etiquetteType + '-not-allowed'"
-                >not allowed</label
-              >
             </div>
           </div>
         </div>
