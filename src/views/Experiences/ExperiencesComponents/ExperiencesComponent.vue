@@ -38,6 +38,9 @@ const retrieveVote = async () => {
       throw 'An error an occured while retrieving helpfulness vote data.';
     }
   } catch (error) {
+    toast.error("Something unexpected happened.", {
+      timeout: 3000
+    })
     console.error(error);
   }
 };

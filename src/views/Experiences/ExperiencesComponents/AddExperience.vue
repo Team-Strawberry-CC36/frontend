@@ -4,11 +4,13 @@ import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IEtiquettePerPlace } from '@/utils/interfaces/Etiquette';
 import apiService from '@/services/api.service';
 import { useToast } from 'vue-toastification';
+import { useLoadingStore } from '@/stores/LoadingStore';
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 console.log(apiUrl);
 
 const place = usePlaceStore();
+const load = useLoadingStore();
 
 const toast = useToast();
 
@@ -71,6 +73,7 @@ function resetForm() {
 
 const handleAddExperience = async () => {
   try {
+    load.loading = true;
     const formattedEtiquettes = experiencePackage.selectedEtiquette.map((item) => {
       return {
         etiquette_id: item,
@@ -85,10 +88,15 @@ const handleAddExperience = async () => {
     if (response.status === 201) {
       resetForm();
       handleToggleAddExperience();
+      load.loading = false;
+      toast.success("Thank you for sharing your experience!", {
+        timeout: 3000
+      })
       // add to pinia to recent experience added
       console.log('inserted!');
     } else {
       resetForm();
+      load.loading = false;
       toast.error('Failed to post experience.', {
         timeout: 3000,
       });
@@ -96,6 +104,10 @@ const handleAddExperience = async () => {
       throw 'There was an error!';
     }
   } catch (error) {
+    load.loading = false;
+    toast.error("Something unexpected happened.", {
+      timeout: 3000
+    })
     console.error(error);
   }
 };
