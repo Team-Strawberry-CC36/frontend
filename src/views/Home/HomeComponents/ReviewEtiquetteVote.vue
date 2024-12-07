@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineEmits } from 'vue';
 import { useToast } from 'vue-toastification';
+import PhotosComponent from './PhotosComponent.vue';
 
 const emit = defineEmits(['close-review-vote', 'refresh-votes-data']);
 
@@ -112,14 +113,13 @@ const updateVote = async () => {
   >
     <section class="h-[20vh]">
       <!-- Cover Photo -->
-      <!-- <div class="h-full w-full">
-        <img
-          v-if="place.details.photos?.length > 0 && place.details.photos"
-          class="w-full h-full object-cover border-b border-slate-400"
-          :src="place.details.photos[0].fileData"
-          alt="place_photo"
-        />
-      </div> -->
+      <section class="h-[20vh]">
+        <!-- Cover Photo Slideshow -->
+        <PhotosComponent />
+      </section>
+      <div class="content">
+        <!-- Other content here -->
+      </div>
     </section>
     <div class="flex flex-col p-5 items-center">
       <section class="text-center w-full pb-5 border-b border-slate-400">
@@ -136,6 +136,7 @@ const updateVote = async () => {
       <section class="w-full">
         <p class="md:text-lg lg:text-xl">
           You shared the following information with the community. Feel free to update you knowledge of this location.
+          Leave unchecked if you don't know about it or didn't experience it.
         </p>
         <!-- Voting section -->
         <div v-for="etiquette in etiquetteVotesData?.data.usersVote">
@@ -149,7 +150,7 @@ const updateVote = async () => {
             </div>
             <div class="p-3 flex flex-row justify-around">
               <input
-                class="ml-3"
+                class="appearance-none w-6 h-6 rounded-md bg-gray-200 border-2 border-gray-300 checked:bg-blue-600 checked:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 type="checkbox"
                 :id="etiquette.etiquetteType + '-allowed'"
                 value="allowed"
@@ -158,7 +159,7 @@ const updateVote = async () => {
               />
               
               <input
-                class="ml-3"
+                class="ml-3 appearance-none w-6 h-6 rounded-md bg-gray-200 border-2 border-gray-300 checked:bg-blue-600 checked:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 type="checkbox"
                 :id="etiquette.etiquetteType + '-not-allowed'"
                 value="not_allowed"
@@ -166,14 +167,15 @@ const updateVote = async () => {
                 @change="updateSelection(etiquette.etiquetteId, 'not-allowed')"
               />
             </div>
+            <div class="w-full h-[1px] bg-gray-300 mt-2"></div>
           </div>
         </div>
         <div class="flex flex-row justify-center">
           <button
-            class="h-12 w-1/2 rounded-lg border border-charcoal hover:bg-white bg-velvet text-white hover:text-velvet hover:cursor-pointer"
+            class="h-12 w-1/2 mr-5 rounded-lg border border-charcoal hover:bg-white bg-velvet text-white hover:text-velvet hover:cursor-pointer"
             @click="handleClick"
           >
-            Done!
+            Set
           </button>
           <button
             class="h-12 w-1/2 rounded-lg border border-charcoal hover:bg-white bg-green-600 text-white hover:text-velvet hover:cursor-pointer"
