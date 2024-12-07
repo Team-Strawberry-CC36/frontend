@@ -35,12 +35,13 @@ const error = ref<string | null>(null);
 .photos-carousel {
   width: 100%;
   max-width: 600px;
+  height: 400px;
   margin: auto;
   overflow: hidden;
 }
 
 img {
-  border-radius: 8px;
+  border-radius: 5px;
   max-height: 100%;
   max-width: 100%;
   object-fit: cover;
