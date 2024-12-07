@@ -4,6 +4,9 @@ import { registerUserThroughFirebase } from '@/auth/auth';
 import router from '@/router';
 import authService from '@/services/auth.service';
 import { useToast } from 'vue-toastification';
+import { useLoadingStore } from '@/stores/LoadingStore';
+
+const load = useLoadingStore();
 
 // Form inputs
 const displayName = ref('');
@@ -54,6 +57,8 @@ const handleSignUp = async () => {
     return;
   }
 
+  load.loading = true;
+
   try {
     const { uid } = await registerUserThroughFirebase(
       email.value,
@@ -62,6 +67,7 @@ const handleSignUp = async () => {
     );
 
     const response = await authService.createUser(uid);
+    load.loading = false;
     if (response.status === 201) {
       await router.push({ name: 'login' });
     } else {
@@ -70,6 +76,7 @@ const handleSignUp = async () => {
       });
     }
   } catch (error) {
+    load.loading = false;
     toast.error('An error occurred during sign-up. Please try again.', {
       timeout: 3000,
     });

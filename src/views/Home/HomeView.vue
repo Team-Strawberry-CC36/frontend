@@ -10,9 +10,11 @@ import ReviewEtiquetteVote from './HomeComponents/ReviewEtiquetteVote.vue';
 import { getAuth } from 'firebase/auth';
 import apiService, { type IPlaceMarker } from '@/services/api.service';
 import { usePlaceStore } from '@/stores/PlaceStore';
+import { useLoadingStore } from '@/stores/LoadingStore';
 
 const auth = getAuth();
 const place = usePlaceStore();
+const load = useLoadingStore();
 
 // const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
 //     message: "Lovely job!",
@@ -60,6 +62,7 @@ const getPlaceEtiquetteVotesData = async (place: IPlace) => {
 
 const getPlaceDetails = async (placeId: string, category: string) => {
   try {
+    load.loading = true;
     const response = await apiService.getPlace(placeId, category);
     place.$patch({
       details: response.data.data,
@@ -68,6 +71,7 @@ const getPlaceDetails = async (placeId: string, category: string) => {
     const photosResponse = await apiService.fetchPhotos(response.data.data.id);
 
     place.updatePhotos(photosResponse.data.data);
+    load.loading = false;
   } catch (e) {
     console.error({
       message: 'There was an error getting place details in homeView',
