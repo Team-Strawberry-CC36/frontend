@@ -11,7 +11,6 @@ import { getAuth } from 'firebase/auth';
 import apiService, { type IPlaceMarker } from '@/services/api.service';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import { useLoadingStore } from '@/stores/LoadingStore';
-import type { IPlaceMarker } from '@/services/api.service';
 import type { EtiquetteStatus } from '@/utils/interfaces/Etiquette';
 
 const auth = getAuth();
@@ -55,6 +54,7 @@ const apiUrl = import.meta.env.VITE_BACKEND_URL;
 // Some functions for async
 const getPlaceEtiquetteVotesData = async (placeId: string) => {
   const user = auth.currentUser;
+
   if (user) {
     const token = await user.getIdToken();
     const headers: Record<string, string> = {
@@ -65,7 +65,6 @@ const getPlaceEtiquetteVotesData = async (placeId: string) => {
       const response = await fetch(`${apiUrl}/moreTesting/places/${placeId}/votes`, {
         method: 'GET',
         headers,
-        credentials: 'include',
       });
       etiquetteVotesData.value = await response.json();
       console.log("Data received back is: ", etiquetteVotesData.value);
@@ -118,10 +117,19 @@ const handleRefreshVotes = async () => {
 }
 
 const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
-  console.log(event.data); // find out what data is!
-  googlePlaceId.value = event.data;
-  getPlaceDetails(event.data);
-  getPlaceEtiquetteVotesData(event.data); // then change the type in this fetch request
+  console.log(event.data);
+  // NOTE ! set a googlePlaceId variable?
+  googlePlaceId.value = event.data.id;
+
+  // 1. First get place details!
+  getPlaceDetails(event.data.id, event.data.category)
+    .then(() => {
+    // 2. Then get etiquttes voting data
+      getPlaceEtiquetteVotesData(event.data.id); // then change the type in this fetch request
+    }).catch(() => {
+      // [ ] Add error validation
+      console.error("Ops! something happend in handleMarkerClicked")
+    })
 };
 
 /**
