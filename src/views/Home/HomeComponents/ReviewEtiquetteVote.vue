@@ -2,7 +2,7 @@
 import { defineEmits } from 'vue';
 import { useToast } from 'vue-toastification';
 
-const emit = defineEmits(['close-review-vote']);
+const emit = defineEmits(['close-review-vote', 'refresh-votes-data']);
 
 const toast = useToast();
 
@@ -11,6 +11,8 @@ import { defineProps } from 'vue';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
 import type { EtiquetteStatus } from '@/utils/interfaces/Etiquette';
 const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquetteVotes | null }>();
+
+console.log("In review etiquette votes:", etiquetteVotesData);
 
 // Authorization
 import { getAuth } from 'firebase/auth';
@@ -30,8 +32,16 @@ const etiquetteSelections = reactive(new Map<number, EtiquetteStatus>());
 etiquetteVotesData?.data.usersVote.forEach((etiquetteVote) => {
   etiquetteSelections.set(etiquetteVote.etiquetteId, etiquetteVote.vote);
 });
+
 const updateSelection = (etiquetteLabelId: number, value: 'allowed' | 'not-allowed') => {
-  etiquetteSelections.set(etiquetteLabelId, value);
+  const currentSelection = etiquetteSelections.get(etiquetteLabelId);
+
+  // Deselect if the same value is clicked again, otherwise update the selection
+  if (currentSelection === value) {
+    etiquetteSelections.set(etiquetteLabelId, 'neutral');
+  } else {
+    etiquetteSelections.set(etiquetteLabelId, value);
+  }
 };
 
 // Handle click of the button
@@ -40,10 +50,14 @@ const handleClick = async () => {
   emit('close-review-vote');
 };
 
+const handleCancel = () => {
+  emit('close-review-vote');
+}
+
 // For submitting the vote
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 const updateVote = async () => {
-  console.log(etiquetteSelections);
+
   // Convert to an array for easier processing
   const voteData = Array.from(etiquetteSelections.entries()).map(([key, value]) => ({
     etiquetteId: Number(key),
@@ -52,29 +66,42 @@ const updateVote = async () => {
     )?.etiquetteType,
     vote: value,
   }));
-  try {
-    const response = await fetch(`${apiUrl}/moreTesting/places/${place.details.id}/votes`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        votes: voteData,
-        //userId: auth.currentUser?.uid,
-        placeId: place.details.id,
-      }),
-    });
 
-    if (!response.ok) {
-      alert('ERROR!');
-      toast.error('An error occured while sending your input.', {
-        timeout: 3000,
-      });
-      throw new Error(`Error: ${response.status} ${response.statusText}`);
+  const user = auth.currentUser;
+  if (user) {
+    const token = await user.getIdToken();
+    const headers: Record<string, string> = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+      };
+
+    try {
+        const response = await fetch(`${apiUrl}/moreTesting/places/${place.details.id}/votes`, {
+          method: 'PATCH',
+          headers,
+          credentials: 'include',
+          body: JSON.stringify({
+                  votes: voteData,
+                  placeId: place.details.id,
+              }),
+          });
+
+        if (!response.ok) {
+            toast.error('An error occured while sending your input.', {
+                timeout: 3000
+            });
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+
+        const result = await response.json();
+
+        if (result.message === "Votes updated successfully") {
+            emit('refresh-votes-data');
+        }
+
+    } catch (error) {
+        console.log('There was an error posting the vote:', error);
     }
-  } catch (error) {
-    console.log('There was an error posting the vote:', error);
   }
 };
 </script>
@@ -143,6 +170,12 @@ const updateVote = async () => {
             @click="handleClick"
           >
             Done!
+          </button>
+          <button
+            class="h-12 w-1/2 rounded-lg border border-charcoal hover:bg-white bg-green-600 text-white hover:text-velvet hover:cursor-pointer"
+            @click="handleCancel"
+          >
+            Cancel
           </button>
         </div>
       </section>
