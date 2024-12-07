@@ -20,8 +20,12 @@ const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquette
   >
     <section class="h-[20vh]">
       <!-- Cover Photo -->
-      <div class="h-full w-full">
+      <section class="h-[20vh]">
+        <!-- Cover Photo Slideshow -->
         <PhotosComponent />
+      </section>
+      <div class="content">
+        <!-- Other content here -->
       </div>
     </section>
     <div class="flex flex-col p-5 items-center">
