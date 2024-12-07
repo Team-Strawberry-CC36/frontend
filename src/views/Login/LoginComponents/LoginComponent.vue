@@ -2,19 +2,24 @@
 import { ref } from 'vue';
 import { signInThroughFirebase } from '@/auth/auth';
 import { useToast } from 'vue-toastification';
+import { useLoadingStore } from '@/stores/LoadingStore';
 
 const email = ref('');
 const password = ref('');
 
 const toast = useToast();
+const load = useLoadingStore();
 
 const handleSignIn = async () => {
   try {
+    load.loading = true;
     await signInThroughFirebase(email.value, password.value);
+    load.loading = false;
     toast.success('Login successful! Welcome!', {
       timeout: 3000,
     });
   } catch (error) {
+    load.loading = false;
     toast.error('Login failed. Please check your login credentials and try again.', {
       timeout: 3000,
     });

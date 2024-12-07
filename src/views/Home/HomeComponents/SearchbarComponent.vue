@@ -2,8 +2,12 @@
 import { usePlaceStore } from '@/stores/PlaceStore';
 import { ref, watch, onMounted, onUnmounted } from 'vue';
 import apiService, { type IPlaceMarker } from '@/services/api.service';
+import { useToast } from 'vue-toastification';
+import { useLoadingStore } from '@/stores/LoadingStore';
 
 const place = usePlaceStore();
+const toast = useToast();
+const load = useLoadingStore();
 
 const searchQuery = ref('onsen');
 const searchCategory = ref('onsen');
@@ -31,8 +35,10 @@ const performSearch = async () => {
 
   try {
     // [ ] Send coordinates!
+    load.loading = true;
     const response = await apiService.search(searchQuery.value, searchCategory.value);
     const data = response.data.data;
+    load.loading = false;
 
     const markers: IPlaceMarker[] = data.map((item) => {
       return {
@@ -46,6 +52,10 @@ const performSearch = async () => {
       data: markers,
     });
   } catch (error) {
+    load.loading = false;
+    toast.error("An error occured while performing your search.", {
+      timeout: 3000
+    })
     console.error('Search request failed: ', error);
   }
 };
