@@ -6,8 +6,6 @@ import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import Toast from 'vue-toastification';
 import type { PluginOptions } from 'vue-toastification';
-import { Carousel, Slide } from 'vue3-carousel';
-import 'vue3-carousel/dist/carousel.css';
 
 import App from './App.vue';
 import router from './router';
@@ -24,8 +22,5 @@ const toastOptions: PluginOptions = {
 app.use(pinia);
 app.use(router);
 app.use(Toast, toastOptions);
-
-app.component('Carousel', Carousel);
-app.component('Slide', Slide);
 
 app.mount('#app');
