@@ -9,7 +9,7 @@ const placeStore = usePlaceStore();
 
 <template>
   <div>
-    <div v-if="placeStore.details.photos?.length" class="m-auto overflow-hidden w-full max-w-[600px]">
+    <div v-if="placeStore.details.photos?.length" class="m-auto overflow-hidden w-full">
       <Carousel
         :wrapAround="true"
         :itemsToShow="1"

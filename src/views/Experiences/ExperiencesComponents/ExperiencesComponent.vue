@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PhotosComponent from '@/views/Home/HomeComponents/PhotosComponent.vue';
 import { onMounted, onUnmounted } from 'vue';
 import { ref, computed, defineEmits } from 'vue';
 import { getAuth } from 'firebase/auth';
@@ -221,14 +222,15 @@ const formatDate = (date: Date) => {
     </section>
     <section class="h-[20vh]">
       <!-- Cover Photo -->
-      <div class="h-full w-full sm:border-t sm:border-b border-slate-400">
+      <PhotosComponent />
+      <!-- <div class="h-full w-full sm:border-t sm:border-b border-slate-400">
         <img
           v-if="place.details.photos?.length > 0 && place.details.photos"
           class="w-full h-full object-cover"
           :src="place.details.photos[Math.floor(Math.random() * 3)]"
           alt="place_photo"
         />
-      </div>
+      </div> -->
     </section>
     <section class="flex justify-end">
       <button
