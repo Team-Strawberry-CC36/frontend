@@ -78,6 +78,28 @@ function resetForm() {
   experiencePackage.experienceText = '';
 }
 
+// Temporary solution to refresh place details to obtain newly added experience
+const getPlaceDetails = async (placeId: string, category: string) => {
+  try {
+    load.loading = true;
+    const response = await apiService.getPlace(placeId, category);
+    place.$patch({
+      details: response.data.data,
+    });
+
+    load.loading = false;
+  } catch (e) {
+    load.loading = false;
+    toast.error("An error occured while retrieving place details.", {
+      timeout: 3000
+    })
+    console.error({
+      message: 'There was an error getting place details',
+      error: e,
+    });
+  }
+};
+
 const handleAddExperience = async () => {
   if (!canSubmit()) {
     toast.info("Please input all provided fields before submission.", {

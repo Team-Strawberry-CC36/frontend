@@ -70,7 +70,7 @@ const handleSignOut = async () => {
       <div class="flex flex-col w-full sm:w-3/4 p-3 rounded-xl border border-slate-400 bg-frostWhite justify-center">
         <h1 class="m-1 text-center">Badges and Titles</h1>
         <p v-if="placesVisitedByUser?.length === undefined || placesVisitedByUser?.length < 5" class="m-1 text-center font-extralight">No badge titles earned yet. Share more experiences to earn some!</p>
-        <p v-else-if="placesVisitedByUser?.length >= 5 || placesVisitedByUser?.length < 10" class="m-1 text-center font-extralight">Noice Traveller</p>
+        <p v-else-if="placesVisitedByUser?.length >= 5 || placesVisitedByUser?.length < 10" class="m-1 text-center font-extralight">Novice Traveller</p>
         <p v-else-if="placesVisitedByUser?.length >= 10 || placesVisitedByUser?.length < 20" class="m-1 text-center font-extralight">Well-Travelled</p>
         <p v-else-if="placesVisitedByUser?.length >= 20" class="m-1 text-center font-extralight">Local Expert!</p>
       </div>

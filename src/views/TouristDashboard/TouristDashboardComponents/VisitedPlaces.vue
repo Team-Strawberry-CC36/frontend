@@ -2,8 +2,13 @@
 import { ref, defineProps, reactive, watch } from 'vue';
 import type { IPlaceVisitedAlias } from '@/utils/interfaces/PlacesVisited';
 import apiService from '@/services/api.service';
+import router from '@/router';
 import { useToast } from 'vue-toastification';
+import { useLoadingStore } from '@/stores/LoadingStore';
+import { usePlaceStore } from '@/stores/PlaceStore';
 
+const load = useLoadingStore();
+const place = usePlaceStore();
 const toast = useToast();
 const { placesVisitedByTourists } = defineProps<{ placesVisitedByTourists: IPlaceVisitedAlias[] }>();
 
@@ -147,6 +152,42 @@ const deleteExperience = async (expId: number) => {
   }
 }
 
+//Date formatter
+const formatDate = (date: Date) => {
+  if (!date) return ""; // Handle null or undefined dates
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(new Date(date));
+};
+
+// Fetching place details and redirection
+const getPlaceDetailsAndRedirect = async (placeId: string, category: string) => {
+  try {
+    load.loading = true;
+    const response = await apiService.getPlace(placeId, category);
+    place.$patch({
+      details: response.data.data,
+    });
+
+    const photosResponse = await apiService.fetchPhotos(response.data.data.id);
+
+    place.updatePhotos(photosResponse.data.data);
+    await router.push({ name: 'home' });
+    load.loading = false;
+  } catch (e) {
+    load.loading = false;
+    toast.error("An error occured while retrieving place details.", {
+      timeout: 3000
+    })
+    console.error({
+      message: 'There was an error getting place details in homeView',
+      error: e,
+    });
+  }
+};
+
 </script>
 
 <template>
@@ -221,10 +262,13 @@ const deleteExperience = async (expId: number) => {
         :key="placeVisited.experienceId"
         class="p-3 bg-frostWhite border border-slate-400 rounded-lg mt-3"
       >
-        <h3 class="text-lg font-extralight">
-          {{ placeVisited.placeName }} : {{ placeVisited.placeType }}
-        </h3>
-        <p class="text-sm font-bold">You visited here {{ placeVisited.dateVisited }}</p>
+        <button
+        class="text-lg font-extralight"
+        @click="getPlaceDetailsAndRedirect(placeVisited.googlePlaceId, placeVisited.placeType)">
+          {{ placeVisited.placeName }}
+        </button>
+        <h3 class="font-light text-sm mb-2">{{ placeVisited.placeType }}</h3>
+        <p class="text-sm font-bold">You visited here on {{ formatDate(placeVisited.dateVisited) }}</p>
 
         <p class="border-b border-slate-400 text-lg font-bold mt-2 mb-3 pb-2">Your experience:</p>
         <!-- <hr class="w-full mb-3" /> -->

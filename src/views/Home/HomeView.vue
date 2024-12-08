@@ -12,10 +12,12 @@ import apiService, { type IPlaceMarker } from '@/services/api.service';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import { useLoadingStore } from '@/stores/LoadingStore';
 import type { EtiquetteStatus } from '@/utils/interfaces/Etiquette';
+import { useToast } from 'vue-toastification';
 
 const auth = getAuth();
 const place = usePlaceStore();
 const load = useLoadingStore();
+const toast = useToast();
 
 // const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
 //     message: "Lovely job!",
@@ -98,6 +100,10 @@ const getPlaceDetails = async (placeId: string, category: string) => {
     place.updatePhotos(photosResponse.data.data);
     load.loading = false;
   } catch (e) {
+    load.loading = false;
+    toast.error("An error occured while retrieving place details.", {
+      timeout: 3000
+    })
     console.error({
       message: 'There was an error getting place details in homeView',
       error: e,
