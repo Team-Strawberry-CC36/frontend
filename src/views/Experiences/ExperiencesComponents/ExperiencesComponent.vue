@@ -6,6 +6,7 @@ import { usePlaceStore } from '@/stores/PlaceStore';
 import { useExperienceVoteStore } from '@/stores/ExperienceVoteStore';
 import apiService from '@/services/api.service';
 import { useToast } from 'vue-toastification';
+import type IExperience from '@/utils/interfaces/Experience';
 
 const place = usePlaceStore();
 
@@ -102,13 +103,14 @@ const isDownvote = (exid: number) => {
 };
 
 // Handles the addition, editing, and deletion of votes
-const handleVote = async (exid: number, vote: string) => {
+const handleVote = async (exid: number, vote: string, experience: IExperience) => {
   // If user is logged in and the vote does not exist, add vote
   if (auth.currentUser && !checkExistingVote(exid) && vote) {
     try {
       const response = await apiService.addHelpfulnessVote(exid, vote);
 
       if (response.status === 201) {
+        experience.helpfulness++;
         console.log('Vote posted!');
       } else {
         toast.error('An error occured while posting your helpfulness vote.', {
@@ -129,6 +131,7 @@ const handleVote = async (exid: number, vote: string) => {
         const response = await apiService.deleteHelpfulnessVote(exid, voteToHandle.vote_id);
 
         if (response.status === 201) {
+          experience.helpfulness--;
           console.log('Vote deleted!');
         } else {
           toast.error('An error occured while removing your helpfulness vote.', {
@@ -145,6 +148,11 @@ const handleVote = async (exid: number, vote: string) => {
         const response = await apiService.editHelpfulnessVote(exid, voteToHandle?.vote_id, vote);
 
         if (response.status === 201) {
+          if (vote = 'up') {
+            experience.helpfulness++;
+          } else {
+            experience.helpfulness--;
+          }
           console.log('Vote edited!');
         } else {
           toast.error('An error occured while changing your helpfulness vote.', {
@@ -163,8 +171,8 @@ const handleVote = async (exid: number, vote: string) => {
 };
 
 // async call to handle before retrieving
-const handleThenRetrieveVote = async (exid: number, vote: string) => {
-  await handleVote(exid, vote); // Wait for handleVote to complete
+const handleThenRetrieveVote = async (exid: number, vote: string, experience: IExperience) => {
+  await handleVote(exid, vote, experience); // Wait for handleVote to complete
   retrieveVote(); // Only execute after handleVote is done
 };
 
@@ -255,7 +263,7 @@ const formatDate = (date: Date) => {
             <button
               class="block mb-1"
               :class="isUpvote(experience.id) ? 'fill-velvet' : 'fill-charcoal'"
-              @click="handleThenRetrieveVote(experience.id, 'up')"
+              @click="handleThenRetrieveVote(experience.id, 'up', experience)"
             >
               <svg
                 viewBox="0 0 256 256"
@@ -274,7 +282,7 @@ const formatDate = (date: Date) => {
             <button
               class="block"
               :class="isDownvote(experience.id) ? 'fill-velvet' : 'fill-charcoal'"
-              @click="handleThenRetrieveVote(experience.id, 'down')"
+              @click="handleThenRetrieveVote(experience.id, 'down', experience)"
             >
               <svg
                 viewBox="0 0 256 256"
