@@ -1,7 +1,7 @@
 import type { IEtiquettePerPlace } from './Etiquette';
 import type IExperience from './Experience';
 
-export default interface IPlace {
+export interface IPlace {
   id: number;
   googlePlaceId: string;
   name: string;

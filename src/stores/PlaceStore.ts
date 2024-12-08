@@ -1,6 +1,6 @@
 import { reactive } from 'vue';
 import { defineStore } from 'pinia';
-import type IPlace from '@/utils/interfaces/Place';
+import type { IPlace } from '@/utils/interfaces/Place';
 
 export const usePlaceStore = defineStore(
   'placeStore',
@@ -8,6 +8,7 @@ export const usePlaceStore = defineStore(
     const details = reactive<IPlace>({
       id: 0,
       name: '',
+      googlePlaceId: '',
       address: '',
       placeType: 'onsen',
       location: {

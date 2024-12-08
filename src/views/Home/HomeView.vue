@@ -2,7 +2,7 @@
 import PlaceComponent from './HomeComponents/PlaceComponent.vue';
 import SearchbarComponent from './HomeComponents/SearchbarComponent.vue';
 import { onMounted, onUnmounted, ref } from 'vue';
-import type IPlace from '@/utils/interfaces/Place';
+import type { IPlace } from '@/utils/interfaces/Place';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
 import HomeMap from './HomeComponents/HomeMap.vue';
 import AddEtiquetteVote from './HomeComponents/AddEtiquetteVote.vue';

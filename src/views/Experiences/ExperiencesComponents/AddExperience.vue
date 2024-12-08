@@ -116,7 +116,7 @@ const handleAddExperience = async () => {
     });
     const response = await apiService.createExperience(place.details.id, {
       etiquetteSelected: formattedEtiquettes,
-      dateVisited: experiencePackage.dateVisited.toISOString(),
+      dateVisited: experiencePackage.dateVisited!.toISOString(),
       experience: experiencePackage.experienceText,
     });
 

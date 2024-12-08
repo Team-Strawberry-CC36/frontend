@@ -5,7 +5,7 @@ import apiService, { type IPlaceMarker } from '@/services/api.service';
 import { useToast } from 'vue-toastification';
 import { useLoadingStore } from '@/stores/LoadingStore';
 import { useSearchStore } from '@/stores/SearchStore';
-import { IPlaceType } from '@/utils/interfaces/Place';
+import type { IPlaceType } from '@/utils/interfaces/Place';
 
 const place = usePlaceStore();
 const toast = useToast();
