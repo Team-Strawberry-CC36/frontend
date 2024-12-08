@@ -4,13 +4,16 @@ import { ref, watch, onMounted, onUnmounted } from 'vue';
 import apiService, { type IPlaceMarker } from '@/services/api.service';
 import { useToast } from 'vue-toastification';
 import { useLoadingStore } from '@/stores/LoadingStore';
+import { useSearchStore } from '@/stores/SearchStore';
+import { IPlaceType } from '@/utils/interfaces/Place';
 
 const place = usePlaceStore();
 const toast = useToast();
 const load = useLoadingStore();
+const search = useSearchStore();
 
 const searchQuery = ref('');
-const searchCategory = ref('onsen');
+const searchCategory = ref<IPlaceType>('onsen');
 const errorMessage = ref('');
 const emit = defineEmits(['search']);
 
@@ -91,9 +94,15 @@ const updateView = () => {
 // Add event listeners for responsive behavior
 onMounted(() => {
   window.addEventListener('resize', updateView);
+  //
+  searchQuery.value = search.data.search;
+  searchCategory.value = search.data.category;
 });
 onUnmounted(() => {
   window.removeEventListener('resize', updateView);
+  //
+  search.updateSearch(searchQuery.value);
+  search.updateCategory(searchCategory.value);
 });
 </script>
 

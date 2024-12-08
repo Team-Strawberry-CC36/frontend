@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PlaceComponent from './HomeComponents/PlaceComponent.vue';
 import SearchbarComponent from './HomeComponents/SearchbarComponent.vue';
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import type IPlace from '@/utils/interfaces/Place';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
 import HomeMap from './HomeComponents/HomeMap.vue';
@@ -13,11 +13,13 @@ import { usePlaceStore } from '@/stores/PlaceStore';
 import { useLoadingStore } from '@/stores/LoadingStore';
 import type { EtiquetteStatus } from '@/utils/interfaces/Etiquette';
 import { useToast } from 'vue-toastification';
+import { useSearchStore } from '@/stores/SearchStore';
 
 const auth = getAuth();
 const place = usePlaceStore();
 const load = useLoadingStore();
 const toast = useToast();
+const search = useSearchStore();
 
 // const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
 //     message: "Lovely job!",
@@ -52,6 +54,15 @@ const googlePlaceId = ref<string | null>(null);
 
 const searchQuery = ref('');
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
+
+// Hooks
+onMounted(() => {
+  placeMarkers.value = search.data.markers;
+})
+
+onUnmounted(() => {
+  search.updateMarkers(placeMarkers.value)
+})
 
 // Some functions for async
 const getPlaceEtiquetteVotesData = async (placeId: string) => {
