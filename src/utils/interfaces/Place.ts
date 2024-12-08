@@ -20,6 +20,6 @@ export default interface IPlace {
   };
 }
 
-type IPlaceType = 'shrine' | 'onsen' | 'restaurant';
+export type IPlaceType = 'shrine' | 'onsen' | 'restaurant';
 
 type IPhoto = string;
