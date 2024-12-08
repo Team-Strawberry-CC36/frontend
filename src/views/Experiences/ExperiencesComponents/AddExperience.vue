@@ -122,6 +122,7 @@ const handleAddExperience = async () => {
 
     if (response.status === 201) {
       resetForm();
+      getPlaceDetails(place.details.id, place.details.placeType)
       handleToggleAddExperience();
       load.loading = false;
       toast.success("Thank you for sharing your experience!", {
@@ -244,6 +245,7 @@ const onCheck = (event: Event, id: number) => {
         rows="5"
         cols="30"
         class="resize-none p-3 rounded-2xl w-full"
+        @click="isDropdownOpen=false"
       ></textarea>
     </section>
 
