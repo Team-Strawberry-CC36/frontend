@@ -11,7 +11,7 @@ export const useSearchStore = defineStore(
       markers: IPlaceMarker[];
       category: IPlaceType;
     }>({
-      search: 'string',
+      search: '',
       markers: [],
       category: 'onsen',
     });
