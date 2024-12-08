@@ -21,15 +21,15 @@ const votesAnalysisData = computed(() => {
       notAllowedPercentage: 100 * (item.numberOfVotesForNotAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed),
       allowedStatus: item.numberOfVotesForAllowed === 0 && item.numberOfVotesForNotAllowed === 0
         ? 'No data yet - be the first to share!'
-        : item.numberOfVotesForAllowed >= 2*item.numberOfVotesForNotAllowed
-          ? 'Allowed'
-          : item.numberOfVotesForAllowed >= item.numberOfVotesForNotAllowed
-            ? 'Probably allowed'
-            : item.numberOfVotesForAllowed < item.numberOfVotesForNotAllowed
-              ? 'Probably not allowed'
-              : item.numberOfVotesForAllowed <= 2*item.numberOfVotesForNotAllowed
-                ? 'Not allowed'
-                : 'Definitely not allowed'
+        : Math.floor(100 * (item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed)) > 66
+          ? `Allowed - our data suggests this is allowed with ${Math.floor(100 * (item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed))}% of our users saying it is allowed.`
+          : Math.floor(100 * (item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed)) >= 50
+            ? `Probably allowed - our data says that ${Math.floor(100 * (item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed))}% of our users say it is allowed.}`
+            : Math.floor(100 * (item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed)) < 33
+              ? `Not allowed - many of our users, ${Math.floor(100 * (item.numberOfVotesForNotAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed))}% say this is not allowed`
+              : Math.floor(100 * (item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed)) < 50
+                ? `Probably not allowed - our data says that ${Math.floor(100 * (item.numberOfVotesForNotAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed))}% say this is not allowed`
+                : 'There might be a problem with our data'
     }
   });
 });
@@ -49,7 +49,7 @@ const handleHoverOrTouch = (etiquetteId: number, event: MouseEvent | TouchEvent)
   const rect = (event.target as HTMLElement).getBoundingClientRect();
 
   toolTipPosition.value = {
-    x: rect.left + rect.width / 2,
+    x: rect.left + 200, //3*rect.width,
     y: rect.top + window.scrollY - 30
   };
 }
