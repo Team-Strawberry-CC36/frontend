@@ -184,6 +184,16 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', updateView);
 });
+
+//Date formatter
+const formatDate = (date: Date) => {
+  if (!date) return ""; // Handle null or undefined dates
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(new Date(date));
+};
 </script>
 
 <template>
@@ -288,7 +298,7 @@ onUnmounted(() => {
               <p>{{ experience.experience }}</p>
             </div>
             <div class="text-xs justify-self-end m-1">
-              <span>{{ experience.username }} visted here {{ experience.dateVisited }}</span>
+              <span>{{ experience.username }} visted here {{ formatDate(experience.dateVisited) }}</span>
             </div>
           </section>
         </div>
