@@ -64,14 +64,27 @@ const handleSetDateVisited = (event: Event) => {
 // };
 
 function canSubmit() {
-  return experiencePackage.selectedEtiquette && experiencePackage.experienceText.trim();
+  return (
+    Array.isArray(experiencePackage.selectedEtiquette) &&
+    experiencePackage.selectedEtiquette.length > 0 &&
+    typeof experiencePackage.experienceText === 'string' &&
+    experiencePackage.experienceText.trim().length > 0 &&
+    experiencePackage.dateVisited !== null
+  );
 }
+
 function resetForm() {
   experiencePackage.selectedEtiquette = [];
   experiencePackage.experienceText = '';
 }
 
 const handleAddExperience = async () => {
+  if (!canSubmit()) {
+    toast.info("Please input all provided fields before submission.", {
+      timeout: 3000
+    })
+    return;
+  }
   try {
     load.loading = true;
     const formattedEtiquettes = experiencePackage.selectedEtiquette.map((item) => {
@@ -81,7 +94,7 @@ const handleAddExperience = async () => {
     });
     const response = await apiService.createExperience(place.details.id, {
       etiquetteSelected: formattedEtiquettes,
-      dateVisited: new Date().toISOString(),
+      dateVisited: experiencePackage.dateVisited.toISOString(),
       experience: experiencePackage.experienceText,
     });
 
