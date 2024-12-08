@@ -81,7 +81,7 @@ function resetForm() {
 const handleAddExperience = async () => {
   if (!canSubmit()) {
     toast.info("Please input all provided fields before submission.", {
-      timeout: 3000
+      timeout: 5000
     })
     return;
   }
@@ -230,7 +230,6 @@ const onCheck = (event: Event, id: number) => {
       <button
         class="mx-5 border-velvet border p-2 rounded-xl text-sm hover:bg-velvet hover:text-white"
         @click="handleAddExperience"
-        :disabled="!canSubmit"
       >
         Post
       </button>
