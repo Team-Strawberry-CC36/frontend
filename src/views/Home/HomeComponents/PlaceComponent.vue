@@ -3,7 +3,7 @@
 import apiService from '@/services/api.service';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
-import { defineProps, onMounted, ref } from 'vue';
+import { defineProps, onMounted, ref, computed } from 'vue';
 import { defineEmits } from 'vue';
 import PhotosComponent from './PhotosComponent.vue';
 
@@ -12,6 +12,52 @@ const emit = defineEmits(['show-add-vote', 'show-review-vote']);
 const place = usePlaceStore();
 
 const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquetteVotes }>();
+const votesAnalysisData = computed(() => {
+  return etiquetteVotesData?.data.etiquetteVotes.map((item) => {
+    return {
+      etiquetteId: item.etiquetteId,
+      totalVotes: item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed,
+      allowedPercentage: 100 * (item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed),
+      notAllowedPercentage: 100 * (item.numberOfVotesForNotAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed),
+      allowedStatus: item.numberOfVotesForAllowed === 0 && item.numberOfVotesForNotAllowed === 0
+        ? 'No data yet - be the first to share!'
+        : item.numberOfVotesForAllowed >= 2*item.numberOfVotesForNotAllowed
+          ? 'Allowed'
+          : item.numberOfVotesForAllowed >= item.numberOfVotesForNotAllowed
+            ? 'Probably allowed'
+            : item.numberOfVotesForAllowed < item.numberOfVotesForNotAllowed
+              ? 'Probably not allowed'
+              : item.numberOfVotesForAllowed <= 2*item.numberOfVotesForNotAllowed
+                ? 'Not allowed'
+                : 'Definitely not allowed'
+    }
+  });
+});
+
+// Tooltip state
+const showToolTip = ref<boolean>(false);
+const toolTipText = ref<string>('');
+const toolTipPosition = ref<{ x: number; y: number }>({ x: 0, y: 0 });
+
+const handleHoverOrTouch = (etiquetteId: number, event: MouseEvent | TouchEvent) => {
+  showToolTip.value = true;
+  const voteAnalysis = votesAnalysisData.value?.find(
+    voteAnalysis => voteAnalysis.etiquetteId === etiquetteId
+  );
+  toolTipText.value = voteAnalysis?.allowedStatus || 'This data is crowd sourced from tourists who visited here';
+
+  const rect = (event.target as HTMLElement).getBoundingClientRect();
+
+  toolTipPosition.value = {
+    x: rect.left + rect.width / 2,
+    y: rect.top + window.scrollY - 30
+  };
+}
+const handleLeaveOrTouchEnd = () => {
+  showToolTip.value = false;
+}
+
+
 </script>
 
 <template>
@@ -65,15 +111,54 @@ const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquette
       <section v-if="etiquetteVotesData" class="m-5 w-full pb-5 border-b border-slate-400">
         <h2 class="text-center text-velvet text-xl">Etiquette Rules</h2>
         <ul class="list-disc list-inside font-light">
-          <li class="pb-3" v-for="item in etiquetteVotesData.data.etiquetteVotes" :key="item.etiquetteId">
-            <span class="font-bold">{{ item.etiquetteType }}</span> :
-            {{
+          <li class="pb-3 group" v-for="item in etiquetteVotesData.data.etiquetteVotes" :key="item.etiquetteId">
+            <span 
+              class="font-bold"
+              @mouseover="handleHoverOrTouch(item.etiquetteId, $event)"
+              @mouseleave="handleLeaveOrTouchEnd"
+              @touchstart="handleHoverOrTouch(item.etiquetteId, $event)"
+              @touchend="handleLeaveOrTouchEnd"  
+            >
+                {{ item.etiquetteType }}
+            </span> :
+            <div v-if="item.numberOfVotesForAllowed === 0 && item.numberOfVotesForNotAllowed === 0">
+              Be the first to share
+            </div>
+            <div 
+              v-else 
+              class="flex h-6 rounded-full overflow-hidden border border-gray-300 bg-gray-100"
+            >
+              <!-- Allowed Votes bar -->
+               <div
+                class="bg-green-500"
+                :style="{ width: votesAnalysisData?.find(voteAnalysis => voteAnalysis.etiquetteId === item.etiquetteId)?.allowedPercentage + '%' }"
+               >
+               </div>
+              <!-- Not allowed votes bar -->
+               <div
+                class="bg-red-500"
+                :style="{ width: votesAnalysisData?.find(voteAnalysis => voteAnalysis.etiquetteId === item.etiquetteId)?.notAllowedPercentage + '%' }"
+               >
+               </div>
+               <!-- Tooltip -->
+                <div
+                  v-if="showToolTip"
+                  :style="{
+                    left: `${toolTipPosition.x}px`,
+                    top: `${toolTipPosition.y}px`
+                  }"
+                  class="absolute transform -translate-x-1/2 bg-gray-800 text-white text-sm rounded p-2 shadow-lg"
+                >
+                  {{ toolTipText }}
+                </div>
+            </div>
+            <!-- {{
               item.numberOfVotesForAllowed === 0 && item.numberOfVotesForNotAllowed === 0
                 ? 'Be the first to share' : 
               item.numberOfVotesForAllowed >= item.numberOfVotesForNotAllowed
                 ? 'allowed'
                 : 'not allowed'
-            }}
+            }} -->
           </li>
         </ul>
         <div v-if="etiquetteVotesData.data.userHasVoted === false">
