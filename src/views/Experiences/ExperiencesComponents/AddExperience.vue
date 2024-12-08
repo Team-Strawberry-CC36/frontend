@@ -90,9 +90,9 @@ const getPlaceDetails = async (placeId: string, category: string) => {
     load.loading = false;
   } catch (e) {
     load.loading = false;
-    toast.error("An error occured while retrieving place details.", {
-      timeout: 3000
-    })
+    toast.error('An error occured while retrieving place details.', {
+      timeout: 3000,
+    });
     console.error({
       message: 'There was an error getting place details',
       error: e,
@@ -102,9 +102,9 @@ const getPlaceDetails = async (placeId: string, category: string) => {
 
 const handleAddExperience = async () => {
   if (!canSubmit()) {
-    toast.info("Please input all provided fields before submission.", {
-      timeout: 5000
-    })
+    toast.info('Please input all provided fields before submission.', {
+      timeout: 5000,
+    });
     return;
   }
   try {
@@ -122,12 +122,12 @@ const handleAddExperience = async () => {
 
     if (response.status === 201) {
       resetForm();
-      await getPlaceDetails(place.details.googlePlaceId, place.details.placeType)
+      await getPlaceDetails(place.details.googlePlaceId, place.details.placeType);
       handleToggleAddExperience();
       load.loading = false;
-      toast.success("Thank you for sharing your experience!", {
-        timeout: 3000
-      })
+      toast.success('Thank you for sharing your experience!', {
+        timeout: 3000,
+      });
       // add to pinia to recent experience added
       console.log('inserted!');
     } else {
@@ -141,9 +141,9 @@ const handleAddExperience = async () => {
     }
   } catch (error) {
     load.loading = false;
-    toast.error("Something unexpected happened.", {
-      timeout: 3000
-    })
+    toast.error('Something unexpected happened.', {
+      timeout: 3000,
+    });
     console.error(error);
   }
 };
@@ -245,7 +245,7 @@ const onCheck = (event: Event, id: number) => {
         rows="5"
         cols="30"
         class="resize-none p-3 rounded-2xl w-full"
-        @click="isDropdownOpen=false"
+        @click="isDropdownOpen = false"
       ></textarea>
     </section>
 

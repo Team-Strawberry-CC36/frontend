@@ -53,9 +53,9 @@ const performSearch = async () => {
     });
   } catch (error) {
     load.loading = false;
-    toast.error("An error occured while performing your search.", {
-      timeout: 3000
-    })
+    toast.error('An error occured while performing your search.', {
+      timeout: 3000,
+    });
     console.error('Search request failed: ', error);
   }
 };

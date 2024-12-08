@@ -40,9 +40,9 @@ const retrieveVote = async () => {
       throw 'An error an occured while retrieving helpfulness vote data.';
     }
   } catch (error) {
-    toast.error("Something unexpected happened.", {
-      timeout: 3000
-    })
+    toast.error('Something unexpected happened.', {
+      timeout: 3000,
+    });
     console.error(error);
   }
 };
@@ -66,8 +66,8 @@ const filteredExperiences = computed(() => {
   if (place.details.experiences) {
     // Filters based on etiquette selection
     const filtered = selectedFilter.value
-      ? place.details.experiences.filter(
-          (experience) => experience.etiquettes.some((etiquette) => etiquette.label === selectedFilter.value),
+      ? place.details.experiences.filter((experience) =>
+          experience.etiquettes.some((etiquette) => etiquette.label === selectedFilter.value),
         )
       : place.details.experiences;
     // arranges experiences based on helpfulness score in descending order
@@ -149,7 +149,7 @@ const handleVote = async (exid: number, vote: string, experience: IExperience) =
         const response = await apiService.editHelpfulnessVote(exid, voteToHandle?.vote_id, vote);
 
         if (response.status === 201) {
-          if (vote = 'up') {
+          if ((vote = 'up')) {
             experience.helpfulness++;
           } else {
             experience.helpfulness--;
@@ -196,11 +196,11 @@ onUnmounted(() => {
 
 //Date formatter
 const formatDate = (date: Date) => {
-  if (!date) return ""; // Handle null or undefined dates
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  if (!date) return ''; // Handle null or undefined dates
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   }).format(new Date(date));
 };
 </script>
@@ -301,14 +301,17 @@ const formatDate = (date: Date) => {
           <section class="basis-auto w-full">
             <div class="flex flex-row m-1 justify-between text-xl">
               <h4>Etiquette</h4>
-              <p class="text-velvet">{{ experience.etiquettes.map(e => e.label).join(' | ') }}</p>
+              <p class="text-velvet">{{ experience.etiquettes.map((e) => e.label).join(' | ') }}</p>
             </div>
             <div class="flex flex-col m-1 justify-between">
               <h4 class="text-xl">Experience</h4>
               <p>{{ experience.experience }}</p>
             </div>
             <div class="text-xs justify-self-end m-1">
-              <span>{{ experience.username }} visted here {{ formatDate(experience.dateVisited) }}</span>
+              <span
+                >{{ experience.username }} visted here
+                {{ formatDate(experience.dateVisited) }}</span
+              >
             </div>
           </section>
         </div>
