@@ -122,7 +122,7 @@ const handleAddExperience = async () => {
 
     if (response.status === 201) {
       resetForm();
-      await getPlaceDetails(place.details.id, place.details.placeType)
+      await getPlaceDetails(place.details.googlePlaceId, place.details.placeType)
       handleToggleAddExperience();
       load.loading = false;
       toast.success("Thank you for sharing your experience!", {
