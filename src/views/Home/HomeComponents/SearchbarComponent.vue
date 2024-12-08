@@ -9,7 +9,7 @@ const place = usePlaceStore();
 const toast = useToast();
 const load = useLoadingStore();
 
-const searchQuery = ref('onsen');
+const searchQuery = ref('');
 const searchCategory = ref('onsen');
 const errorMessage = ref('');
 const emit = defineEmits(['search']);
