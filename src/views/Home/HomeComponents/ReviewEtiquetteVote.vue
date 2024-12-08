@@ -12,7 +12,7 @@ import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVote
 import type { EtiquetteStatus } from '@/utils/interfaces/Etiquette';
 const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquetteVotes | null }>();
 
-console.log("In review etiquette votes:", etiquetteVotesData);
+console.log('In review etiquette votes:', etiquetteVotesData);
 
 // Authorization
 import { getAuth } from 'firebase/auth';
@@ -52,12 +52,11 @@ const handleClick = async () => {
 
 const handleCancel = () => {
   emit('close-review-vote');
-}
+};
 
 // For submitting the vote
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 const updateVote = async () => {
-
   // Convert to an array for easier processing
   const voteData = Array.from(etiquetteSelections.entries()).map(([key, value]) => ({
     etiquetteId: Number(key),
@@ -71,36 +70,35 @@ const updateVote = async () => {
   if (user) {
     const token = await user.getIdToken();
     const headers: Record<string, string> = {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-      };
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
 
     try {
-        const response = await fetch(`${apiUrl}/moreTesting/places/${place.details.id}/votes`, {
-          method: 'PATCH',
-          headers,
-          credentials: 'include',
-          body: JSON.stringify({
-                  votes: voteData,
-                  placeId: place.details.id,
-              }),
-          });
+      const response = await fetch(`${apiUrl}/moreTesting/places/${place.details.id}/votes`, {
+        method: 'PATCH',
+        headers,
+        credentials: 'include',
+        body: JSON.stringify({
+          votes: voteData,
+          placeId: place.details.id,
+        }),
+      });
 
-        if (!response.ok) {
-            toast.error('An error occured while sending your input.', {
-                timeout: 3000
-            });
-          throw new Error(`Error: ${response.status} ${response.statusText}`);
-        }
+      if (!response.ok) {
+        toast.error('An error occured while sending your input.', {
+          timeout: 3000,
+        });
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
 
-        const result = await response.json();
+      const result = await response.json();
 
-        if (result.message === "Votes updated successfully") {
-            emit('refresh-votes-data');
-        }
-
+      if (result.message === 'Votes updated successfully') {
+        emit('refresh-votes-data');
+      }
     } catch (error) {
-        console.log('There was an error posting the vote:', error);
+      console.log('There was an error posting the vote:', error);
     }
   }
 };

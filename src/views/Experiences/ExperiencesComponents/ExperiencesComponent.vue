@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PhotosComponent from '@/views/Home/HomeComponents/PhotosComponent.vue';
 import { onMounted, onUnmounted } from 'vue';
 import { ref, computed, defineEmits } from 'vue';
 import { getAuth } from 'firebase/auth';
@@ -6,6 +7,7 @@ import { usePlaceStore } from '@/stores/PlaceStore';
 import { useExperienceVoteStore } from '@/stores/ExperienceVoteStore';
 import apiService from '@/services/api.service';
 import { useToast } from 'vue-toastification';
+import type IExperience from '@/utils/interfaces/Experience';
 
 const place = usePlaceStore();
 
@@ -38,9 +40,9 @@ const retrieveVote = async () => {
       throw 'An error an occured while retrieving helpfulness vote data.';
     }
   } catch (error) {
-    toast.error("Something unexpected happened.", {
-      timeout: 3000
-    })
+    toast.error('Something unexpected happened.', {
+      timeout: 3000,
+    });
     console.error(error);
   }
 };
@@ -64,8 +66,8 @@ const filteredExperiences = computed(() => {
   if (place.details.experiences) {
     // Filters based on etiquette selection
     const filtered = selectedFilter.value
-      ? place.details.experiences.filter(
-          (experience) => experience.etiquettes.some((etiquette) => etiquette.label === selectedFilter.value),
+      ? place.details.experiences.filter((experience) =>
+          experience.etiquettes.some((etiquette) => etiquette.label === selectedFilter.value),
         )
       : place.details.experiences;
     // arranges experiences based on helpfulness score in descending order
@@ -102,13 +104,14 @@ const isDownvote = (exid: number) => {
 };
 
 // Handles the addition, editing, and deletion of votes
-const handleVote = async (exid: number, vote: string) => {
+const handleVote = async (exid: number, vote: string, experience: IExperience) => {
   // If user is logged in and the vote does not exist, add vote
   if (auth.currentUser && !checkExistingVote(exid) && vote) {
     try {
       const response = await apiService.addHelpfulnessVote(exid, vote);
 
       if (response.status === 201) {
+        experience.helpfulness++;
         console.log('Vote posted!');
       } else {
         toast.error('An error occured while posting your helpfulness vote.', {
@@ -129,6 +132,7 @@ const handleVote = async (exid: number, vote: string) => {
         const response = await apiService.deleteHelpfulnessVote(exid, voteToHandle.vote_id);
 
         if (response.status === 201) {
+          experience.helpfulness--;
           console.log('Vote deleted!');
         } else {
           toast.error('An error occured while removing your helpfulness vote.', {
@@ -145,6 +149,11 @@ const handleVote = async (exid: number, vote: string) => {
         const response = await apiService.editHelpfulnessVote(exid, voteToHandle?.vote_id, vote);
 
         if (response.status === 201) {
+          if ((vote = 'up')) {
+            experience.helpfulness++;
+          } else {
+            experience.helpfulness--;
+          }
           console.log('Vote edited!');
         } else {
           toast.error('An error occured while changing your helpfulness vote.', {
@@ -163,8 +172,8 @@ const handleVote = async (exid: number, vote: string) => {
 };
 
 // async call to handle before retrieving
-const handleThenRetrieveVote = async (exid: number, vote: string) => {
-  await handleVote(exid, vote); // Wait for handleVote to complete
+const handleThenRetrieveVote = async (exid: number, vote: string, experience: IExperience) => {
+  await handleVote(exid, vote, experience); // Wait for handleVote to complete
   retrieveVote(); // Only execute after handleVote is done
 };
 
@@ -184,6 +193,16 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', updateView);
 });
+
+//Date formatter
+const formatDate = (date: Date) => {
+  if (!date) return ''; // Handle null or undefined dates
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(new Date(date));
+};
 </script>
 
 <template>
@@ -203,14 +222,15 @@ onUnmounted(() => {
     </section>
     <section class="h-[20vh]">
       <!-- Cover Photo -->
-      <div class="h-full w-full sm:border-t sm:border-b border-slate-400">
+      <PhotosComponent />
+      <!-- <div class="h-full w-full sm:border-t sm:border-b border-slate-400">
         <img
           v-if="place.details.photos?.length > 0 && place.details.photos"
           class="w-full h-full object-cover"
           :src="place.details.photos[Math.floor(Math.random() * 3)]"
           alt="place_photo"
         />
-      </div>
+      </div> -->
     </section>
     <section class="flex justify-end">
       <button
@@ -245,7 +265,7 @@ onUnmounted(() => {
             <button
               class="block mb-1"
               :class="isUpvote(experience.id) ? 'fill-velvet' : 'fill-charcoal'"
-              @click="handleThenRetrieveVote(experience.id, 'up')"
+              @click="handleThenRetrieveVote(experience.id, 'up', experience)"
             >
               <svg
                 viewBox="0 0 256 256"
@@ -264,7 +284,7 @@ onUnmounted(() => {
             <button
               class="block"
               :class="isDownvote(experience.id) ? 'fill-velvet' : 'fill-charcoal'"
-              @click="handleThenRetrieveVote(experience.id, 'down')"
+              @click="handleThenRetrieveVote(experience.id, 'down', experience)"
             >
               <svg
                 viewBox="0 0 256 256"
@@ -281,14 +301,17 @@ onUnmounted(() => {
           <section class="basis-auto w-full">
             <div class="flex flex-row m-1 justify-between text-xl">
               <h4>Etiquette</h4>
-              <p class="text-velvet">{{ experience.etiquettes.map(e => e.label).join(' | ') }}</p>
+              <p class="text-velvet">{{ experience.etiquettes.map((e) => e.label).join(' | ') }}</p>
             </div>
             <div class="flex flex-col m-1 justify-between">
               <h4 class="text-xl">Experience</h4>
               <p>{{ experience.experience }}</p>
             </div>
             <div class="text-xs justify-self-end m-1">
-              <span>{{ experience.username }} visted here {{ experience.dateVisited }}</span>
+              <span
+                >{{ experience.username }} visted here
+                {{ formatDate(experience.dateVisited) }}</span
+              >
             </div>
           </section>
         </div>

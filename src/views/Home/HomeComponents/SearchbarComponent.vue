@@ -9,7 +9,7 @@ const place = usePlaceStore();
 const toast = useToast();
 const load = useLoadingStore();
 
-const searchQuery = ref('onsen');
+const searchQuery = ref('');
 const searchCategory = ref('onsen');
 const errorMessage = ref('');
 const emit = defineEmits(['search']);
@@ -53,9 +53,9 @@ const performSearch = async () => {
     });
   } catch (error) {
     load.loading = false;
-    toast.error("An error occured while performing your search.", {
-      timeout: 3000
-    })
+    toast.error('An error occured while performing your search.', {
+      timeout: 3000,
+    });
     console.error('Search request failed: ', error);
   }
 };

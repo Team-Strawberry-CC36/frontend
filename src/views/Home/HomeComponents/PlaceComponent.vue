@@ -1,9 +1,7 @@
 <script setup lang="ts">
-//import type Place from '@/utils/interfaces/Place';
-import apiService from '@/services/api.service';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
-import { defineProps, onMounted, ref } from 'vue';
+import { defineProps } from 'vue';
 import { defineEmits } from 'vue';
 import PhotosComponent from './PhotosComponent.vue';
 
@@ -22,7 +20,7 @@ const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquette
       <!-- Cover Photo -->
       <section class="h-[20vh]">
         <!-- Cover Photo Slideshow -->
-        <PhotosComponent />
+        <PhotosComponent class="max-w-[600px]" />
       </section>
       <div class="content">
         <!-- Other content here -->
@@ -65,14 +63,18 @@ const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquette
       <section v-if="etiquetteVotesData" class="m-5 w-full pb-5 border-b border-slate-400">
         <h2 class="text-center text-velvet text-xl">Etiquette Rules</h2>
         <ul class="list-disc list-inside font-light">
-          <li class="pb-3" v-for="item in etiquetteVotesData.data.etiquetteVotes" :key="item.etiquetteId">
+          <li
+            class="pb-3"
+            v-for="item in etiquetteVotesData.data.etiquetteVotes"
+            :key="item.etiquetteId"
+          >
             <span class="font-bold">{{ item.etiquetteType }}</span> :
             {{
               item.numberOfVotesForAllowed === 0 && item.numberOfVotesForNotAllowed === 0
-                ? 'Be the first to share' : 
-              item.numberOfVotesForAllowed >= item.numberOfVotesForNotAllowed
-                ? 'allowed'
-                : 'not allowed'
+                ? 'Be the first to share'
+                : item.numberOfVotesForAllowed >= item.numberOfVotesForNotAllowed
+                  ? 'allowed'
+                  : 'not allowed'
             }}
           </li>
         </ul>

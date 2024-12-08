@@ -2,10 +2,17 @@
 import { ref, defineProps, reactive, watch } from 'vue';
 import type { IPlaceVisitedAlias } from '@/utils/interfaces/PlacesVisited';
 import apiService from '@/services/api.service';
+import router from '@/router';
 import { useToast } from 'vue-toastification';
+import { useLoadingStore } from '@/stores/LoadingStore';
+import { usePlaceStore } from '@/stores/PlaceStore';
 
+const load = useLoadingStore();
+const place = usePlaceStore();
 const toast = useToast();
-const { placesVisitedByTourists } = defineProps<{ placesVisitedByTourists: IPlaceVisitedAlias[] }>();
+const { placesVisitedByTourists } = defineProps<{
+  placesVisitedByTourists: IPlaceVisitedAlias[];
+}>();
 
 // create a local reactive copy of the data to allow interaction locally such as sorting
 const localPlacesVisited = reactive({
@@ -13,40 +20,42 @@ const localPlacesVisited = reactive({
 });
 
 // Change local placed in prop change
-watch(() => placesVisitedByTourists, (value) => {
-  localPlacesVisited.data = value
-})
-
+watch(
+  () => placesVisitedByTourists,
+  (value) => {
+    localPlacesVisited.data = value;
+  },
+);
 
 // Initially sort places visited according to date, with latest first
 localPlacesVisited.data.sort((placeVisitedA, placeVisitedB) => {
   return placeVisitedB.dateVisited.getTime() - placeVisitedA.dateVisited.getTime();
 });
 
-const selectedSorting = ref("date-latest"); // Default sorting value
+const selectedSorting = ref('date-latest'); // Default sorting value
 
 const handleSortingChange = () => {
   switch (selectedSorting.value) {
-    case "date-latest":
-      sortByDate("latest-first");
+    case 'date-latest':
+      sortByDate('latest-first');
       break;
-    case "date-oldest":
-      sortByDate("latest-last");
+    case 'date-oldest':
+      sortByDate('latest-last');
       break;
-    case "type-asc":
-      sortByType("ascending");
+    case 'type-asc':
+      sortByType('ascending');
       break;
-    case "type-desc":
-      sortByType("descending");
+    case 'type-desc':
+      sortByType('descending');
       break;
-    case "name-asc":
-      sortByPlaceName("ascending");
+    case 'name-asc':
+      sortByPlaceName('ascending');
       break;
-    case "name-desc":
-      sortByPlaceName("descending");
+    case 'name-desc':
+      sortByPlaceName('descending');
       break;
     default:
-      console.warn("Unknown sorting option selected:", selectedSorting.value);
+      console.warn('Unknown sorting option selected:', selectedSorting.value);
   }
 };
 
@@ -133,20 +142,55 @@ const deleteExperience = async (expId: number) => {
   const placeIndex = localPlacesVisited.data.findIndex((item) => item.experienceId === expId);
 
   if (placeIndex === -1) {
-    toast.error("The experience you are trying to delete was not found.");
+    toast.error('The experience you are trying to delete was not found.');
     return;
   }
 
   try {
     await apiService.deleteExperience(expId);
     localPlacesVisited.data.splice(placeIndex, 1);
-    toast.info("Experience deleted.")
+    toast.info('Experience deleted.');
   } catch (error) {
-    toast.error("An error occured while deleting your experience.")
-    console.log("Error deleting experience:", error)
+    toast.error('An error occured while deleting your experience.');
+    console.log('Error deleting experience:', error);
   }
-}
+};
 
+//Date formatter
+const formatDate = (date: Date) => {
+  if (!date) return ''; // Handle null or undefined dates
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(new Date(date));
+};
+
+// Fetching place details and redirection
+const getPlaceDetailsAndRedirect = async (placeId: string, category: string) => {
+  try {
+    load.loading = true;
+    const response = await apiService.getPlace(placeId, category);
+    place.$patch({
+      details: response.data.data,
+    });
+
+    const photosResponse = await apiService.fetchPhotos(response.data.data.id);
+
+    place.updatePhotos(photosResponse.data.data);
+    await router.push({ name: 'home' });
+    load.loading = false;
+  } catch (e) {
+    load.loading = false;
+    toast.error('An error occured while retrieving place details.', {
+      timeout: 3000,
+    });
+    console.error({
+      message: 'There was an error getting place details in homeView',
+      error: e,
+    });
+  }
+};
 </script>
 
 <template>
@@ -210,9 +254,6 @@ const deleteExperience = async (expId: number) => {
           </div>
         </div>
       </div>
-
-
-
     </section>
     <section class="p-3">
       <!-- Main body of cards containing info -->
@@ -221,10 +262,16 @@ const deleteExperience = async (expId: number) => {
         :key="placeVisited.experienceId"
         class="p-3 bg-frostWhite border border-slate-400 rounded-lg mt-3"
       >
-        <h3 class="text-lg font-extralight">
-          {{ placeVisited.placeName }} : {{ placeVisited.placeType }}
-        </h3>
-        <p class="text-sm font-bold">You visited here {{ placeVisited.dateVisited }}</p>
+        <button
+          class="text-lg font-extralight"
+          @click="getPlaceDetailsAndRedirect(placeVisited.googlePlaceId, placeVisited.placeType)"
+        >
+          {{ placeVisited.placeName }}
+        </button>
+        <h3 class="font-light text-sm mb-2">{{ placeVisited.placeType }}</h3>
+        <p class="text-sm font-bold">
+          You visited here on {{ formatDate(placeVisited.dateVisited) }}
+        </p>
 
         <p class="border-b border-slate-400 text-lg font-bold mt-2 mb-3 pb-2">Your experience:</p>
         <!-- <hr class="w-full mb-3" /> -->

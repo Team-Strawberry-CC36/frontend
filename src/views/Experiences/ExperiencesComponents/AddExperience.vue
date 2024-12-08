@@ -64,14 +64,49 @@ const handleSetDateVisited = (event: Event) => {
 // };
 
 function canSubmit() {
-  return experiencePackage.selectedEtiquette && experiencePackage.experienceText.trim();
+  return (
+    Array.isArray(experiencePackage.selectedEtiquette) &&
+    experiencePackage.selectedEtiquette.length > 0 &&
+    typeof experiencePackage.experienceText === 'string' &&
+    experiencePackage.experienceText.trim().length > 0 &&
+    experiencePackage.dateVisited !== null
+  );
 }
+
 function resetForm() {
   experiencePackage.selectedEtiquette = [];
   experiencePackage.experienceText = '';
 }
 
+// Temporary solution to refresh place details to obtain newly added experience
+const getPlaceDetails = async (placeId: string, category: string) => {
+  try {
+    load.loading = true;
+    const response = await apiService.getPlace(placeId, category);
+    place.$patch({
+      details: response.data.data,
+    });
+
+    load.loading = false;
+  } catch (e) {
+    load.loading = false;
+    toast.error('An error occured while retrieving place details.', {
+      timeout: 3000,
+    });
+    console.error({
+      message: 'There was an error getting place details',
+      error: e,
+    });
+  }
+};
+
 const handleAddExperience = async () => {
+  if (!canSubmit()) {
+    toast.info('Please input all provided fields before submission.', {
+      timeout: 5000,
+    });
+    return;
+  }
   try {
     load.loading = true;
     const formattedEtiquettes = experiencePackage.selectedEtiquette.map((item) => {
@@ -81,17 +116,18 @@ const handleAddExperience = async () => {
     });
     const response = await apiService.createExperience(place.details.id, {
       etiquetteSelected: formattedEtiquettes,
-      dateVisited: new Date().toISOString(),
+      dateVisited: experiencePackage.dateVisited.toISOString(),
       experience: experiencePackage.experienceText,
     });
 
     if (response.status === 201) {
       resetForm();
+      await getPlaceDetails(place.details.googlePlaceId, place.details.placeType);
       handleToggleAddExperience();
       load.loading = false;
-      toast.success("Thank you for sharing your experience!", {
-        timeout: 3000
-      })
+      toast.success('Thank you for sharing your experience!', {
+        timeout: 3000,
+      });
       // add to pinia to recent experience added
       console.log('inserted!');
     } else {
@@ -105,9 +141,9 @@ const handleAddExperience = async () => {
     }
   } catch (error) {
     load.loading = false;
-    toast.error("Something unexpected happened.", {
-      timeout: 3000
-    })
+    toast.error('Something unexpected happened.', {
+      timeout: 3000,
+    });
     console.error(error);
   }
 };
@@ -209,6 +245,7 @@ const onCheck = (event: Event, id: number) => {
         rows="5"
         cols="30"
         class="resize-none p-3 rounded-2xl w-full"
+        @click="isDropdownOpen = false"
       ></textarea>
     </section>
 
@@ -217,7 +254,6 @@ const onCheck = (event: Event, id: number) => {
       <button
         class="mx-5 border-velvet border p-2 rounded-xl text-sm hover:bg-velvet hover:text-white"
         @click="handleAddExperience"
-        :disabled="!canSubmit"
       >
         Post
       </button>
