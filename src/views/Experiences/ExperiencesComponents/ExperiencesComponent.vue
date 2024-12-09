@@ -149,7 +149,7 @@ const handleVote = async (exid: number, vote: string, experience: IExperience) =
         const response = await apiService.editHelpfulnessVote(exid, voteToHandle?.vote_id, vote);
 
         if (response.status === 201) {
-          if ((vote = 'up')) {
+          if (vote === 'up') {
             experience.helpfulness++;
           } else {
             experience.helpfulness--;
