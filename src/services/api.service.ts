@@ -1,4 +1,4 @@
-import type IPlace from '@/utils/interfaces/Place';
+import type { IPlace } from '@/utils/interfaces/Place';
 import type ExperienceHelpfulnessVote from '@/utils/interfaces/ExperienceHelpfulnessVote';
 import { auth } from '@/firebase';
 import Axios, { type AxiosInstance, type AxiosResponse } from 'axios';

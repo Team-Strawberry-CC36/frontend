@@ -1,5 +1,5 @@
 import Axios, { type AxiosResponse } from 'axios';
-import type IPlace from '@/utils/interfaces/Place';
+import type { IPlace } from '@/utils/interfaces/Place';
 
 // TEMP interfaces
 export interface IPlaceMarker {

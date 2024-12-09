@@ -1,5 +1,6 @@
 export interface IPlaceVisitedAlias {
   experienceId: number; // ID of experience from Experiences table: id
+  googlePlaceId: string;
   placeName: string; // Name of the place described in the experience
   placeType: string; // Type of the place described in the experience
   experience: string; // The written experience text from Experiences table: experience

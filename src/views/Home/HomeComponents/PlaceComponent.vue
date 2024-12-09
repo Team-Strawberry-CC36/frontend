@@ -1,6 +1,4 @@
 <script setup lang="ts">
-//import type Place from '@/utils/interfaces/Place';
-import apiService from '@/services/api.service';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
 import { defineProps, onMounted, ref, computed } from 'vue';
@@ -68,7 +66,7 @@ const handleLeaveOrTouchEnd = () => {
       <!-- Cover Photo -->
       <section class="h-[20vh]">
         <!-- Cover Photo Slideshow -->
-        <PhotosComponent />
+        <PhotosComponent class="max-w-[600px]" />
       </section>
       <div class="content">
         <!-- Other content here -->

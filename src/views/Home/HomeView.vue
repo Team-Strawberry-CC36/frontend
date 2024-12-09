@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import PlaceComponent from './HomeComponents/PlaceComponent.vue';
 import SearchbarComponent from './HomeComponents/SearchbarComponent.vue';
-import { ref } from 'vue';
-import type IPlace from '@/utils/interfaces/Place';
+import { onMounted, onUnmounted, ref } from 'vue';
+import type { IPlace } from '@/utils/interfaces/Place';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
 import HomeMap from './HomeComponents/HomeMap.vue';
 import AddEtiquetteVote from './HomeComponents/AddEtiquetteVote.vue';
@@ -12,10 +12,14 @@ import apiService, { type IPlaceMarker } from '@/services/api.service';
 import { usePlaceStore } from '@/stores/PlaceStore';
 import { useLoadingStore } from '@/stores/LoadingStore';
 import type { EtiquetteStatus } from '@/utils/interfaces/Etiquette';
+import { useToast } from 'vue-toastification';
+import { useSearchStore } from '@/stores/SearchStore';
 
 const auth = getAuth();
 const place = usePlaceStore();
 const load = useLoadingStore();
+const toast = useToast();
+const search = useSearchStore();
 
 // const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
 //     message: "Lovely job!",
@@ -51,6 +55,15 @@ const googlePlaceId = ref<string | null>(null);
 const searchQuery = ref('');
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
+// Hooks
+onMounted(() => {
+  placeMarkers.value = search.data.markers;
+})
+
+onUnmounted(() => {
+  search.updateMarkers(placeMarkers.value)
+})
+
 // Some functions for async
 const getPlaceEtiquetteVotesData = async (placeId: string) => {
   const user = auth.currentUser;
@@ -58,17 +71,17 @@ const getPlaceEtiquetteVotesData = async (placeId: string) => {
   if (user) {
     const token = await user.getIdToken();
     const headers: Record<string, string> = {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-      };
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
     try {
       const response = await fetch(`${apiUrl}/moreTesting/places/${placeId}/votes`, {
         method: 'GET',
         headers,
       });
       etiquetteVotesData.value = await response.json();
-      console.log("Data received back is: ", etiquetteVotesData.value);
-      etiquetteVotesData.value?.data.usersVote.forEach(vote => {
+      console.log('Data received back is: ', etiquetteVotesData.value);
+      etiquetteVotesData.value?.data.usersVote.forEach((vote) => {
         if (vote.vote) {
           const transformedVote = vote.vote.toLowerCase().replace(/_/g, '-');
           if (['allowed', 'not-allowed'].includes(transformedVote)) {
@@ -78,7 +91,7 @@ const getPlaceEtiquetteVotesData = async (placeId: string) => {
           }
         }
       });
-      console.log("Here is your etiquette votes data:", etiquetteVotesData.value);
+      console.log('Here is your etiquette votes data:', etiquetteVotesData.value);
     } catch (error) {
       console.error('There was an error getting etiquette votes from the database: ', error);
     }
@@ -98,6 +111,10 @@ const getPlaceDetails = async (placeId: string, category: string) => {
     place.updatePhotos(photosResponse.data.data);
     load.loading = false;
   } catch (e) {
+    load.loading = false;
+    toast.error('An error occured while retrieving place details.', {
+      timeout: 3000,
+    });
     console.error({
       message: 'There was an error getting place details in homeView',
       error: e,
@@ -114,7 +131,7 @@ const handleRefreshVotes = async () => {
   if (googlePlaceId.value) {
     await getPlaceEtiquetteVotesData(googlePlaceId.value);
   }
-}
+};
 
 const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
   console.log(event.data);
@@ -124,12 +141,13 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
   // 1. First get place details!
   getPlaceDetails(event.data.id, event.data.category)
     .then(() => {
-    // 2. Then get etiquttes voting data
+      // 2. Then get etiquttes voting data
       getPlaceEtiquetteVotesData(event.data.id); // then change the type in this fetch request
-    }).catch(() => {
-      // [ ] Add error validation
-      console.error("Ops! something happend in handleMarkerClicked")
     })
+    .catch(() => {
+      // [ ] Add error validation
+      console.error('Ops! something happend in handleMarkerClicked');
+    });
 };
 
 /**
@@ -150,7 +168,6 @@ const toggleReviewVoteView = () => {
   viewReviewEtiquetteVote.value = !viewReviewEtiquetteVote.value;
   viewPlaceDetails.value = !viewPlaceDetails.value;
 };
-
 </script>
 
 <template>

@@ -30,18 +30,18 @@ const handleSignOut = async () => {
   signOut(auth)
     .then(() => {
       // Sign-out successful.
-      toast.info("Sign out successful. See you next time!", {
-        timeout: 3000
-      })
+      toast.info('Sign out successful. See you next time!', {
+        timeout: 3000,
+      });
     })
     .catch((error) => {
       // An error happened.
-      toast.error("An error occured while signing you out.", {
-        timeout: 3000
-      })
+      toast.error('An error occured while signing you out.', {
+        timeout: 3000,
+      });
       console.log('Error: ' + error);
     });
-}
+};
 
 // handle emits to close sidebar when clicking on link
 const emit = defineEmits(['close-sidebar']);
