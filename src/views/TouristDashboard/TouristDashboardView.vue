@@ -138,7 +138,8 @@ const showToolTip = ref<boolean>(false);
 const toolTipText = ref<string>('');
 const toolTipPosition = ref<{ x: number; y: number }>({ x: 0, y: 0 });
 
-const handleHoverOrTouch = (badge: object, event: MouseEvent | TouchEvent) => {
+// @ts-ignore
+const handleHoverOrTouch = (badge: any, event: MouseEvent | TouchEvent) => {
   showToolTip.value = true;
   toolTipText.value = 'Provided ' + badge.threshold;
   const rect = (event.target as HTMLElement).getBoundingClientRect();
