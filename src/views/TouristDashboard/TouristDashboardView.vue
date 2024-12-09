@@ -50,22 +50,22 @@ const fetchPlacesVisitedByUser = async () => {
 
 fetchPlacesVisitedByUser(); // fetch the places visited by the user from the database
 
-const handleSignOut = async () => {
-  signOut(auth)
-    .then(() => {
-      // Sign-out successful.
-      toast.info('Sign out successful. See you next time!', {
-        timeout: 3000,
-      });
-    })
-    .catch((error) => {
-      // An error happened.
-      toast.error('An error occured while signing you out.', {
-        timeout: 3000,
-      });
-      console.log('Error: ' + error);
-    });
-};
+// const handleSignOut = async () => {
+//   signOut(auth)
+//     .then(() => {
+//       // Sign-out successful.
+//       toast.info('Sign out successful. See you next time!', {
+//         timeout: 3000,
+//       });
+//     })
+//     .catch((error) => {
+//       // An error happened.
+//       toast.error('An error occured while signing you out.', {
+//         timeout: 3000,
+//       });
+//       console.log('Error: ' + error);
+//     });
+// };
 
 const experienceBadges = [
   {
