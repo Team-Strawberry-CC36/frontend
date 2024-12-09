@@ -40,15 +40,8 @@ const performSearch = async () => {
     // [ ] Send coordinates!
     load.loading = true;
     const response = await apiService.search(searchQuery.value, searchCategory.value);
-    const data = response.data.data;
+    const markers = response.data.data;
     load.loading = false;
-
-    const markers: IPlaceMarker[] = data.map((item) => {
-      return {
-        ...item,
-        category: searchCategory.value,
-      };
-    });
 
     emit('search', {
       event: 'search-perfomed',
