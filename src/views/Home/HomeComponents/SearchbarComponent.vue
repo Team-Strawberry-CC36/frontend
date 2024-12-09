@@ -2,7 +2,7 @@
 import { usePlaceStore } from '@/stores/PlaceStore';
 import { ref, watch, onMounted, onUnmounted } from 'vue';
 import apiService, { type IPlaceMarker } from '@/services/api.service';
-import { useToast } from 'vue-toastification';
+import { POSITION, useToast } from 'vue-toastification';
 import { useLoadingStore } from '@/stores/LoadingStore';
 import { useSearchStore } from '@/stores/SearchStore';
 import type { IPlaceType } from '@/utils/interfaces/Place';
@@ -17,24 +17,18 @@ const searchCategory = ref<IPlaceType>('onsen');
 const errorMessage = ref('');
 const emit = defineEmits(['search']);
 
-// Watch the searchQuery so any changes clear the error message
-watch(searchQuery, () => {
-  if (errorMessage.value) {
-    errorMessage.value = '';
-  }
-});
-
 const performSearch = async () => {
   // Validate the search term
-  if (searchQuery.value.length < 5) {
-    errorMessage.value = 'Search term is not long enough.';
+  if (searchQuery.value.length < 4) {
+    toast.error("Search term is not long enough", {
+      timeout: 2000,
+      position: POSITION.TOP_LEFT
+    })
     return; // prevents the request being sent.
   }
 
   // Get user location
   const coordinates = getUserGeoLocation();
-
-  errorMessage.value = '';
 
   try {
     // [ ] Send coordinates!
@@ -134,8 +128,5 @@ onUnmounted(() => {
     >
       Search
     </button>
-  </div>
-  <div class="text-center">
-    <p v-if="errorMessage" class="text-red-500" text-sm mt-2>{{ errorMessage }}</p>
   </div>
 </template>
