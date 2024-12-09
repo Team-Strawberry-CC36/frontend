@@ -192,7 +192,7 @@ const handleLeaveOrTouchEnd = () => {
           <p>Visited here? Tell us about the etiquette rules.</p>
           <div>
             <button
-              class="block mx-auto w-3/4 p-5 rounded-3xl border border-slate-400 hover:bg-white bg-velvet text-frostWhite hover:text-velvet hover:cursor-pointer"
+              class="block mt-5 mx-auto w-3/4 p-5 rounded-3xl border border-slate-400 hover:bg-white bg-velvet text-frostWhite hover:text-velvet hover:cursor-pointer"
               @click="emit('show-add-vote')"
             >
               Vote
@@ -203,7 +203,7 @@ const handleLeaveOrTouchEnd = () => {
           <p>Want to review the etiquette rules you told us about?</p>
           <div>
             <button
-              class="block mx-auto w-3/4 p-5 rounded-3xl border border-slate-400 hover:bg-white bg-velvet text-frostWhite hover:text-velvet hover:cursor-pointer"
+              class="block mt-5 mx-auto w-3/4 p-5 rounded-3xl border border-slate-400 hover:bg-white bg-velvet text-frostWhite hover:text-velvet hover:cursor-pointer"
               @click="emit('show-review-vote')"
             >
               Review vote

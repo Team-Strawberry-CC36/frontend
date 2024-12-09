@@ -106,19 +106,19 @@ const submitVote = async () => {
 
 <template>
   <div
-    class="sm:w-full sm:h-fit mt-3 lg:m-3 sm:border border-slate-400 overflow-hidden rounded-xl shadow-2xl bg-frostWhite"
+    class="sm:w-fit sm:h-fit mt-3 lg:m-3 sm:border border-slate-400 overflow-hidden rounded-xl shadow-2xl bg-frostWhite"
   >
     <section class="h-[20vh]">
       <!-- Cover Photo -->
       <section class="h-[20vh]">
         <!-- Cover Photo Slideshow -->
-        <PhotosComponent />
+        <PhotosComponent class="max-w-[600px]" />
       </section>
       <div class="content">
         <!-- Other content here -->
       </div>
     </section>
-    <div class="flex flex-col p-5 items-center">
+    <div class="flex flex-col p-5 items-center max-w-[600px]">
       <section class="text-center w-full pb-5 border-b border-slate-400">
         <!-- Name of the place -->
         <h1 class="text-3xl">Vote for {{ place.details.name }}'s etiquette</h1>
