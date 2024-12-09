@@ -6,7 +6,7 @@ import VisitedPlaces from './TouristDashboardComponents/VisitedPlaces.vue';
 // import types and interfaces needed
 import type { IPlaceVisitedAlias } from '@/utils/interfaces/PlacesVisited';
 // authorization
-import { getAuth, signOut } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import apiService from '@/services/api.service';
 const auth = getAuth();
 // toasts
@@ -204,7 +204,7 @@ const handleLeaveOrTouchEnd = () => {
         <section class="grid grid-cols-3">
           <div v-for="badge in helpfulnessVoteBadges" :key="badge.id">
             <div
-              v-if="placesVisitedByUser?.length >= badge.threshold"
+              v-if="helpfulvote.details.length >= badge.threshold"
               @mouseover="handleHoverOrTouch(badge, $event)"
               @mouseleave="handleLeaveOrTouchEnd"
               @touchstart="handleHoverOrTouch(badge, $event)"
