@@ -1,40 +1,31 @@
 <script setup lang="ts">
-import { usePlaceStore } from '@/stores/PlaceStore';
-import { ref, watch, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import apiService, { type IPlaceMarker } from '@/services/api.service';
-import { useToast } from 'vue-toastification';
+import { POSITION, useToast } from 'vue-toastification';
 import { useLoadingStore } from '@/stores/LoadingStore';
 import { useSearchStore } from '@/stores/SearchStore';
 import type { IPlaceType } from '@/utils/interfaces/Place';
 
-const place = usePlaceStore();
 const toast = useToast();
 const load = useLoadingStore();
 const search = useSearchStore();
 
 const searchQuery = ref('');
 const searchCategory = ref<IPlaceType>('onsen');
-const errorMessage = ref('');
 const emit = defineEmits(['search']);
-
-// Watch the searchQuery so any changes clear the error message
-watch(searchQuery, () => {
-  if (errorMessage.value) {
-    errorMessage.value = '';
-  }
-});
 
 const performSearch = async () => {
   // Validate the search term
-  if (searchQuery.value.length < 5) {
-    errorMessage.value = 'Search term is not long enough.';
+  if (searchQuery.value.length < 4) {
+    toast.error("Search term is not long enough", {
+      timeout: 2500,
+      position: POSITION.TOP_LEFT
+    })
     return; // prevents the request being sent.
   }
 
   // Get user location
   const coordinates = getUserGeoLocation();
-
-  errorMessage.value = '';
 
   try {
     // [ ] Send coordinates!
@@ -104,10 +95,16 @@ onUnmounted(() => {
   search.updateSearch(searchQuery.value);
   search.updateCategory(searchCategory.value);
 });
+
+function handleKeydown(event: KeyboardEvent) {
+  if (event.key === 'Enter') {
+    performSearch();
+  }
+}
 </script>
 
 <template>
-  <div class="flex flex-row w-full bg-frostWhite justify-center p-1">
+  <div class="flex flex-row w-full bg-frostWhite justify-center p-1" @keydown="handleKeydown" tabindex="0">
     <select
       v-model="searchCategory"
       class="w-1/6 h-10 mr-1 rounded-xl border border-slate-400 bg-mist text-charcoal text-center text-sm"
@@ -134,8 +131,5 @@ onUnmounted(() => {
     >
       Search
     </button>
-  </div>
-  <div class="text-center">
-    <p v-if="errorMessage" class="text-red-500" text-sm mt-2>{{ errorMessage }}</p>
   </div>
 </template>
