@@ -15,20 +15,37 @@ const votesAnalysisData = computed(() => {
     return {
       etiquetteId: item.etiquetteId,
       totalVotes: item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed,
-      allowedPercentage: 100 * (item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed),
-      notAllowedPercentage: 100 * (item.numberOfVotesForNotAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed),
-      allowedStatus: item.numberOfVotesForAllowed === 0 && item.numberOfVotesForNotAllowed === 0
-        ? 'No data yet - be the first to share!'
-        : Math.floor(100 * (item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed)) > 66
-          ? `Allowed - our data suggests this is allowed with ${Math.floor(100 * (item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed))}% of our users saying it is allowed.`
-          : Math.floor(100 * (item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed)) >= 50
-            ? `Probably allowed - our data says that ${Math.floor(100 * (item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed))}% of our users say it is allowed.}`
-            : Math.floor(100 * (item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed)) < 33
-              ? `Not allowed - many of our users, ${Math.floor(100 * (item.numberOfVotesForNotAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed))}% say this is not allowed`
-              : Math.floor(100 * (item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed)) < 50
-                ? `Probably not allowed - our data says that ${Math.floor(100 * (item.numberOfVotesForNotAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed))}% say this is not allowed`
-                : 'There might be a problem with our data'
-    }
+      allowedPercentage:
+        (100 * item.numberOfVotesForAllowed) /
+        (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed),
+      notAllowedPercentage:
+        (100 * item.numberOfVotesForNotAllowed) /
+        (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed),
+      allowedStatus:
+        item.numberOfVotesForAllowed === 0 && item.numberOfVotesForNotAllowed === 0
+          ? 'No data yet - be the first to share!'
+          : Math.floor(
+                (100 * item.numberOfVotesForAllowed) /
+                  (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed),
+              ) > 66
+            ? `Allowed - our data suggests this is allowed with ${Math.floor((100 * item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed))}% of our users saying it is allowed.`
+            : Math.floor(
+                  (100 * item.numberOfVotesForAllowed) /
+                    (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed),
+                ) >= 50
+              ? `Probably allowed - our data says that ${Math.floor((100 * item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed))}% of our users say it is allowed.}`
+              : Math.floor(
+                    (100 * item.numberOfVotesForAllowed) /
+                      (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed),
+                  ) < 33
+                ? `Not allowed - many of our users, ${Math.floor((100 * item.numberOfVotesForNotAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed))}% say this is not allowed`
+                : Math.floor(
+                      (100 * item.numberOfVotesForAllowed) /
+                        (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed),
+                    ) < 50
+                  ? `Probably not allowed - our data says that ${Math.floor((100 * item.numberOfVotesForNotAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed))}% say this is not allowed`
+                  : 'There might be a problem with our data',
+    };
   });
 });
 
@@ -40,22 +57,21 @@ const toolTipPosition = ref<{ x: number; y: number }>({ x: 0, y: 0 });
 const handleHoverOrTouch = (etiquetteId: number, event: MouseEvent | TouchEvent) => {
   showToolTip.value = true;
   const voteAnalysis = votesAnalysisData.value?.find(
-    voteAnalysis => voteAnalysis.etiquetteId === etiquetteId
+    (voteAnalysis) => voteAnalysis.etiquetteId === etiquetteId,
   );
-  toolTipText.value = voteAnalysis?.allowedStatus || 'This data is crowd sourced from tourists who visited here';
+  toolTipText.value =
+    voteAnalysis?.allowedStatus || 'This data is crowd sourced from tourists who visited here';
 
   const rect = (event.target as HTMLElement).getBoundingClientRect();
 
   toolTipPosition.value = {
     x: rect.left + 200, //3*rect.width,
-    y: rect.top + window.scrollY - 30
+    y: rect.top + window.scrollY - 30,
   };
-}
+};
 const handleLeaveOrTouchEnd = () => {
   showToolTip.value = false;
-}
-
-
+};
 </script>
 
 <template>
@@ -109,46 +125,59 @@ const handleLeaveOrTouchEnd = () => {
       <section v-if="etiquetteVotesData" class="m-5 w-full pb-5 border-b border-slate-400">
         <h2 class="text-center text-velvet text-xl">Etiquette Rules</h2>
         <ul class="list-disc list-inside font-light">
-          <li class="pb-3 group" v-for="item in etiquetteVotesData.data.etiquetteVotes" :key="item.etiquetteId">
-            <span 
+          <li
+            class="pb-3 group"
+            v-for="item in etiquetteVotesData.data.etiquetteVotes"
+            :key="item.etiquetteId"
+          >
+            <span
               class="font-bold"
               @mouseover="handleHoverOrTouch(item.etiquetteId, $event)"
               @mouseleave="handleLeaveOrTouchEnd"
               @touchstart="handleHoverOrTouch(item.etiquetteId, $event)"
-              @touchend="handleLeaveOrTouchEnd"  
+              @touchend="handleLeaveOrTouchEnd"
             >
-                {{ item.etiquetteType }}
-            </span> :
+              {{ item.etiquetteType }}
+            </span>
+            :
             <div v-if="item.numberOfVotesForAllowed === 0 && item.numberOfVotesForNotAllowed === 0">
               Be the first to share
             </div>
-            <div 
-              v-else 
+            <div
+              v-else
               class="flex h-6 rounded-full overflow-hidden border border-gray-300 bg-gray-100"
             >
               <!-- Allowed Votes bar -->
-               <div
+              <div
                 class="bg-green-500"
-                :style="{ width: votesAnalysisData?.find(voteAnalysis => voteAnalysis.etiquetteId === item.etiquetteId)?.allowedPercentage + '%' }"
-               >
-               </div>
+                :style="{
+                  width:
+                    votesAnalysisData?.find(
+                      (voteAnalysis) => voteAnalysis.etiquetteId === item.etiquetteId,
+                    )?.allowedPercentage + '%',
+                }"
+              ></div>
               <!-- Not allowed votes bar -->
-               <div
+              <div
                 class="bg-red-500"
-                :style="{ width: votesAnalysisData?.find(voteAnalysis => voteAnalysis.etiquetteId === item.etiquetteId)?.notAllowedPercentage + '%' }"
-               >
-               </div>
-               <!-- Tooltip -->
-                <div
-                  v-if="showToolTip"
-                  :style="{
-                    left: `${toolTipPosition.x}px`,
-                    top: `${toolTipPosition.y}px`
-                  }"
-                  class="absolute transform -translate-x-1/2 bg-gray-800 text-white text-sm rounded p-2 shadow-lg"
-                >
-                  {{ toolTipText }}
-                </div>
+                :style="{
+                  width:
+                    votesAnalysisData?.find(
+                      (voteAnalysis) => voteAnalysis.etiquetteId === item.etiquetteId,
+                    )?.notAllowedPercentage + '%',
+                }"
+              ></div>
+              <!-- Tooltip -->
+              <div
+                v-if="showToolTip"
+                :style="{
+                  left: `${toolTipPosition.x}px`,
+                  top: `${toolTipPosition.y}px`,
+                }"
+                class="absolute transform -translate-x-1/2 bg-gray-800 text-white text-sm rounded p-2 shadow-lg"
+              >
+                {{ toolTipText }}
+              </div>
             </div>
             <!-- {{
               item.numberOfVotesForAllowed === 0 && item.numberOfVotesForNotAllowed === 0

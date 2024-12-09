@@ -58,11 +58,11 @@ const apiUrl = import.meta.env.VITE_BACKEND_URL;
 // Hooks
 onMounted(() => {
   placeMarkers.value = search.data.markers;
-})
+});
 
 onUnmounted(() => {
-  search.updateMarkers(placeMarkers.value)
-})
+  search.updateMarkers(placeMarkers.value);
+});
 
 // Some functions for async
 const getPlaceEtiquetteVotesData = async (placeId: string) => {
