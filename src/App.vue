@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import NavigationBarComponent from './views/General/NavigationBarComponent.vue';
+import LoadScreenComponent from './views/General/LoadScreenComponent.vue';
 </script>
 
 <template>
   <div class="flex flex-col min-h-screen">
-  <NavigationBarComponent class="z-50"/>
+    <NavigationBarComponent class="z-50" />
 
-  <main class="flex flex-grow bg-mist">
-    <RouterView class="w-full"/>
-  </main>
-</div>
+    <main class="relative flex flex-grow bg-mist">
+      <LoadScreenComponent />
+      <RouterView class="w-full" />
+    </main>
+  </div>
 </template>

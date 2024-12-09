@@ -9,4 +9,4 @@ export interface IEtiquettePerPlace extends IEtiquette {
 
 export type IEtiquettePerExperience = IEtiquette;
 
-export type EtiquetteStatus = 'allowed' | 'not-allowed' | undefined;
+export type EtiquetteStatus = 'allowed' | 'not-allowed' | 'neutral' | undefined;

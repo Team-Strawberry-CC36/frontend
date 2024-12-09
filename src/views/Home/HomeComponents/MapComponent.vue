@@ -2,7 +2,7 @@
 //import { Loader } from "@googlemaps/js-api-loader";
 import { usePlaceStore } from '@/stores/PlaceStore';
 const place = usePlaceStore();
-place.useMock();
+//place.useMock();
 
 const googleAPIKey = import.meta.env.VITE_GOOGLE_KEY;
 // export default {
