@@ -2,6 +2,10 @@
 import { RouterView } from 'vue-router';
 import NavigationBarComponent from './views/General/NavigationBarComponent.vue';
 import LoadScreenComponent from './views/General/LoadScreenComponent.vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+
+
+
 </script>
 
 <template>

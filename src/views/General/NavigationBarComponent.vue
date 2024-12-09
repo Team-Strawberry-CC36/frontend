@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import SidebarComponent from './GeneralComponents/SidebarComponent.vue';
 import { useRouter } from 'vue-router';
 
@@ -7,6 +7,27 @@ const openSidebar = ref<boolean>(false);
 const toggleSidebar = () => {
   openSidebar.value = !openSidebar.value;
 };
+
+const handleClickOutside = (event: MouseEvent) => {
+  console.log(event.target);
+  const target = event.target as HTMLElement;
+  if (target && target.classList) {
+    if(!target.classList.contains('hamburger') && !target.classList.contains('hamburger-lines') && !target.classList.contains('hamburger-line')) {
+      const sidebarElement = document.querySelector('.sidebar');
+      if (openSidebar.value && sidebarElement) {
+        openSidebar.value = false;
+      }
+    }
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside);
+})
 
 const router = useRouter();
 const handleGoHome = () => {
@@ -23,11 +44,11 @@ const handleGoHome = () => {
       >
         Jappuri
       </h1>
-      <button class="absolute top-3 left-5 p-2" @click="toggleSidebar">
+      <button class="hamburger absolute top-3 left-5 p-2" @click="toggleSidebar">
         <!-- Hamburger Menu -->
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6 transition-transform duration-300 ease-in-out"
+          class="hamburger-lines h-6 w-6 transition-transform duration-300 ease-in-out"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -38,7 +59,7 @@ const handleGoHome = () => {
             y1="6"
             x2="21"
             y2="6"
-            class="transition-transform duration-300 ease-in-out origin-center"
+            class="hamburger-line transition-transform duration-300 ease-in-out origin-center"
             :class="{ 'rotate-45 translate-y-2': openSidebar }"
             stroke-width="2"
             stroke="currentColor"
@@ -49,7 +70,7 @@ const handleGoHome = () => {
             y1="12"
             x2="21"
             y2="12"
-            class="transition-opacity duration-300 ease-in-out"
+            class="hamburger-line transition-opacity duration-300 ease-in-out"
             stroke-width="2"
             stroke="currentColor"
             :class="{ 'opacity-0': openSidebar }"
@@ -60,7 +81,7 @@ const handleGoHome = () => {
             y1="18"
             x2="21"
             y2="18"
-            class="transition-transform duration-300 ease-in-out origin-center"
+            class="hamburger-line transition-transform duration-300 ease-in-out origin-center"
             :class="{ '-rotate-45 -translate-y-2': openSidebar }"
             stroke-width="2"
             stroke="currentColor"
@@ -68,7 +89,7 @@ const handleGoHome = () => {
         </svg>
       </button>
 
-      <SidebarComponent :openSidebar="openSidebar" @close-sidebar="toggleSidebar" />
+      <SidebarComponent class="sidebar" :openSidebar="openSidebar" @close-sidebar="toggleSidebar" />
     </div>
   </header>
 </template>
