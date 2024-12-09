@@ -94,66 +94,66 @@ const handleSignOut = async () => {
 const experienceBadges = [
   {
     id: 1,
-    name: "旅人 Tabibito",
-    threshold: 5
+    name: '旅人 Tabibito',
+    threshold: 5,
   },
   {
     id: 2,
-    name: "探検家 Tankenka",
-    threshold: 10
+    name: '探検家 Tankenka',
+    threshold: 10,
   },
   {
     id: 3,
-    name: "国巡り人 Kuni Meguribito",
-    threshold: 20
+    name: '国巡り人 Kuni Meguribito',
+    threshold: 20,
   },
   {
     id: 4,
-    name: "旅の達人 Tabi no Tatsujin",
-    threshold: 35
+    name: '旅の達人 Tabi no Tatsujin',
+    threshold: 35,
   },
   {
     id: 5,
-    name: "開拓者 Kaitakusha",
-    threshold: 50
+    name: '開拓者 Kaitakusha',
+    threshold: 50,
   },
   {
     id: 6,
-    name: "日本の伝説 Nippon no Densetsu",
-    threshold: 70
+    name: '日本の伝説 Nippon no Densetsu',
+    threshold: 70,
   },
 ];
 
 const helpfulnessVoteBadges = [
   {
     id: 1,
-    name: "Thoughtful Reviewer",
-    threshold: 10
+    name: 'Thoughtful Reviewer',
+    threshold: 10,
   },
   {
     id: 2,
-    name: "Journey Evaluator",
-    threshold: 20
+    name: 'Journey Evaluator',
+    threshold: 20,
   },
   {
     id: 3,
-    name: "Insightful Critic",
-    threshold: 40
+    name: 'Insightful Critic',
+    threshold: 40,
   },
   {
     id: 4,
-    name: "Seasoned Advisor",
-    threshold: 80
+    name: 'Seasoned Advisor',
+    threshold: 80,
   },
   {
     id: 5,
-    name: "Travel Guru",
-    threshold: 160
+    name: 'Travel Guru',
+    threshold: 160,
   },
   {
     id: 6,
-    name: "Critic Extraordinaire",
-    threshold: 320
+    name: 'Critic Extraordinaire',
+    threshold: 320,
   },
 ];
 
@@ -164,7 +164,7 @@ const toolTipPosition = ref<{ x: number; y: number }>({ x: 0, y: 0 });
 
 const handleHoverOrTouch = (badge: object, event: MouseEvent | TouchEvent) => {
   showToolTip.value = true;
-  toolTipText.value = "Provided " + badge.threshold;
+  toolTipText.value = 'Provided ' + badge.threshold;
   const rect = (event.target as HTMLElement).getBoundingClientRect();
 
   toolTipPosition.value = {
@@ -175,7 +175,6 @@ const handleHoverOrTouch = (badge: object, event: MouseEvent | TouchEvent) => {
 const handleLeaveOrTouchEnd = () => {
   showToolTip.value = false;
 };
-
 </script>
 
 <template>
@@ -209,19 +208,19 @@ const handleLeaveOrTouchEnd = () => {
               @touchend="handleLeaveOrTouchEnd"
               class="border border-slate-400 bg-mist m-1 p-1 rounded-xl text-center font-extralight"
             >
-            {{ badge.name }}
+              {{ badge.name }}
+            </div>
+            <div
+              v-if="showToolTip"
+              :style="{
+                left: `${toolTipPosition.x}px`,
+                top: `${toolTipPosition.y}px`,
+              }"
+              class="absolute transform -translate-x-1/2 bg-gray-800 text-white text-sm rounded p-2 shadow-lg"
+            >
+              {{ toolTipText }} experiences.
+            </div>
           </div>
-          <div
-            v-if="showToolTip"
-            :style="{
-              left: `${toolTipPosition.x}px`,
-              top: `${toolTipPosition.y}px`,
-            }"
-            class="absolute transform -translate-x-1/2 bg-gray-800 text-white text-sm rounded p-2 shadow-lg"
-          >
-           {{ toolTipText }} experiences.
-          </div>
-        </div>
         </section>
         <p v-if="helpfulvote.details.length > 0" class="m-1 p-1 text-center font-extralight">
           Helpfulness Input
@@ -229,26 +228,26 @@ const handleLeaveOrTouchEnd = () => {
         <section class="grid grid-cols-3">
           <div v-for="badge in helpfulnessVoteBadges" :key="badge.id">
             <div
-            v-if="placesVisitedByUser?.length >= badge.threshold"
-            @mouseover="handleHoverOrTouch(badge, $event)"
-            @mouseleave="handleLeaveOrTouchEnd"
-            @touchstart="handleHoverOrTouch(badge, $event)"
-            @touchend="handleLeaveOrTouchEnd"
-            class="border border-slate-400 bg-mist m-1 p-1 rounded-xl text-center font-extralight"
-          >
-            {{ badge.name }}
+              v-if="placesVisitedByUser?.length >= badge.threshold"
+              @mouseover="handleHoverOrTouch(badge, $event)"
+              @mouseleave="handleLeaveOrTouchEnd"
+              @touchstart="handleHoverOrTouch(badge, $event)"
+              @touchend="handleLeaveOrTouchEnd"
+              class="border border-slate-400 bg-mist m-1 p-1 rounded-xl text-center font-extralight"
+            >
+              {{ badge.name }}
+            </div>
+            <div
+              v-if="showToolTip"
+              :style="{
+                left: `${toolTipPosition.x}px`,
+                top: `${toolTipPosition.y}px`,
+              }"
+              class="absolute transform -translate-x-1/2 bg-gray-800 text-white text-sm rounded p-2 shadow-lg"
+            >
+              {{ toolTipText }} helpfulness votes.
+            </div>
           </div>
-          <div
-            v-if="showToolTip"
-            :style="{
-              left: `${toolTipPosition.x}px`,
-              top: `${toolTipPosition.y}px`,
-            }"
-            class="absolute transform -translate-x-1/2 bg-gray-800 text-white text-sm rounded p-2 shadow-lg"
-          >
-           {{ toolTipText }} helpfulness votes.
-          </div>
-        </div>
         </section>
       </div>
     </section>
