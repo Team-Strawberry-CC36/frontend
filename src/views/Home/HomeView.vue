@@ -122,8 +122,30 @@ const getPlaceDetails = async (placeId: string, category: string) => {
   }
 };
 
+/**
+ * Adding and reviewing etiquette
+ */
+
+ const viewEtiquetteVote = ref<boolean>(false);
+const viewReviewEtiquetteVote = ref<boolean>(false);
+const viewPlaceDetails = ref<boolean>(true);
+
+const toggleVoteView = () => {
+  viewEtiquetteVote.value = !viewEtiquetteVote.value;
+  console.log(viewEtiquetteVote.value);
+  viewPlaceDetails.value = !viewPlaceDetails.value;
+};
+
+const toggleReviewVoteView = () => {
+  viewReviewEtiquetteVote.value = !viewReviewEtiquetteVote.value;
+  viewPlaceDetails.value = !viewPlaceDetails.value;
+};
+
 // Handlers
 const handleSearchResults = (event: { event: string; data: IPlaceMarker[] }) => {
+  viewEtiquetteVote.value = false;
+  viewReviewEtiquetteVote.value = false;
+  viewPlaceDetails.value = true;
   placeMarkers.value = event.data;
 };
 
@@ -150,24 +172,6 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
     });
 };
 
-/**
- * Adding and reviewing etiquette
- */
-
-const viewEtiquetteVote = ref<boolean>(false);
-const viewReviewEtiquetteVote = ref<boolean>(false);
-const viewPlaceDetails = ref<boolean>(true);
-
-const toggleVoteView = () => {
-  viewEtiquetteVote.value = !viewEtiquetteVote.value;
-  console.log(viewEtiquetteVote.value);
-  viewPlaceDetails.value = !viewPlaceDetails.value;
-};
-
-const toggleReviewVoteView = () => {
-  viewReviewEtiquetteVote.value = !viewReviewEtiquetteVote.value;
-  viewPlaceDetails.value = !viewPlaceDetails.value;
-};
 </script>
 
 <template>
