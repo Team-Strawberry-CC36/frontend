@@ -3,6 +3,10 @@ import { Loader } from '@googlemaps/js-api-loader';
 import { environment } from '@/utils/environments/environent';
 import { onMounted, ref, useTemplateRef, watch } from 'vue';
 import type { IPlaceMarker } from '@/services/api.service';
+import { useSearchStore } from '@/stores/SearchStore';
+
+// Stores
+const search = useSearchStore();
 
 // Constans
 const tokyoCenter = {
@@ -11,7 +15,6 @@ const tokyoCenter = {
 };
 
 // This component receives the Places as the source of information
-const { data } = defineProps<{ data: IPlaceMarker[] }>();
 const emit = defineEmits(['map-marker-clicked']);
 const currentMarkers: google.maps.marker.AdvancedMarkerElement[] = [];
 
@@ -50,12 +53,15 @@ async function initMap() {
     zoom: 12,
     mapId: 'DEMO_MAP_ID',
   });
+
+  // If already data.
 }
 
 // Watcher for new markers from data
 watch(
-  () => data,
+  () => search.data.markers,
   async (newMarkers) => {
+    console.log(newMarkers)
     const { AdvancedMarkerElement, PinElement } = await loader.importLibrary('marker');
 
     // Recenter the map
@@ -109,9 +115,9 @@ watch(
         });
       });
     });
-
-    // Recenter the map
-  },
+  }, {
+    immediate: true
+  }
 );
 </script>
 
