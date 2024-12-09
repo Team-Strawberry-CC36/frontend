@@ -174,6 +174,18 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
 
 </script>
 
+<style>
+.map {
+  height: calc(100vh - 150px);
+}
+
+@media screen and (max-width: 1015px) {
+  .map {
+    height: calc(50vh - 10px)
+  }    
+}
+</style>
+
 <template>
   <main class="flex flex-col">
     <div class="">
@@ -181,7 +193,7 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
     </div>
     <div class="flex flex-col lg:flex-row p-4 w-full lg:w-screen bg-mist">
       <HomeMap
-        style="height: 600px"
+        class="sm:h-[50vh] map"
         :data="placeMarkers"
         :search-query="searchQuery"
         @map-marker-clicked="handleMarkerClicked"
