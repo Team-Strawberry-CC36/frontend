@@ -116,10 +116,10 @@ fetchPlacesVisitedByUser(); // fetch the places visited by the user from the dat
         Logout
       </button> -->
       <RouterLink
-          class="block mx-auto w-1/12 bg-velvet border border-slate-400 text-frostWhite rounded-3xl text-center p-5"
+          class="block mx-auto w-32 bg-velvet border border-slate-400 text-frostWhite rounded-xl text-center p-5"
           to="/home"
-          >Home →</RouterLink
-        >
+          >Home →
+      </RouterLink>
     </section>
   </div>
 </template>
