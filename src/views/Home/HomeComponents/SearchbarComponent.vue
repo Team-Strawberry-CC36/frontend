@@ -17,10 +17,10 @@ const emit = defineEmits(['search']);
 const performSearch = async () => {
   // Validate the search term
   if (searchQuery.value.length < 4) {
-    toast.error("Search term is not long enough", {
+    toast.error('Search term is not long enough', {
       timeout: 2500,
-      position: POSITION.TOP_LEFT
-    })
+      position: POSITION.TOP_LEFT,
+    });
     return; // prevents the request being sent.
   }
 
@@ -104,7 +104,11 @@ function handleKeydown(event: KeyboardEvent) {
 </script>
 
 <template>
-  <div class="flex flex-row w-full bg-frostWhite justify-center p-1" @keydown="handleKeydown" tabindex="0">
+  <div
+    class="flex flex-row w-full bg-frostWhite justify-center p-1"
+    @keydown="handleKeydown"
+    tabindex="0"
+  >
     <select
       v-model="searchCategory"
       class="w-1/6 h-10 mr-1 rounded-xl border border-slate-400 bg-mist text-charcoal text-center text-sm"

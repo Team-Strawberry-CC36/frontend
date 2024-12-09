@@ -50,8 +50,8 @@ const handleClick = async () => {
 
 // Handle cancelling casting vote
 const handleCancel = () => {
-    emit('close-add-vote');
-}
+  emit('close-add-vote');
+};
 
 // For submitting the vote
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
@@ -132,8 +132,9 @@ const submitVote = async () => {
 
       <section class="w-full">
         <p class="md:text-lg lg:text-xl">
-          For each etiquette rule, tell us what you know. Leave it unchecked if you didn't experience it or just don't know.
-          Don't forget you can write about your etiquette experience in the experience section.
+          For each etiquette rule, tell us what you know. Leave it unchecked if you didn't
+          experience it or just don't know. Don't forget you can write about your etiquette
+          experience in the experience section.
         </p>
         <!-- Voting section -->
         <div v-for="etiquette in etiquetteVotesData?.data.etiquetteVotes">
@@ -142,8 +143,8 @@ const submitVote = async () => {
               {{ etiquette.etiquetteType }}
             </div>
             <div class="flex flex-row justify-around">
-                <span>allowed</span>
-                <span>not allowed</span>
+              <span>allowed</span>
+              <span>not allowed</span>
             </div>
             <div class="p-3 flex flex-row justify-around">
               <input
