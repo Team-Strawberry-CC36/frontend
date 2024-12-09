@@ -170,16 +170,17 @@ const submitVote = async () => {
         <div class="flex flex-row justify-center">
           <button
             class="h-12 w-1/2 mr-5 rounded-lg border border-charcoal hover:bg-white bg-velvet text-white hover:text-velvet hover:cursor-pointer"
-            @click="handleClick"
-          >
-            Set
-          </button>
-          <button
-            class="h-12 w-1/2 rounded-lg border border-charcoal hover:bg-white bg-green-600 text-white hover:text-velvet hover:cursor-pointer"
             @click="handleCancel"
           >
             Cancel
           </button>
+          <button
+            class="h-12 w-1/2 rounded-lg border border-charcoal hover:bg-white bg-green-600 text-white hover:text-velvet hover:cursor-pointer"
+            @click="handleClick"
+          >
+            Set
+          </button>
+          
         </div>
       </section>
     </div>

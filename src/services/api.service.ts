@@ -74,7 +74,7 @@ class ApiService {
     );
   }
 
-  async search(search: string, category: string): ApiResponse<Omit<IPlaceMarker[], 'category'>> {
+  async search(search: string, category: string): ApiResponse<IPlaceMarker[]> {
     return await this.api.post(`${this.apiUrl}/search`, {
       method: 'POST',
       headers: {

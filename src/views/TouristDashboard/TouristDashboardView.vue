@@ -48,31 +48,7 @@ const fetchPlacesVisitedByUser = async () => {
   // placesVisitedByUser.value = await response.json();
 };
 
-// Database fetch request for helpfulness votes
-// Function to fetch all votes for a given experience ID
-const retrieveVote = async () => {
-  try {
-    const response = await apiService.retrieveHelpfulnessVote();
-
-    if (response.status === 200) {
-      helpfulvote.clear();
-      helpfulvote.update(response.data.data);
-    } else {
-      toast.error('An error occured while retrieving user information.', {
-        timeout: 3000,
-      });
-      throw 'An error an occured while retrieving helpfulness vote data.';
-    }
-  } catch (error) {
-    toast.error('Something unexpected happened.', {
-      timeout: 3000,
-    });
-    console.error(error);
-  }
-};
-
 fetchPlacesVisitedByUser(); // fetch the places visited by the user from the database
-retrieveVote(); // Fetch the helpfulness votes by the user
 
 const handleSignOut = async () => {
   signOut(auth)
@@ -263,12 +239,18 @@ const handleLeaveOrTouchEnd = () => {
       >
         Search
       </button> -->
-      <button
+      <!-- Commenting out the logout button until further notice-->
+      <!-- <button
         class="border border-charcoal bg-frostWhite text-charcoal text-xl rounded p-3 m-3 hover:bg-charcoal hover:text-frostWhite"
         @click.prevent="handleSignOut"
       >
         Logout
-      </button>
+      </button> -->
+      <RouterLink
+          class="block mx-auto w-32 bg-velvet border border-slate-400 text-frostWhite rounded-xl text-center p-5"
+          to="/home"
+          >Home →
+      </RouterLink>
     </section>
   </div>
 </template>
