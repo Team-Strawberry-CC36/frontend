@@ -4,9 +4,9 @@
   <main
     class="flex flex-col w-full bg-cover bg-center bg-fixed bg-[url('https://prd-static.gltjp.com/glt/data/article/21000/20446/20230928_135548_0da1a377_w1920.webp')] text-white p-6"
   >
-    <div class="bg-black bg-opacity-50 rounded-lg shadow-lg p-8 max-w-4xl text-center">
+    <div class="bg-black bg-opacity-50 rounded-lg shadow-lg p-8 max-w-4xl">
       <h1 class="text-3xl font-bold text-left mb-4">⛩️ Shrine Guide ⛩️</h1>
-      <h2 class="text-xl font-semibold text-left mb-3">What’s Shrine?</h2>
+      <h2 class="text-xl font-semibold text-left mb-3">What’s a Shrine?</h2>
       <p class="leading-7 mb-4">
         Shrines are sacred spaces dedicated to a god. Shrines are places to pray for good fortune,
         give thanks, and connect with Japan’s gods. Common features include torii (gates),
