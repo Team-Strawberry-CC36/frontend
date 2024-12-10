@@ -5,6 +5,7 @@ import router from '@/router';
 import authService from '@/services/auth.service';
 import { useToast } from 'vue-toastification';
 import { useLoadingStore } from '@/stores/LoadingStore';
+import { FirebaseError } from 'firebase/app';
 
 const load = useLoadingStore();
 
@@ -77,10 +78,19 @@ const handleSignUp = async () => {
     }
   } catch (error) {
     load.loading = false;
-    toast.error('An error occurred during sign-up. Please try again.', {
-      timeout: 3000,
+    let errorMessage = "An error occurred during sign-up. Please try again.";
+
+    const err = error instanceof FirebaseError;
+
+    if(err){
+      if (error.code === "auth/email-already-in-use") {
+        errorMessage = "Email already used! Please try again."
+      }
+    }
+
+    toast.error(errorMessage, {
+      timeout: 4500,
     });
-    console.error('Sign-up error:', error);
   }
 };
 
