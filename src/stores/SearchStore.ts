@@ -28,7 +28,13 @@ export const useSearchStore = defineStore(
       data.category = category;
     }
 
-    return { data, updateMarkers, updateSearch, updateCategory };
+    function $reset() {
+      data.category = 'onsen';
+      data.markers = [];
+      data.search = '';
+    }
+
+    return { data, updateMarkers, updateSearch, updateCategory, $reset };
   },
   {
     persist: true,

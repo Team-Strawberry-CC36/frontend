@@ -4,15 +4,17 @@ import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { RouterLink } from 'vue-router';
 import { defineEmits } from 'vue';
 import { useToast } from 'vue-toastification';
+import { useSearchStore } from '@/stores/SearchStore';
 
 defineProps({
   openSidebar: Boolean,
 });
 
+// Stores
+const search = useSearchStore();
+
 const username = ref<string | null>(null);
-
 const auth = getAuth();
-
 const toast = useToast();
 
 onAuthStateChanged(auth, (user) => {
@@ -33,6 +35,8 @@ const handleSignOut = async () => {
       toast.info('Sign out successful. See you next time!', {
         timeout: 3000,
       });
+      // Clean the store
+      search.$reset()
     })
     .catch((error) => {
       // An error happened.
