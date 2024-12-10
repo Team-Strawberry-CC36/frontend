@@ -5,6 +5,7 @@ import { RouterLink } from 'vue-router';
 import { defineEmits } from 'vue';
 import { useToast } from 'vue-toastification';
 import { useSearchStore } from '@/stores/SearchStore';
+import { usePlaceStore } from '@/stores/PlaceStore';
 
 defineProps({
   openSidebar: Boolean,
@@ -12,6 +13,7 @@ defineProps({
 
 // Stores
 const search = useSearchStore();
+const place = usePlaceStore();
 
 const username = ref<string | null>(null);
 const auth = getAuth();
@@ -36,7 +38,8 @@ const handleSignOut = async () => {
         timeout: 3000,
       });
       // Clean the store
-      search.$reset()
+      search.$reset();
+      place.$reset();
     })
     .catch((error) => {
       // An error happened.
