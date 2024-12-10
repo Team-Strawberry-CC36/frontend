@@ -2,7 +2,6 @@
 import PlaceComponent from './HomeComponents/PlaceComponent.vue';
 import SearchbarComponent from './HomeComponents/SearchbarComponent.vue';
 import { onMounted, onUnmounted, ref } from 'vue';
-import type { IPlace } from '@/utils/interfaces/Place';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
 import HomeMap from './HomeComponents/HomeMap.vue';
 import AddEtiquetteVote from './HomeComponents/AddEtiquetteVote.vue';
@@ -45,7 +44,6 @@ const search = useSearchStore();
 
 // };
 
-const placeMarkers = ref<IPlaceMarker[]>([]);
 const etiquetteVotesData = ref<IPlaceEtiquetteVotes | null>(null);
 
 // This is necessary to refresh the voting data, otherwise the placeId becomes the placeId from the database
@@ -54,15 +52,6 @@ const googlePlaceId = ref<string | null>(null);
 
 const searchQuery = ref('');
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
-
-// Hooks
-onMounted(() => {
-  placeMarkers.value = search.data.markers;
-})
-
-onUnmounted(() => {
-  search.updateMarkers(placeMarkers.value)
-})
 
 // Some functions for async
 const getPlaceEtiquetteVotesData = async (placeId: string) => {
@@ -146,7 +135,8 @@ const handleSearchResults = (event: { event: string; data: IPlaceMarker[] }) => 
   viewEtiquetteVote.value = false;
   viewReviewEtiquetteVote.value = false;
   viewPlaceDetails.value = true;
-  placeMarkers.value = event.data;
+  //
+  search.updateMarkers(event.data);
 };
 
 const handleRefreshVotes = async () => {
@@ -182,7 +172,7 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
 @media screen and (max-width: 1015px) {
   .map {
     height: calc(50vh - 10px)
-  }    
+  }
 }
 </style>
 
@@ -194,7 +184,6 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
     <div class="flex flex-col lg:flex-row p-4 w-full lg:w-screen bg-mist">
       <HomeMap
         class="sm:h-[50vh] map"
-        :data="placeMarkers"
         :search-query="searchQuery"
         @map-marker-clicked="handleMarkerClicked"
       />

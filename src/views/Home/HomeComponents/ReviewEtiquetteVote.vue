@@ -133,8 +133,8 @@ const updateVote = async () => {
 
       <section class="w-full">
         <p class="md:text-lg lg:text-xl">
-          You shared the following information with the community. Feel free to update you knowledge of this location.
-          Leave unchecked if you don't know about it or didn't experience it.
+          You shared the following information with the community. Feel free to update you knowledge
+          of this location. Leave unchecked if you don't know about it or didn't experience it.
         </p>
         <!-- Voting section -->
         <div v-for="etiquette in etiquetteVotesData?.data.usersVote">
@@ -155,7 +155,7 @@ const updateVote = async () => {
                 :checked="etiquetteSelections.get(etiquette.etiquetteId) === 'allowed'"
                 @change="updateSelection(etiquette.etiquetteId, 'allowed')"
               />
-              
+
               <input
                 class="ml-3 appearance-none w-6 h-6 rounded-md bg-gray-200 border-2 border-gray-300 checked:bg-blue-600 checked:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 type="checkbox"

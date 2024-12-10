@@ -24,6 +24,21 @@ export const usePlaceStore = defineStore(
       },
     });
 
+    function $reset() {
+      details.id = 0;
+      details.name = '';
+      details.googlePlaceId = '';
+      details.address = '';
+      details.placeType = 'onsen';
+      details.location.latitude = 0;
+      details.location.longitude = 0;
+      details.etiquettes = [];
+      details.experiences = [];
+      details.photos = [];
+      details.metadata.createdAt = new Date();
+      details.metadata.updatedAt = new Date();
+    }
+
     function useMock() {
       details.id = 1;
       details.name = 'Code Chrysalis Onsen';
@@ -111,7 +126,7 @@ export const usePlaceStore = defineStore(
       details.photos = img;
     }
 
-    return { details, useMock, updatePhotos };
+    return { details, useMock, updatePhotos, $reset };
   },
   {
     persist: true,
