@@ -1,4 +1,4 @@
-import { defineAsyncComponent, reactive } from 'vue';
+import { reactive } from 'vue';
 import { defineStore } from 'pinia';
 import type { IPlace } from '@/utils/interfaces/Place';
 
