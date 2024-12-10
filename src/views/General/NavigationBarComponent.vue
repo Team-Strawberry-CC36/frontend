@@ -88,7 +88,7 @@ const handleGoHome = () => {
           />
         </svg>
       </button>
-      <img class="mx-auto h-28 hover:cursor-pointer" src="/public/Jappuri.png" @click="handleGoHome" />
+      <img class="mx-auto h-32 mb-4 hover:cursor-pointer" src="/public/Jappuri.png" @click="handleGoHome" />
 
       <SidebarComponent class="sidebar" :openSidebar="openSidebar" @close-sidebar="toggleSidebar" />
     </div>
