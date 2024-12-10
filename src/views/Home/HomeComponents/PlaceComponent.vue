@@ -181,7 +181,7 @@ const handleLeaveOrTouchEnd = () => {
             </div>
             <!-- {{
               item.numberOfVotesForAllowed === 0 && item.numberOfVotesForNotAllowed === 0
-                ? 'Be the first to share' : 
+                ? 'Be the first to share' :
               item.numberOfVotesForAllowed >= item.numberOfVotesForNotAllowed
                 ? 'allowed'
                 : 'not allowed'
