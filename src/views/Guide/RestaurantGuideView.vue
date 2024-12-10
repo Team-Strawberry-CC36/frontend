@@ -4,10 +4,10 @@
   <main
     class="flex flex-col w-full bg-cover bg-center bg-fixed bg-[url('https://images.www.kateigaho.com/media/article/35398/images/main_b8e5c5c64a2d5c9818adc38ef4a10257ffa5bef2.jpg?w=960')] text-white p-6"
   >
-    <div class="bg-black bg-opacity-50 rounded-lg shadow-lg p-8 max-w-4xl text-center">
+    <div class="bg-black bg-opacity-50 rounded-lg shadow-lg p-8 max-w-4xl">
       <h1 class="text-3xl font-bold text-left mb-4">🍽️ Restaurant Guide 🍽️</h1>
       <h2 class="text-xl font-semibold text-left mb-3">
-        What’s specific rule at Japanese Restaurant?
+        What’s are the specific rules at a Japanese Restaurant?
       </h2>
       <ul class="list-disc list-inside space-y-3">
         <li>
