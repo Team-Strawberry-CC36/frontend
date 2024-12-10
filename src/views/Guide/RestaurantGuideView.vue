@@ -1,13 +1,15 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="restaurant-guide p-6 rounded-lg border border-gray-200 shadow-sm flex">
-    <div class="text-content w-2/3 pr-6">
+  <main
+    class="flex flex-col w-full bg-cover bg-center bg-fixed bg-[url('https://images.www.kateigaho.com/media/article/35398/images/main_b8e5c5c64a2d5c9818adc38ef4a10257ffa5bef2.jpg?w=960')] text-white p-6"
+  >
+    <div class="bg-black bg-opacity-50 rounded-lg shadow-lg p-8 max-w-4xl text-center">
       <h1 class="text-3xl font-bold text-left mb-4">🍽️ Restaurant Guide 🍽️</h1>
       <h2 class="text-xl font-semibold text-left mb-3">
         What’s specific rule at Japanese Restaurant?
       </h2>
-      <ul class="list-disc list-inside space-y-3 text-gray-700">
+      <ul class="list-disc list-inside space-y-3">
         <li>
           <span class="font-medium">Using Chopsticks:</span> Don’t point, wave, or stick chopsticks
           upright on rice, and avoid passing food from chopstick to chopstick (which symbolizes a
@@ -28,14 +30,8 @@
         </li>
       </ul>
     </div>
-    <div class="image-content w-1/3">
-      <img
-        src="https://images.www.kateigaho.com/media/article/35398/images/main_b8e5c5c64a2d5c9818adc38ef4a10257ffa5bef2.jpg?w=960"
-        alt="Restaurant image"
-        class="w-full h-auto object-cover rounded-lg"
-      />
-    </div>
-  </div>
+    <div class="image-content w-1/3"></div>
+  </main>
 </template>
 
 <style scoped>
