@@ -70,7 +70,8 @@ const handleSignUp = async () => {
     const response = await authService.createUser(uid);
     load.loading = false;
     if (response.status === 201) {
-      await router.push({ name: 'login' });
+      await router.push({ name: 'home' });
+
     } else {
       toast.error('Failed to create user in the database.', {
         timeout: 3000,

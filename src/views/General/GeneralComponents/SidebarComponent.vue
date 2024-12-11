@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { RouterLink } from 'vue-router';
 import { defineEmits } from 'vue';
 import { useToast } from 'vue-toastification';
 import { useSearchStore } from '@/stores/SearchStore';
 import { usePlaceStore } from '@/stores/PlaceStore';
+import { useLoginStatusStore } from '@/stores/LoginStatusStore';
 
 defineProps({
   openSidebar: Boolean,
@@ -14,21 +15,27 @@ defineProps({
 // Stores
 const search = useSearchStore();
 const place = usePlaceStore();
+const loginStatus = useLoginStatusStore();
+loginStatus.initializeAuth();
+const username = computed(() => loginStatus.username);
+console.log("The user name is:", username);
+console.log("Login status is:", loginStatus);
 
-const username = ref<string | null>(null);
+// const username = ref<string | null>(null);
+
 const auth = getAuth();
 const toast = useToast();
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/auth.user
-    username.value = user.displayName;
-  } else {
-    username.value = null;
-    // User is signed out
-  }
-});
+// onAuthStateChanged(auth, (user) => {
+//   if (user) {
+//     // User is signed in, see docs for a list of available properties
+//     // https://firebase.google.com/docs/reference/js/auth.user
+//     username.value = user.displayName;
+//   } else {
+//     username.value = null;
+//     // User is signed out
+//   }
+// });
 
 const handleSignOut = async () => {
   signOut(auth)
@@ -60,7 +67,7 @@ const emit = defineEmits(['close-sidebar']);
     :class="{ 'left-0': openSidebar, 'left-[-500px]': !openSidebar }"
   >
     <section
-      v-if="username"
+      v-if="loginStatus.isLoggedIn"
       class="block bg-charcoal text-frostWhite w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl"
     >
       <p>Logged in as: {{ username }}</p>
@@ -74,7 +81,7 @@ const emit = defineEmits(['close-sidebar']);
       Login
     </RouterLink>
     <RouterLink
-      v-if="!username"
+      v-if="!loginStatus.isLoggedIn"
       @click="emit('close-sidebar')"
       to="/signup"
       class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse"
@@ -82,7 +89,7 @@ const emit = defineEmits(['close-sidebar']);
       Sign Up
     </RouterLink>
     <RouterLink
-      v-if="username"
+      v-if="loginStatus.isLoggedIn"
       @click="emit('close-sidebar')"
       to="/home"
       class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse"
@@ -90,7 +97,7 @@ const emit = defineEmits(['close-sidebar']);
       Home
     </RouterLink>
     <RouterLink
-      v-if="username"
+      v-if="loginStatus.isLoggedIn"
       @click="emit('close-sidebar')"
       to="/dashboard"
       class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse"
@@ -120,7 +127,7 @@ const emit = defineEmits(['close-sidebar']);
       About
     </RouterLink>
     <button
-      v-if="username"
+      v-if="loginStatus.isLoggedIn"
       @click.prevent="handleSignOut"
       class="block bg-frostWhite text-charcoal w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl hover:animate-pulse"
     >

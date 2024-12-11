@@ -6,6 +6,7 @@ import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import Toast from 'vue-toastification';
 import type { PluginOptions } from 'vue-toastification';
+import { useLoginStatusStore } from './stores/LoginStatusStore';
 
 import App from './App.vue';
 import router from './router';
@@ -22,5 +23,8 @@ const toastOptions: PluginOptions = {
 app.use(pinia);
 app.use(router);
 app.use(Toast, toastOptions);
+
+const loginStatusStore = useLoginStatusStore();
+loginStatusStore.initializeAuth();
 
 app.mount('#app');

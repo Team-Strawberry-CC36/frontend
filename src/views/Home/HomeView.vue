@@ -15,6 +15,7 @@ import { useToast } from 'vue-toastification';
 import { useSearchStore } from '@/stores/SearchStore';
 
 const auth = getAuth();
+console.log("Current user is: ", auth.currentUser);
 const place = usePlaceStore();
 const load = useLoadingStore();
 const toast = useToast();
