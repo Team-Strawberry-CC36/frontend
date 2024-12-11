@@ -11,7 +11,7 @@ const placeStore = usePlaceStore();
     <div v-if="placeStore.details.photos?.length" class="m-auto overflow-hidden w-full">
       <Carousel :wrapAround="true" :itemsToShow="1" :autoplay="10000" :pauseAutoplayOnHover="true">
         <Slide v-for="(url, key) in placeStore.details.photos" :key="key">
-          <img :src="url" alt="Place Photo" class="w-full h-[20vh] object-cover" />
+          <img :src="url" alt="Place Photo" class="w-full h-[20vh] object-cover rounded-tl-xl rounded-tr-xl" />
         </Slide>
         <template #addons>
           <Navigation />
