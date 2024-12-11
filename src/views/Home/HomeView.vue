@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import PlaceComponent from './HomeComponents/PlaceComponent.vue';
 import SearchbarComponent from './HomeComponents/SearchbarComponent.vue';
-import { onMounted, onUnmounted, ref } from 'vue';
-import type { IPlace } from '@/utils/interfaces/Place';
+import { ref } from 'vue';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
 import HomeMap from './HomeComponents/HomeMap.vue';
 import AddEtiquetteVote from './HomeComponents/AddEtiquetteVote.vue';
@@ -21,31 +20,6 @@ const load = useLoadingStore();
 const toast = useToast();
 const search = useSearchStore();
 
-// const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
-//     message: "Lovely job!",
-//     data: {
-//       placeId: 1,
-//       userId: auth.currentUser?.uid,
-//       userHasVoted : true,
-//       etiquetteVotes : [
-//           { etiquetteId: 1, etiquetteType: 'Smoking', numberOfVotesForAllowed: 100, numberOfVotesForNotAllowed: 1000 },
-//           { etiquetteId: 2, etiquetteType: 'Tattoos', numberOfVotesForAllowed: 400, numberOfVotesForNotAllowed: 700 },
-//           { etiquetteId: 3, etiquetteType: 'Towels', numberOfVotesForAllowed: 1050, numberOfVotesForNotAllowed: 50},
-//           { etiquetteId: 4, etiquetteType: 'Swimming', numberOfVotesForAllowed: 550, numberOfVotesForNotAllowed: 550},
-//           { etiquetteId: 5, etiquetteType: 'Existential Dread', numberOfVotesForAllowed: 1100, numberOfVotesForNotAllowed: 0}
-//       ],
-//       usersVote: [
-//           { etiquetteId: 1, etiquetteType: 'Smoking', vote: 'allowed' },
-//           { etiquetteId: 2, etiquetteType: 'Tattoos', vote: undefined },
-//           { etiquetteId: 3, etiquetteType: 'Towels', vote: 'not-allowed' },
-//           { etiquetteId: 4, etiquetteType: 'Swimming', vote: undefined },
-//           { etiquetteId: 5, etiquetteType: 'Existential Dread', vote: undefined },
-//       ],
-//     }
-
-// };
-
-const placeMarkers = ref<IPlaceMarker[]>([]);
 const etiquetteVotesData = ref<IPlaceEtiquetteVotes | null>(null);
 
 // This is necessary to refresh the voting data, otherwise the placeId becomes the placeId from the database
@@ -54,15 +28,6 @@ const googlePlaceId = ref<string | null>(null);
 
 const searchQuery = ref('');
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
-
-// Hooks
-onMounted(() => {
-  placeMarkers.value = search.data.markers;
-});
-
-onUnmounted(() => {
-  search.updateMarkers(placeMarkers.value);
-});
 
 // Some functions for async
 const getPlaceEtiquetteVotesData = async (placeId: string) => {
@@ -126,7 +91,7 @@ const getPlaceDetails = async (placeId: string, category: string) => {
  * Adding and reviewing etiquette
  */
 
- const viewEtiquetteVote = ref<boolean>(false);
+const viewEtiquetteVote = ref<boolean>(false);
 const viewReviewEtiquetteVote = ref<boolean>(false);
 const viewPlaceDetails = ref<boolean>(true);
 
@@ -146,7 +111,8 @@ const handleSearchResults = (event: { event: string; data: IPlaceMarker[] }) => 
   viewEtiquetteVote.value = false;
   viewReviewEtiquetteVote.value = false;
   viewPlaceDetails.value = true;
-  placeMarkers.value = event.data;
+  //
+  search.updateMarkers(event.data);
 };
 
 const handleRefreshVotes = async () => {
@@ -171,7 +137,14 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
       console.error('Ops! something happend in handleMarkerClicked');
     });
 };
-
+// Only gets the data if there is a googlePlaceId in the place store
+// This is used when clicking the back button from another page
+// because etiquette voting is not stored locally
+const getEtiquetteVotesData = async () => {
+  if (place.details.googlePlaceId) {
+    await getPlaceEtiquetteVotesData(place.details.googlePlaceId);
+  }
+}
 </script>
 
 <style>
@@ -181,8 +154,8 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
 
 @media screen and (max-width: 1015px) {
   .map {
-    height: calc(50vh - 10px)
-  }    
+    height: calc(50vh - 10px);
+  }
 }
 </style>
 
@@ -194,7 +167,6 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
     <div class="flex flex-col lg:flex-row p-4 w-full lg:w-screen bg-mist">
       <HomeMap
         class="sm:h-[50vh] map"
-        :data="placeMarkers"
         :search-query="searchQuery"
         @map-marker-clicked="handleMarkerClicked"
       />
@@ -206,6 +178,7 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
           v-if="viewPlaceDetails && place.details.id > 0"
           @show-add-vote="toggleVoteView"
           @show-review-vote="toggleReviewVoteView"
+          @get-etiquette-votes-data="getEtiquetteVotesData"
         />
         <AddEtiquetteVote
           v-if="viewEtiquetteVote"

@@ -249,19 +249,19 @@ const onCheck = (event: Event, id: number) => {
       ></textarea>
     </section>
 
-    <section class="flex flex-row font-extralight justify-end">
+    <section class="flex flex-row font-extralight justify-between">
       <!-- Post and cancel buttons -->
+      <button
+        class="border-velvet border p-2 ml-4 rounded-xl text-sm hover:bg-velvet hover:text-white"
+        @click="handleToggleAddExperience"
+      >
+        Cancel
+      </button>
       <button
         class="mx-5 border-velvet border p-2 rounded-xl text-sm hover:bg-velvet hover:text-white"
         @click="handleAddExperience"
       >
         Post
-      </button>
-      <button
-        class="border-velvet border p-2 rounded-xl text-sm hover:bg-velvet hover:text-white"
-        @click="handleToggleAddExperience"
-      >
-        Cancel
       </button>
     </section>
   </div>

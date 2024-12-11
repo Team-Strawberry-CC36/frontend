@@ -5,6 +5,7 @@ import router from '@/router';
 import authService from '@/services/auth.service';
 import { useToast } from 'vue-toastification';
 import { useLoadingStore } from '@/stores/LoadingStore';
+import { FirebaseError } from 'firebase/app';
 
 const load = useLoadingStore();
 
@@ -77,10 +78,19 @@ const handleSignUp = async () => {
     }
   } catch (error) {
     load.loading = false;
-    toast.error('An error occurred during sign-up. Please try again.', {
-      timeout: 3000,
+    let errorMessage = "An error occurred during sign-up. Please try again.";
+
+    const err = error instanceof FirebaseError;
+
+    if(err){
+      if (error.code === "auth/email-already-in-use") {
+        errorMessage = "Email already used! Please try again."
+      }
+    }
+
+    toast.error(errorMessage, {
+      timeout: 4500,
     });
-    console.error('Sign-up error:', error);
   }
 };
 
@@ -89,7 +99,7 @@ const toast = useToast();
 
 <template>
   <div class="flex flex-col p-3 items-center h-fit sm:w-1/4 rounded-xl bg-frostWhite shadow-2xl">
-    <span class="m-3 text-center">Sign up for Jappuri</span>
+    <span class="text-2xl m-3 text-center">Sign up</span>
     <form class="flex flex-col w-full sm:w-4/5" @submit.prevent="handleSignUp">
       <!-- Username Field -->
       <div class="relative">
@@ -101,10 +111,10 @@ const toast = useToast();
             'mb-0': usernameError,
             'mb-3': !usernameError,
           }"
-          class="block p-1 border border-slate-400 rounded-xl w-full"
+          class="block h-10 p-1 border border-slate-400 rounded-xl w-full"
         />
         <p v-if="usernameError" class="text-red-500 text-sm">
-          {{ usernameError }}
+          *{{ usernameError }}
         </p>
       </div>
 
@@ -114,10 +124,10 @@ const toast = useToast();
           type="email"
           v-model="email"
           placeholder="Email"
-          class="block p-1 mb-3 border border-slate-400 rounded-xl w-full"
+          class="block h-10 p-1 mb-3 border border-slate-400 rounded-xl w-full"
         />
         <p v-if="!isEmailValid && email" class="text-red-500 text-sm absolute -bottom-4 left-1">
-          Please enter a valid email
+          *Please enter a valid email
         </p>
       </div>
 
@@ -131,10 +141,10 @@ const toast = useToast();
             'mb-0': passwordError,
             'mb-3': !passwordError,
           }"
-          class="block p-1 border border-slate-400 rounded-xl w-full"
+          class="block h-10 p-1 border border-slate-400 rounded-xl w-full"
         />
         <p v-if="passwordError" class="text-red-500 text-sm">
-          {{ passwordError }}
+          *{{ passwordError }}
         </p>
       </div>
 
@@ -148,10 +158,10 @@ const toast = useToast();
             'mb-0': confirmPasswordError,
             'mb-3': !confirmPasswordError,
           }"
-          class="block p-1 border border-slate-400 rounded-xl w-full"
+          class="block h-10 p-1 border border-slate-400 rounded-xl w-full"
         />
         <p v-if="confirmPasswordError" class="text-red-500 text-sm">
-          {{ confirmPasswordError }}
+          *{{ confirmPasswordError }}
         </p>
       </div>
 
