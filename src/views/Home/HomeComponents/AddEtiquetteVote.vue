@@ -180,7 +180,6 @@ const submitVote = async () => {
           >
             Set
           </button>
-          
         </div>
       </section>
     </div>

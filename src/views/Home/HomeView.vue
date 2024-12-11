@@ -137,7 +137,6 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
       console.error('Ops! something happend in handleMarkerClicked');
     });
 };
-
 // Only gets the data if there is a googlePlaceId in the place store
 // This is used when clicking the back button from another page
 // because etiquette voting is not stored locally
@@ -146,7 +145,6 @@ const getEtiquetteVotesData = async () => {
     await getPlaceEtiquetteVotesData(place.details.googlePlaceId);
   }
 }
-
 </script>
 
 <style>
@@ -156,7 +154,7 @@ const getEtiquetteVotesData = async () => {
 
 @media screen and (max-width: 1015px) {
   .map {
-    height: calc(50vh - 10px)
+    height: calc(50vh - 10px);
   }
 }
 </style>

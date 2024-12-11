@@ -61,7 +61,7 @@ async function initMap() {
 watch(
   () => search.data.markers,
   async (newMarkers) => {
-    console.log(newMarkers)
+    console.log(newMarkers);
     const { AdvancedMarkerElement, PinElement } = await loader.importLibrary('marker');
 
     // Recenter the map
@@ -115,9 +115,10 @@ watch(
         });
       });
     });
-  }, {
-    immediate: true
-  }
+  },
+  {
+    immediate: true,
+  },
 );
 </script>
 
