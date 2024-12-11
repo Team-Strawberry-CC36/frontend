@@ -5,11 +5,17 @@ import { defineProps, onMounted, ref, computed } from 'vue';
 import { defineEmits } from 'vue';
 import PhotosComponent from './PhotosComponent.vue';
 
-const emit = defineEmits(['show-add-vote', 'show-review-vote']);
+const emit = defineEmits(['show-add-vote', 'show-review-vote', 'get-etiquette-votes-data']);
 
 const place = usePlaceStore();
 
 const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquetteVotes }>();
+console.log("etiquettesVotesData:", etiquetteVotesData)
+
+if (!etiquetteVotesData) {
+  emit('get-etiquette-votes-data');
+}
+
 const votesAnalysisData = computed(() => {
   return etiquetteVotesData?.data.etiquetteVotes.map((item) => {
     return {
@@ -76,7 +82,7 @@ const handleLeaveOrTouchEnd = () => {
 
 <template>
   <div
-    class="sm:w-fit sm:h-fit mt-3 lg:m-3 lg:mt-0 border border-slate-400 overflow-hidden rounded-xl shadow-2xl bg-frostWhite"
+    class="sm:w-fit lg:h-[610px] mt-3 lg:m-3 lg:mt-0 border border-slate-400 sm:overflow-y-auto rounded-xl shadow-2xl bg-frostWhite"
   >
     <section class="h-[20vh]">
       <!-- Cover Photo -->
@@ -179,13 +185,6 @@ const handleLeaveOrTouchEnd = () => {
                 {{ toolTipText }}
               </div>
             </div>
-            <!-- {{
-              item.numberOfVotesForAllowed === 0 && item.numberOfVotesForNotAllowed === 0
-                ? 'Be the first to share' :
-              item.numberOfVotesForAllowed >= item.numberOfVotesForNotAllowed
-                ? 'allowed'
-                : 'not allowed'
-            }} -->
           </li>
         </ul>
         <div v-if="etiquetteVotesData.data.userHasVoted === false">

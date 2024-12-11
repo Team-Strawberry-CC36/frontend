@@ -61,7 +61,7 @@ async function initMap() {
 watch(
   () => search.data.markers,
   async (newMarkers) => {
-    console.log(newMarkers)
+    console.log(newMarkers);
     const { AdvancedMarkerElement, PinElement } = await loader.importLibrary('marker');
 
     // Recenter the map
@@ -115,13 +115,16 @@ watch(
         });
       });
     });
-  }, {
-    immediate: true
-  }
+  },
+  {
+    immediate: true,
+  },
 );
 </script>
 
 <template>
   <!-- Div who stores google maps container -->
-  <div ref="map-container" class="w-[100%] h-[100%]"></div>
+   <div class="background bg-white rounded p-[3px] w-[100%] h-[100%]">
+      <div ref="map-container" class="w-[100%] h-[100%] p-[10px]"></div>
+   </div>
 </template>

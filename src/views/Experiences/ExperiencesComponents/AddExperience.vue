@@ -263,7 +263,6 @@ const onCheck = (event: Event, id: number) => {
       >
         Post
       </button>
-      
     </section>
   </div>
 </template>

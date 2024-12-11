@@ -12,7 +12,11 @@ const handleClickOutside = (event: MouseEvent) => {
   console.log(event.target);
   const target = event.target as HTMLElement;
   if (target && target.classList) {
-    if(!target.classList.contains('hamburger') && !target.classList.contains('hamburger-lines') && !target.classList.contains('hamburger-line')) {
+    if (
+      !target.classList.contains('hamburger') &&
+      !target.classList.contains('hamburger-lines') &&
+      !target.classList.contains('hamburger-line')
+    ) {
       const sidebarElement = document.querySelector('.sidebar');
       if (openSidebar.value && sidebarElement) {
         openSidebar.value = false;
@@ -27,7 +31,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside);
-})
+});
 
 const router = useRouter();
 const handleGoHome = () => {
@@ -88,7 +92,11 @@ const handleGoHome = () => {
           />
         </svg>
       </button>
-      <img class="mx-auto h-32 mb-4 hover:cursor-pointer" src="../../assets/Jappuri.png" @click="handleGoHome" />
+      <img
+        class="mx-auto h-32 mb-4 hover:cursor-pointer"
+        src="../../assets/Jappuri.png"
+        @click="handleGoHome"
+      />
 
       <SidebarComponent class="sidebar" :openSidebar="openSidebar" @close-sidebar="toggleSidebar" />
     </div>

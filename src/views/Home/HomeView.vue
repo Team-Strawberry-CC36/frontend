@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PlaceComponent from './HomeComponents/PlaceComponent.vue';
 import SearchbarComponent from './HomeComponents/SearchbarComponent.vue';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { ref } from 'vue';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
 import HomeMap from './HomeComponents/HomeMap.vue';
 import AddEtiquetteVote from './HomeComponents/AddEtiquetteVote.vue';
@@ -19,30 +19,6 @@ const place = usePlaceStore();
 const load = useLoadingStore();
 const toast = useToast();
 const search = useSearchStore();
-
-// const mockEtiquetteVotesData: IPlaceEtiquetteVotes = {
-//     message: "Lovely job!",
-//     data: {
-//       placeId: 1,
-//       userId: auth.currentUser?.uid,
-//       userHasVoted : true,
-//       etiquetteVotes : [
-//           { etiquetteId: 1, etiquetteType: 'Smoking', numberOfVotesForAllowed: 100, numberOfVotesForNotAllowed: 1000 },
-//           { etiquetteId: 2, etiquetteType: 'Tattoos', numberOfVotesForAllowed: 400, numberOfVotesForNotAllowed: 700 },
-//           { etiquetteId: 3, etiquetteType: 'Towels', numberOfVotesForAllowed: 1050, numberOfVotesForNotAllowed: 50},
-//           { etiquetteId: 4, etiquetteType: 'Swimming', numberOfVotesForAllowed: 550, numberOfVotesForNotAllowed: 550},
-//           { etiquetteId: 5, etiquetteType: 'Existential Dread', numberOfVotesForAllowed: 1100, numberOfVotesForNotAllowed: 0}
-//       ],
-//       usersVote: [
-//           { etiquetteId: 1, etiquetteType: 'Smoking', vote: 'allowed' },
-//           { etiquetteId: 2, etiquetteType: 'Tattoos', vote: undefined },
-//           { etiquetteId: 3, etiquetteType: 'Towels', vote: 'not-allowed' },
-//           { etiquetteId: 4, etiquetteType: 'Swimming', vote: undefined },
-//           { etiquetteId: 5, etiquetteType: 'Existential Dread', vote: undefined },
-//       ],
-//     }
-
-// };
 
 const etiquetteVotesData = ref<IPlaceEtiquetteVotes | null>(null);
 
@@ -115,7 +91,7 @@ const getPlaceDetails = async (placeId: string, category: string) => {
  * Adding and reviewing etiquette
  */
 
- const viewEtiquetteVote = ref<boolean>(false);
+const viewEtiquetteVote = ref<boolean>(false);
 const viewReviewEtiquetteVote = ref<boolean>(false);
 const viewPlaceDetails = ref<boolean>(true);
 
@@ -161,7 +137,14 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
       console.error('Ops! something happend in handleMarkerClicked');
     });
 };
-
+// Only gets the data if there is a googlePlaceId in the place store
+// This is used when clicking the back button from another page
+// because etiquette voting is not stored locally
+const getEtiquetteVotesData = async () => {
+  if (place.details.googlePlaceId) {
+    await getPlaceEtiquetteVotesData(place.details.googlePlaceId);
+  }
+}
 </script>
 
 <style>
@@ -171,7 +154,7 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
 
 @media screen and (max-width: 1015px) {
   .map {
-    height: calc(50vh - 10px)
+    height: calc(50vh - 10px);
   }
 }
 </style>
@@ -195,6 +178,7 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
           v-if="viewPlaceDetails && place.details.id > 0"
           @show-add-vote="toggleVoteView"
           @show-review-vote="toggleReviewVoteView"
+          @get-etiquette-votes-data="getEtiquetteVotesData"
         />
         <AddEtiquetteVote
           v-if="viewEtiquetteVote"
