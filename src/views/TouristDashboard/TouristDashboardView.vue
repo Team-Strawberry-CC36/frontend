@@ -94,38 +94,50 @@ const experienceBadges = [
   {
     id: 1,
     name: '旅人 Tabibito',
-    type: "experiences",
+    type: 'experiences',
     threshold: 5,
+    image:
+      'https://cdn-icons-png.freepik.com/256/9288/9288294.png?ga=GA1.1.1632838173.1733732668&semt=ais_hybrid',
   },
   {
     id: 2,
     name: '探検家 Tankenka',
-    type: "experiences",
+    type: 'experiences',
     threshold: 10,
+    image:
+      'https://cdn-icons-png.freepik.com/256/15196/15196009.png?ga=GA1.1.1632838173.1733732668&semt=ais_hybrid',
   },
   {
     id: 3,
-    name: '国巡り人 Kuni Meguribito',
-    type: "experiences",
+    name: '玄人 Kurouto',
+    type: 'experiences',
     threshold: 20,
+    image:
+      'https://cdn-icons-png.freepik.com/256/16779/16779412.png?ga=GA1.1.1632838173.1733732668&semt=ais_hybrid',
   },
   {
     id: 4,
     name: '旅の達人 Tabi no Tatsujin',
-    type: "experiences",
+    type: 'experiences',
     threshold: 35,
+    image:
+      'https://cdn-icons-png.freepik.com/256/8124/8124667.png?ga=GA1.1.1632838173.1733732668&semt=ais_hybrid',
   },
   {
     id: 5,
     name: '開拓者 Kaitakusha',
-    type: "experiences",
+    type: 'experiences',
     threshold: 50,
+    image:
+      'https://cdn-icons-png.freepik.com/256/13747/13747917.png?ga=GA1.1.1632838173.1733732668&semt=ais_hybrid',
   },
   {
     id: 6,
     name: '日本の伝説 Nippon no Densetsu',
-    type: "experiences",
+    type: 'experiences',
     threshold: 70,
+    image:
+      'https://cdn-icons-png.freepik.com/256/14861/14861072.png?ga=GA1.1.1632838173.1733732668&semt=ais_hybrid',
   },
 ];
 
@@ -133,38 +145,44 @@ const helpfulnessVoteBadges = [
   {
     id: 1,
     name: 'Thoughtful Reviewer',
-    type: "helpfulness votes",
+    type: 'helpfulness votes',
     threshold: 10,
+    image: 'https://cdn-icons-png.flaticon.com/128/5406/5406792.png',
   },
   {
     id: 2,
     name: 'Journey Evaluator',
-    type: "helpfulness votes",
+    type: 'helpfulness votes',
     threshold: 20,
+    image: 'https://cdn-icons-png.flaticon.com/128/4168/4168977.png',
   },
   {
     id: 3,
     name: 'Insightful Critic',
-    type: "helpfulness votes",
+    type: 'helpfulness votes',
     threshold: 40,
+    image: 'https://cdn-icons-png.flaticon.com/128/3135/3135728.png',
   },
   {
     id: 4,
     name: 'Seasoned Advisor',
-    type: "helpfulness votes",
+    type: 'helpfulness votes',
     threshold: 80,
+    image: 'https://cdn-icons-png.flaticon.com/128/2583/2583264.png',
   },
   {
     id: 5,
     name: 'Travel Guru',
-    type: "helpfulness votes",
+    type: 'helpfulness votes',
     threshold: 160,
+    image: 'https://cdn-icons-png.flaticon.com/128/4859/4859854.png',
   },
   {
     id: 6,
     name: 'Critic Extraordinaire',
-    type: "helpfulness votes",
+    type: 'helpfulness votes',
     threshold: 320,
+    image: 'https://cdn-icons-png.flaticon.com/128/9319/9319106.png',
   },
 ];
 
@@ -173,9 +191,12 @@ const showToolTip = ref<boolean>(false);
 const toolTipText = ref<string>('');
 const toolTipPosition = ref<{ x: number; y: number }>({ x: 0, y: 0 });
 
-const handleHoverOrTouch = (badge: {id: number, name: string, type: string, threshold: number}, event: MouseEvent | TouchEvent) => {
+const handleHoverOrTouch = (
+  badge: { id: number; name: string; type: string; threshold: number },
+  event: MouseEvent | TouchEvent,
+) => {
   showToolTip.value = true;
-  toolTipText.value = 'Provided ' + badge.threshold + " " + badge.type;
+  toolTipText.value = 'Provided ' + badge.threshold + ' ' + badge.type;
   const rect = (event.target as HTMLElement).getBoundingClientRect();
 
   toolTipPosition.value = {
@@ -219,6 +240,7 @@ const handleLeaveOrTouchEnd = () => {
               @touchend="handleLeaveOrTouchEnd"
               class="border border-slate-400 bg-mist m-1 p-1 rounded-xl text-center font-extralight"
             >
+              <img :src="badge.image" :alt="badge.name" class="w-12 h-12 mx-auto" />
               {{ badge.name }}
             </div>
             <div
@@ -282,9 +304,9 @@ const handleLeaveOrTouchEnd = () => {
         Logout
       </button> -->
       <RouterLink
-          class="block mx-auto w-32 bg-velvet border border-slate-400 text-frostWhite rounded-xl text-center p-5"
-          to="/home"
-          >Home →
+        class="block mx-auto w-32 bg-velvet border border-slate-400 text-frostWhite rounded-xl text-center p-5"
+        to="/home"
+        >Home →
       </RouterLink>
     </section>
   </div>
