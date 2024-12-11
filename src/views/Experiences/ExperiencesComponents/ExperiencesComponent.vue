@@ -207,7 +207,7 @@ const formatDate = (date: Date) => {
 
 <template>
   <div
-    class="sm:w-1/2 sm:h-fit h-screen sm:border border-slate-400 sm:m-3 overflow-hidden sm:rounded-xl shadow-2xl bg-frostWhite"
+    class="sm:w-1/2 h-fit sm:border border-slate-400 sm:m-3 sm:rounded-xl shadow-2xl bg-frostWhite"
   >
     <section class="flex flex-row justify-between m-3">
       <!-- Place Name + add Experiences button-->
