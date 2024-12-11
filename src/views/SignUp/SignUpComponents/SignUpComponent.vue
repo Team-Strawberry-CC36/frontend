@@ -6,7 +6,6 @@ import authService from '@/services/auth.service';
 import { useToast } from 'vue-toastification';
 import { useLoadingStore } from '@/stores/LoadingStore';
 import { FirebaseError } from 'firebase/app';
-import { useLoginStatusStore } from '@/stores/LoginStatusStore';
 
 const load = useLoadingStore();
 
@@ -70,11 +69,8 @@ const handleSignUp = async () => {
 
     const response = await authService.createUser(uid);
     load.loading = false;
-    const loginStatus = useLoginStatusStore();
     if (response.status === 201) {
       await router.push({ name: 'home' })
-        
-
     } else {
       toast.error('Failed to create user in the database.', {
         timeout: 3000,

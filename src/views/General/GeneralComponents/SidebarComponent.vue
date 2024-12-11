@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import { getAuth, signOut } from 'firebase/auth';
 import { RouterLink } from 'vue-router';
 import { defineEmits } from 'vue';
 import { useToast } from 'vue-toastification';
@@ -18,21 +17,8 @@ const place = usePlaceStore();
 const loginStatus = useLoginStatusStore();
 
 
-// const username = ref<string | null>(null);
-
 const auth = getAuth();
 const toast = useToast();
-
-// onAuthStateChanged(auth, (user) => {
-//   if (user) {
-//     // User is signed in, see docs for a list of available properties
-//     // https://firebase.google.com/docs/reference/js/auth.user
-//     username.value = user.displayName;
-//   } else {
-//     username.value = null;
-//     // User is signed out
-//   }
-// });
 
 const handleSignOut = async () => {
   signOut(auth)
