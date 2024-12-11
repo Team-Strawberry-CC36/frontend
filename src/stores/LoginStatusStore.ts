@@ -12,7 +12,9 @@ export const useLoginStatusStore = defineStore(
             initializeAuth() {
                 const auth = getAuth();
                 onAuthStateChanged(auth, (user) => {
+                    const aUser = auth.currentUser;
                     if (user) {
+                        console.log("This is the user in store: ", aUser?.displayName);
                         this.username = user.displayName;
                         this.isLoggedIn = true;
                     } else {

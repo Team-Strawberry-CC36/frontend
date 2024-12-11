@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { RouterLink } from 'vue-router';
 import { defineEmits } from 'vue';
@@ -16,10 +16,7 @@ defineProps({
 const search = useSearchStore();
 const place = usePlaceStore();
 const loginStatus = useLoginStatusStore();
-loginStatus.initializeAuth();
-const username = computed(() => loginStatus.username);
-console.log("The user name is:", username);
-console.log("Login status is:", loginStatus);
+
 
 // const username = ref<string | null>(null);
 
@@ -70,7 +67,7 @@ const emit = defineEmits(['close-sidebar']);
       v-if="loginStatus.isLoggedIn"
       class="block bg-charcoal text-frostWhite w-full p-3 mx-auto my-3 text-center shadow-lg rounded-xl"
     >
-      <p>Logged in as: {{ username }}</p>
+      <p>Logged in as: {{ auth.currentUser?.displayName }}</p>
     </section>
     <RouterLink
       v-else
