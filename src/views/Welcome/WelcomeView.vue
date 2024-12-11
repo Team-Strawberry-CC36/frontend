@@ -13,7 +13,7 @@ const photolinks = [
 </script>
 
 <template>
-  <div class="w-screen bg-charcoal">
+  <div class="relative overflow-hidden w-screen bg-charcoal">
     <!-- Carousel -->
     <div v-if="photolinks.length" class="relative sm:absolute">
       <Carousel
