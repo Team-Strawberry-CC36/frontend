@@ -124,5 +124,7 @@ watch(
 
 <template>
   <!-- Div who stores google maps container -->
-  <div ref="map-container" class="w-[100%] h-[100%]"></div>
+   <div class="background bg-white rounded p-[3px] w-[100%] h-[100%]">
+      <div ref="map-container" class="w-[100%] h-[100%] p-[10px]"></div>
+   </div>
 </template>

@@ -5,11 +5,17 @@ import { defineProps, onMounted, ref, computed } from 'vue';
 import { defineEmits } from 'vue';
 import PhotosComponent from './PhotosComponent.vue';
 
-const emit = defineEmits(['show-add-vote', 'show-review-vote']);
+const emit = defineEmits(['show-add-vote', 'show-review-vote', 'get-etiquette-votes-data']);
 
 const place = usePlaceStore();
 
 const { etiquetteVotesData } = defineProps<{ etiquetteVotesData: IPlaceEtiquetteVotes }>();
+console.log("etiquettesVotesData:", etiquetteVotesData)
+
+if (!etiquetteVotesData) {
+  emit('get-etiquette-votes-data');
+}
+
 const votesAnalysisData = computed(() => {
   return etiquetteVotesData?.data.etiquetteVotes.map((item) => {
     return {
@@ -179,13 +185,6 @@ const handleLeaveOrTouchEnd = () => {
                 {{ toolTipText }}
               </div>
             </div>
-            <!-- {{
-              item.numberOfVotesForAllowed === 0 && item.numberOfVotesForNotAllowed === 0
-                ? 'Be the first to share' :
-              item.numberOfVotesForAllowed >= item.numberOfVotesForNotAllowed
-                ? 'allowed'
-                : 'not allowed'
-            }} -->
           </li>
         </ul>
         <div v-if="etiquetteVotesData.data.userHasVoted === false">
