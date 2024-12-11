@@ -299,13 +299,14 @@ const formatDate = (date: Date) => {
             </button>
           </section>
           <section class="basis-auto w-full">
-            <div class="flex flex-row m-1 justify-between text-xl">
+            <div class="flex sm:flex-row flex-col m-1 justify-between text-xl">
               <h4>Etiquette</h4>
-              <p class="text-velvet">{{ experience.etiquettes.map((e) => e.label).join(' | ') }}</p>
+              <p class="text-velvet lg:ml-5">{{ experience.etiquettes.map((e) => e.label).join(' | ') }}</p>
             </div>
             <div class="flex flex-col m-1 justify-between">
-              <h4 class="text-xl">Experience</h4>
-              <p>{{ experience.experience }}</p>
+              <!-- <h4 class="text-xl">Experience</h4> -->
+              <textarea name="" :value="experience.experience" rows="5" class="border border-slate-400 h-24 rounded-xl p-2" readonly id=""></textarea>
+              <!-- <p>{{ experience.experience }}</p> -->
             </div>
             <div class="text-xs justify-self-end m-1">
               <span
