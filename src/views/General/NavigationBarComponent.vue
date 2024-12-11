@@ -9,7 +9,6 @@ const toggleSidebar = () => {
 };
 
 const handleClickOutside = (event: MouseEvent) => {
-  console.log(event.target);
   const target = event.target as HTMLElement;
   if (target && target.classList) {
     if (
@@ -46,7 +45,7 @@ const handleGoHome = () => {
         class="w-full text-center text-3xl font-semibold hover:cursor-pointer"
         @click="handleGoHome"
       >
-        
+
       </h1> -->
       <button class="hamburger absolute top-3 left-5 p-2" @click="toggleSidebar">
         <!-- Hamburger Menu -->
