@@ -115,7 +115,7 @@ const getPlaceDetails = async (placeId: string, category: string) => {
  * Adding and reviewing etiquette
  */
 
- const viewEtiquetteVote = ref<boolean>(false);
+const viewEtiquetteVote = ref<boolean>(false);
 const viewReviewEtiquetteVote = ref<boolean>(false);
 const viewPlaceDetails = ref<boolean>(true);
 
@@ -161,7 +161,6 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
       console.error('Ops! something happend in handleMarkerClicked');
     });
 };
-
 </script>
 
 <style>
@@ -171,7 +170,7 @@ const handleMarkerClicked = (event: { event: string; data: IPlaceMarker }) => {
 
 @media screen and (max-width: 1015px) {
   .map {
-    height: calc(50vh - 10px)
+    height: calc(50vh - 10px);
   }
 }
 </style>

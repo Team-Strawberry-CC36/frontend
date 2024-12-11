@@ -113,7 +113,7 @@ const updateVote = async () => {
       <!-- Cover Photo -->
       <section class="h-[20vh]">
         <!-- Cover Photo Slideshow -->
-        <PhotosComponent class="max-w-[600px]"/>
+        <PhotosComponent class="max-w-[600px]" />
       </section>
       <div class="content">
         <!-- Other content here -->

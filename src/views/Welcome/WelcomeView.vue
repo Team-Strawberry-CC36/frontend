@@ -13,43 +13,47 @@ const photolinks = [
 </script>
 
 <template>
-
-    <div>
-    <div v-if="photolinks.length" class="absolute overflow-hidden w-full">
-      <Carousel :wrapAround="true" :itemsToShow="1" :autoplay="10000">
+  <div class="relative w-screen overflow-hidden">
+    <!-- Carousel -->
+    <div v-if="photolinks.length" class="absolute">
+      <Carousel
+        :wrapAround="true"
+        :itemsToShow="1"
+        :autoplay="5000"
+        :mouseDrag="false"
+        :touchDrag="false"
+      >
         <Slide v-for="url in photolinks" :key="url">
-          <img :src="url" alt="Place Photo" class="w-full object-cover" />
+          <img :src="url" alt="Place Photo" class="h-full"/>
         </Slide>
       </Carousel>
     </div>
     <div v-else>
       <p>No photos available</p>
     </div>
+
+    <!-- Main content -->
+    <main
+      class="absolute top-1/4 w-full h-1/2 flex flex-col items-center justify-center z-10 bg-charcoal bg-opacity-80 text-white"
+    >
+      <div class="text-center px-5">
+        <h1 class="text-5xl">Welcome to Jappuri</h1>
+        <h2 class="mt-5">Cultural appreciation begins with understanding</h2>
+      </div>
+      <div class="mx-auto mt-10">
+        <RouterLink
+          class="bg-velvet text-frostWhite p-3 rounded-xl mx-5 hover:animate-pulse"
+          to="/login"
+        >
+          Login
+        </RouterLink>
+        <RouterLink
+          class="bg-velvet text-frostWhite p-3 rounded-xl mx-5 hover:animate-pulse"
+          to="/signup"
+        >
+          Sign Up
+        </RouterLink>
+      </div>
+    </main>
   </div>
-
-
-
-
-
-  <main class="flex flex-col items-center justify-center w-full bg-mist">
-    <div class="w-1/2 text-center">
-      <h1 class="text-5xl">Welcome to Japuri</h1>
-      <h2 class="mt-5">Cultural appreciation begins with understanding</h2>
-    </div>
-    <div class="mx-auto mt-10">
-      <!-- <button class="bg-blueGreen p-3 rounded-xl mx- hover:animate-pulse">Login</button> -->
-      <RouterLink
-        class="bg-charcoal text-frostWhite p-3 rounded-xl mx-5 hover:animate-pulse"
-        to="/login"
-      >
-        Login
-      </RouterLink>
-      <RouterLink
-        class="bg-charcoal text-frostWhite p-3 rounded-xl mx-5 hover:animate-pulse"
-        to="/signup"
-      >
-        Sign Up
-      </RouterLink>
-    </div>
-  </main>
 </template>

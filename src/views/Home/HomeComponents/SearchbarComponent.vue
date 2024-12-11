@@ -21,7 +21,6 @@ const performSearch = async () => {
     return; // prevents the request being sent.
   }
 
-
   try {
     // [ ] Send coordinates!
     load.loading = true;

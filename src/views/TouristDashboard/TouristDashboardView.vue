@@ -94,37 +94,37 @@ const experienceBadges = [
   {
     id: 1,
     name: '旅人 Tabibito',
-    type: "experiences",
+    type: 'experiences',
     threshold: 5,
   },
   {
     id: 2,
     name: '探検家 Tankenka',
-    type: "experiences",
+    type: 'experiences',
     threshold: 10,
   },
   {
     id: 3,
     name: '国巡り人 Kuni Meguribito',
-    type: "experiences",
+    type: 'experiences',
     threshold: 20,
   },
   {
     id: 4,
     name: '旅の達人 Tabi no Tatsujin',
-    type: "experiences",
+    type: 'experiences',
     threshold: 35,
   },
   {
     id: 5,
     name: '開拓者 Kaitakusha',
-    type: "experiences",
+    type: 'experiences',
     threshold: 50,
   },
   {
     id: 6,
     name: '日本の伝説 Nippon no Densetsu',
-    type: "experiences",
+    type: 'experiences',
     threshold: 70,
   },
 ];
@@ -133,37 +133,37 @@ const helpfulnessVoteBadges = [
   {
     id: 1,
     name: 'Thoughtful Reviewer',
-    type: "helpfulness votes",
+    type: 'helpfulness votes',
     threshold: 10,
   },
   {
     id: 2,
     name: 'Journey Evaluator',
-    type: "helpfulness votes",
+    type: 'helpfulness votes',
     threshold: 20,
   },
   {
     id: 3,
     name: 'Insightful Critic',
-    type: "helpfulness votes",
+    type: 'helpfulness votes',
     threshold: 40,
   },
   {
     id: 4,
     name: 'Seasoned Advisor',
-    type: "helpfulness votes",
+    type: 'helpfulness votes',
     threshold: 80,
   },
   {
     id: 5,
     name: 'Travel Guru',
-    type: "helpfulness votes",
+    type: 'helpfulness votes',
     threshold: 160,
   },
   {
     id: 6,
     name: 'Critic Extraordinaire',
-    type: "helpfulness votes",
+    type: 'helpfulness votes',
     threshold: 320,
   },
 ];
@@ -173,9 +173,12 @@ const showToolTip = ref<boolean>(false);
 const toolTipText = ref<string>('');
 const toolTipPosition = ref<{ x: number; y: number }>({ x: 0, y: 0 });
 
-const handleHoverOrTouch = (badge: {id: number, name: string, type: string, threshold: number}, event: MouseEvent | TouchEvent) => {
+const handleHoverOrTouch = (
+  badge: { id: number; name: string; type: string; threshold: number },
+  event: MouseEvent | TouchEvent,
+) => {
   showToolTip.value = true;
-  toolTipText.value = 'Provided ' + badge.threshold + " " + badge.type;
+  toolTipText.value = 'Provided ' + badge.threshold + ' ' + badge.type;
   const rect = (event.target as HTMLElement).getBoundingClientRect();
 
   toolTipPosition.value = {
@@ -282,9 +285,9 @@ const handleLeaveOrTouchEnd = () => {
         Logout
       </button> -->
       <RouterLink
-          class="block mx-auto w-32 bg-velvet border border-slate-400 text-frostWhite rounded-xl text-center p-5"
-          to="/home"
-          >Home →
+        class="block mx-auto w-32 bg-velvet border border-slate-400 text-frostWhite rounded-xl text-center p-5"
+        to="/home"
+        >Home →
       </RouterLink>
     </section>
   </div>
