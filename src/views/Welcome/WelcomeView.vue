@@ -13,9 +13,9 @@ const photolinks = [
 </script>
 
 <template>
-  <div class="relative w-screen overflow-hidden">
+  <div class="relative overflow-hidden w-screen bg-charcoal">
     <!-- Carousel -->
-    <div v-if="photolinks.length" class="absolute">
+    <div v-if="photolinks.length" class="relative sm:absolute">
       <Carousel
         :wrapAround="true"
         :itemsToShow="1"
@@ -34,7 +34,7 @@ const photolinks = [
 
     <!-- Main content -->
     <main
-      class="absolute top-1/4 w-full h-1/2 flex flex-col items-center justify-center z-10 bg-charcoal bg-opacity-80 text-white"
+      class="relative sm:absolute sm:top-1/4 w-full h-1/2 flex flex-col items-center justify-center z-10 bg-charcoal bg-opacity-80 text-white"
     >
       <div class="text-center px-5">
         <h1 class="text-5xl">Welcome to Jappuri</h1>
