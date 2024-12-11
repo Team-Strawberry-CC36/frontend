@@ -12,6 +12,7 @@ import HomeView from '@/views/Home/HomeView.vue';
 import ExperiencesView from '@/views/Experiences/ExperiencesView.vue';
 import TouristDashboard from '@/views/TouristDashboard/TouristDashboardView.vue';
 import TestingComponents from '@/views/testing-components/TestingComponents.vue';
+import DevProfile from '@/views/About/DevProfile.vue';
 
 const auth = getAuth();
 
@@ -77,6 +78,11 @@ const router = createRouter({
       path: '/dashboard',
       name: 'dashboard',
       component: TouristDashboard,
+    },
+    {
+      path: '/developers',
+      name: 'developers',
+      component: DevProfile,
     },
   ],
 });
