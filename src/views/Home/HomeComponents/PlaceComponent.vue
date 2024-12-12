@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { usePlaceStore } from '@/stores/PlaceStore';
 import type { IPlaceEtiquetteVotes } from '@/utils/interfaces/PlaceEtiquetteVotes';
-import { defineProps, onMounted, ref, computed } from 'vue';
+import { defineProps, ref, computed } from 'vue';
 import { defineEmits } from 'vue';
 import PhotosComponent from './PhotosComponent.vue';
 
@@ -39,7 +39,7 @@ const votesAnalysisData = computed(() => {
                   (100 * item.numberOfVotesForAllowed) /
                     (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed),
                 ) >= 50
-              ? `Probably allowed - our data says that ${Math.floor((100 * item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed))}% of our users say it is allowed.}`
+              ? `Probably allowed - our data says that ${Math.floor((100 * item.numberOfVotesForAllowed) / (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed))}% of our users say it is allowed.`
               : Math.floor(
                     (100 * item.numberOfVotesForAllowed) /
                       (item.numberOfVotesForAllowed + item.numberOfVotesForNotAllowed),
@@ -80,9 +80,21 @@ const handleLeaveOrTouchEnd = () => {
 };
 </script>
 
+<style>
+.place {
+  height: calc(100vh - 156px)
+}
+
+@media screen and (max-width: 1015px) {
+  .place {
+    height: auto;
+  }
+}
+</style>
+
 <template>
   <div
-    class="sm:w-fit lg:h-[610px] mt-3 lg:m-3 lg:mt-0 border border-slate-400 sm:overflow-y-auto overflow-hidden rounded-xl shadow-2xl bg-frostWhite"
+    class="sm:w-fit place mt-3 lg:m-3 lg:mt-0 border border-slate-400 sm:overflow-y-auto overflow-hidden rounded-xl shadow-2xl bg-frostWhite"
   >
     <section class="h-[20vh]">
       <!-- Cover Photo -->
