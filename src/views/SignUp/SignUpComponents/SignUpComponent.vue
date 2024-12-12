@@ -15,8 +15,24 @@ const email = ref('');
 const password = ref('');
 const confirmPassword = ref('');
 
+// errors touched
+const usernameTouched = ref<boolean>(false);
+const passwordTouched = ref<boolean>(false);
+
+// handling blur on fields
+const handleBlur = (field: string) => {
+  if (field === 'username') {
+    usernameTouched.value = true;
+  }
+
+  if (field === "password") {
+    passwordTouched.value = true;
+  }
+}
+
 // Computed validation logic
 const usernameError = computed(() => {
+  if (!usernameTouched.value) return null; 
   if (!displayName.value) return 'Username is required';
   if (!/^[a-zA-Z0-9]{4,}$/.test(displayName.value)) {
     return 'Username must be at least 4 characters and only contain letters and numbers';
@@ -25,6 +41,7 @@ const usernameError = computed(() => {
 });
 
 const passwordError = computed(() => {
+  if (!passwordTouched.value) return null;
   if (!password.value) return 'Password is required';
   if (!/^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]{8,}$/.test(password.value)) {
     return 'Password must be at least 8 characters and contain only letters, numbers, or special characters';
@@ -112,6 +129,7 @@ const toast = useToast();
             'mb-3': !usernameError,
           }"
           class="block h-10 p-1 border border-slate-400 rounded-xl w-full"
+          @blur="handleBlur('username')"
         />
         <p v-if="usernameError" class="text-red-500 text-sm">
           *{{ usernameError }}
@@ -142,6 +160,7 @@ const toast = useToast();
             'mb-3': !passwordError,
           }"
           class="block h-10 p-1 border border-slate-400 rounded-xl w-full"
+          @blur="handleBlur('password')"
         />
         <p v-if="passwordError" class="text-red-500 text-sm">
           *{{ passwordError }}
